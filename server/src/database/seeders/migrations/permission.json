@@ -1,0 +1,119 @@
+[   
+    {
+       "title":"Authoriztion",
+       "description":"The Super Admin can access all the endpoints"
+    },
+    {
+      "title": "create account",
+      "description": "Create account test"
+    },
+    {
+      "title": "read account",
+      "description": "Read account test"
+    },
+    {
+      "title": "update account",
+      "description": "Change password"
+    },
+    {
+      "title": "delete account",
+      "description": "Delete account test"
+    },
+    {
+      "title": "create user",
+      "description": "Create user test"
+    },
+    {
+      "title": "read user",
+      "description": "Read user test"
+    },
+    {
+      "title": "update user",
+      "description": "Update user test"
+    },
+    {
+      "title": "delete user",
+      "description": "Delete user test"
+    },
+    {
+      "title": "create product",
+      "description": "Create product test"
+    },
+    {
+      "title": "read product",
+      "description": "Read product test"
+    },
+    {
+      "title": "update product",
+      "description": "Update product test"
+    },
+    {
+      "title": "delete product",
+      "description": "Delete product test"
+    },
+    {
+      "title": "create category",
+      "description": "Create category test"
+    },
+    {
+      "title": "read category",
+      "description": "Read category test"
+    },
+    {
+      "title": "update category",
+      "description": "Update category test"
+    },
+    {
+      "title": "delete category",
+      "description": "Delete category test"
+    },
+    {
+      "title": "create order",
+      "description": "Create order test"
+    },
+    {
+      "title": "read order",
+      "description": "Read order test"
+    },
+    {
+      "title": "update order",
+      "description": "Update order test"
+    },
+    {
+      "title": "delete order",
+      "description": "Delete order test"
+    },
+    {
+      "title": "create review",
+      "description": "Create review test"
+    },
+    {
+      "title": "read review",
+      "description": "Read review test"
+    },
+    {
+      "title": "update review",
+      "description": "Update review test"
+    },
+    {
+      "title": "delete review",
+      "description": "Delete review test"
+    },
+    {
+      "title": "create supplier",
+      "description": "Create supplier test"
+    },
+    {
+      "title": "read supplier",
+      "description": "Read supplier test"
+    },
+    {
+      "title": "update supplier",
+      "description": "Update supplier test"
+    },
+    {
+      "title": "delete supplier",
+      "description": "Delete supplier test"
+    }
+  ]
+  

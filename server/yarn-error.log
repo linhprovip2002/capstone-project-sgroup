@@ -1,0 +1,44 @@
+Arguments: 
+  D:\node\node.exe C:\Users\dangq\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add typescripts --save-dev
+
+PATH: 
+  C:\Python311\Scripts\;C:\Python311\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;D:\node\;C:\ProgramData\chocolatey\bin;D:\Git\cmd;C:\Program Files\Docker\Docker\resources\bin;C:\Users\dangq\AppData\Local\Yarn\bin;C:\Users\dangq\AppData\Local\Microsoft\WindowsApps;;C:\Users\dangq\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\dangq\AppData\Roaming\npm
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  20.5.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/typescripts: Not found
+      at params.callback [as _callback] (C:\Users\dangq\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66145:18)
+      at self.callback (C:\Users\dangq\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140890:22)
+      at Request.emit (node:events:514:28)
+      at Request.<anonymous> (C:\Users\dangq\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141862:10)
+      at Request.emit (node:events:514:28)
+      at IncomingMessage.<anonymous> (C:\Users\dangq\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141784:12)
+      at Object.onceWrapper (node:events:628:28)
+      at IncomingMessage.emit (node:events:526:35)
+      at endReadableNT (node:internal/streams/readable:1376:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+
+npm manifest: 
+  { 
+    "scripts": {
+      "start": "ts-node src/index.ts"
+    },
+    "devDependencies": {
+      "ts-node": "^10.9.1",
+      "typescript": "^5.2.2"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

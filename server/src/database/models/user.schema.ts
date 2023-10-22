@@ -12,11 +12,11 @@ const userSchema = new mongoose.Schema({
     passwordResetToken: { type: String, required: true },
     dayOfBirth: Date,
     profileImage: String,
-    isActive: { type: String, enum: isActiveEnum },
+    isActive: { type: String, enum: isActiveEnum, default: isActiveEnum.ACTIVE },
     roleName: { type: String, enum: roleNameEnum, default: roleNameEnum.USER },
   } , { timestamps: true});
 
-userSchema.plugin(mongooseDelete , { overrideMethods: 'all',   deletedAt : true });
+userSchema.plugin(mongooseDelete , { deletedAt : true });
 
 const User = mongoose.model('User', userSchema);
 

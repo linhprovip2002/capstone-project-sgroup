@@ -1,9 +1,11 @@
-import Account from "./account.schema";
-import { Role, Permission } from "./authorization.schema";
 import  User  from "./user.schema";
-export { 
-    Account, 
-    Role, 
-    Permission, 
-    User
+import Blog from "./blog.schema";
+import Category from "./category.schema";
+import Comment from "./comment.schema";
+
+export {
+    User,
+    Blog,
+    Category,
+    Comment
 }

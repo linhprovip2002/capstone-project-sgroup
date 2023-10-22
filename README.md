@@ -61,6 +61,6 @@ The project is currently under a license (if any), please check the project's li
 
 ## Contact
 
-For questions or inquiries about the project, you can contact the project maintainer at [maintainer@email.com](mailto:maintainer@email.com).
+For questions or inquiries about the project, you can contact the project at [dangquangnhatlinh123@gmail.com](dangquangnhatlinh123@gmail.com).
 
 Feel free to explore, contribute, or use this "Forum Clone" project as a learning resource or for your specific needs. Enjoy creating and enhancing forum systems!

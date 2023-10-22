@@ -7,5 +7,5 @@ export {
     User,
     Blog,
     Category,
-    Comment
+    Comment,
 }

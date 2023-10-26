@@ -1,7 +1,8 @@
 export default {
+  ssr:false,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'FE-Client',
+    title: 'Forum',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -12,8 +13,14 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [],
-
+  css: ['~/assets/css/main.css'
+  ],
+  
+  styleResources: {
+    scss: [
+      '~/assets/scss/variables.scss',
+    ]
+  },
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [],
 
@@ -26,6 +33,7 @@ export default {
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
+    // '@nuxtjs/style-resources',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules

@@ -1,9 +1,10 @@
 <template>
-  <h2>chao</h2>
+  <div class="main"></div>
 </template>
 
 <script>
 export default {
   name: 'IndexPage',
+  layout: 'default'
 }
 </script>

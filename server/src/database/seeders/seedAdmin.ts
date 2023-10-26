@@ -1,33 +1,32 @@
-// import mongoose from 'mongoose';
-import dbConfig from '../config/db.config';
-import { Account,Role,User} from '../models';
-import { hashPassword } from "../../service";
+import { User } from "../models";
+import bcrypt from "bcrypt";
+import { isActiveEnum, roleNameEnum } from "../models/enum";
 import crypto from 'crypto';
-const userDataSeed = require( './migrations/user.json');
+import { dbConfig } from "../config";
 
 async function seedData() {
     try {
         await dbConfig.connect();
-        const ObjectPassword:any = hashPassword(userDataSeed.password);
-        const account = new Account({
-            userName: userDataSeed.userName,
-            password: ObjectPassword.passwordHashed,
-            email: userDataSeed.email,
-            salt: ObjectPassword.salt,
-            passwordResetToken: crypto.randomBytes(20).toString('hex')
+        const salt = bcrypt.genSaltSync(10);
+        const hashPasswordUser = bcrypt.hashSync('admin', salt);
+        const passwordResetToken = crypto.randomBytes(10).toString('hex');
+        await User.create({
+            email: 'admin@gmail.com',
+            password: hashPasswordUser,
+            passwordResetToken: passwordResetToken,
+            firstName: 'admin',
+            isActive: isActiveEnum.ACTIVE,
+            roleName: roleNameEnum.ADMIN
         });
-        await account.save();
-        console.log(account._id);
-        const roleUser = await Role.findOne({ roleName: "superUser",deleted: false });
-        const user = new User({
-            account: account,
-            Roles: roleUser,
-            firstName: userDataSeed.firstName,
-            lastName: userDataSeed.lastName,
-            gender: userDataSeed.gender
+
+        await User.create({
+            email: 'moderator@gmail.com',
+            password: bcrypt.hashSync('moderator', salt),
+            passwordResetToken: passwordResetToken,
+            firstName: 'moderator',
+            isActive: isActiveEnum.ACTIVE,
+            roleName: roleNameEnum.MODERATOR
         });
-        await user.save();
-        console.log("super created successfully.");
         return;
     } catch (error) {
         throw error;

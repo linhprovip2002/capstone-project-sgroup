@@ -4,41 +4,28 @@ class AuthenticationController {
     }
     async register(req, res, next) {
         try {
-            const { username, password, email } = req.body;
-            await authenticateService.register(username, password, email)
+            const { password, email } = req.body;      
+            await authenticateService.register( password, email)
             return res.status(200).json({message:"User created successfully."});
         } catch (error) {
-           
-            console.error("Error while saving permission:", error);
+            console.error("Error while saving:", error);
             next(error);
         }
     }
     async login(req, res, next) {
         try {
-            
-            const { username, password } = req.body;
-            const account = await authenticateService.findAccountByUserName(username);
-            account?console.log("user found"):console.log("user not found");
-            if(!account)
-            {
-                return res.status(401).json({message:"Username not found."});
-            }
-            const token = await authenticateService.login(account, password);
-            res.status(200).json({message:"Login successfully.",token:token});
+            const { email, password } = req.body;
+            const token = await authenticateService.login(email, password);
+            return res.status(200).json({message:"Login successfully.", token: token});
         } catch (error) {
             next(error);
           }
     }
     async forgotPassword(req, res, next) {
         try {
-            const { email } = req.body;
-            const account = await authenticateService.findAccountByEmail(email);
-            if(!account)
-            {
-                return res.status(401).json({message:"Email not found."});
-            }
-            await authenticateService.forgotPassword(account);
-            return res.status(200).json({message:"Email sent."});
+           const { email } = req.body;
+           await authenticateService.forgotPassword(email);
+           return res.status(200).json({message:"Email sent successfully."});        
         } catch (error) {
             next(error);
           }

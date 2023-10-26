@@ -1,23 +1,22 @@
 import mongoose from 'mongoose';
-const mongoose_delete = require('mongoose-delete');
-
-
+import mongooseDelete from 'mongoose-delete';
+import { isActiveEnum,roleNameEnum } from './enum';
 
 const userSchema = new mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
-    account: { type: mongoose.Schema.Types.ObjectId, ref: 'Account' },
-    Roles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Role'}],
-    firstName: { type: String },
-    lastName: { type: String },
-    gender: { type: Boolean },
-    phone: { type: Number },
-    dayOfBirth: { type: mongoose.Schema.Types.Date },
-    lastLogin: { type: Date },
-    Address: { type: String },
-    profilePicture: { type: String },
-}, { timestamps: true });
+    firstName: String,
+    lastName: String,
+    gender: Boolean,
+    phone: Number,
+    email: { type: String, required: true, unique: true },
+    password: String,
+    passwordResetToken: { type: String, required: true },
+    dayOfBirth: Date,
+    profileImage: String,
+    isActive: { type: String, enum: isActiveEnum, default: isActiveEnum.ACTIVE },
+    roleName: { type: String, enum: roleNameEnum, default: roleNameEnum.USER },
+  } , { timestamps: true});
 
-userSchema.plugin(mongoose_delete , { overrideMethods: 'all',   deletedAt : true });
+userSchema.plugin(mongooseDelete , { deletedAt : true });
 
 const User = mongoose.model('User', userSchema);
 

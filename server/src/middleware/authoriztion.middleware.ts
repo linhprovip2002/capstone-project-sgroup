@@ -1,6 +1,12 @@
-export default function checkAuthor(roles:string) {
-    return async  function (req, res, next )
-    {
-        next();
+export default function checkAuthor(roles:string[]) {
+    return async function (req, res, next )
+    {   
+        if (roles.includes(req.userToken.role)) {
+            next();
+        } else
+        {
+            return res.status(403).json({ message: 'You are not allowed to perform this action' });
+        }
+        
     }
 }

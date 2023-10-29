@@ -31,7 +31,6 @@ class AuthenticationService {
             if (user === null) {
                 throw new Error("Email not exists");
             }
-            console.log("aaaa" + user.email);
             
             const isMatch = bcrypt.compareSync(password, user.password);
             if (!isMatch) {

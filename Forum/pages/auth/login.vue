@@ -16,10 +16,10 @@
                 <hr>
                 <div class="flex justify-between w-full">
                     <button class="text-sm text-[#676767]" @click.prevent="toSignup">Create new account?</button>
-                    <button class="text-sm text-[#FF4B26] font-medium" @click="toFogotPassword">Forgot password</button>
+                    <button class="text-sm text-[#FF4B26] font-medium" @click.prevent="toFogotPassword">Forgot password</button>
                 </div>
                 <div class="flex justify-center items-center w-full">
-                    <button class="text-[16px] font-bold text-white bg-[#FF4401] rounded-[25px] py-[8px] px-[40px]">Sign In</button>
+                    <button type="button" @click.prevent="submit" class="text-[16px] font-bold text-white bg-[#FF4401] rounded-[25px] py-[8px] px-[40px]">Sign In</button>
                 </div>
             </form>
 
@@ -41,6 +41,7 @@ export default {
     },
     methods: {
         submit() {
+            this.$router.push('/')
             // axios({
             //     method: 'post',
             //     url: `http://${import.meta.env.VITE_APP_BASE_URL}:3000/auth/login`,

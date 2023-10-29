@@ -1,50 +1,41 @@
 <template>
   <div class="top-nav">
-    <div class="top-nav__logo">
-      <img src="~assets/img/logosgroup.png" alt="">
+    <div class="top-nav__logo" @click="$router.push('/')">
+      <img src="~assets/img/logosgroup.png" alt="" />
       <div class="name-web">S-Forum</div>
     </div>
     <div class="top-nav__main">
       <div class="top-nav__main__left">
         <div class="top-nav__main__menu">
-          <div 
+          <div
             class="menu__item"
-            :class="{'isActive':currentTab=='home'}"
-            @click="currentTab='home'"
+            :class="{ isActive: currentTab == 'home' }"
+            @click="navigation('home')"
           >
-          <img src="~/assets/icon/home.svg" alt="">
+            <img src="~/assets/icon/home.svg" alt="" />
           </div>
-          <div 
+          <div
             class="menu__item"
-            :class="{'isActive':currentTab=='calendar'}"
-            @click="currentTab='calendar'"
+            :class="{ isActive: currentTab == 'calendar' }"
+            @click="navigation('calendar')"
           >
-          <img src="~/assets/icon/calendar.svg" alt="">
+            <img src="~/assets/icon/calendar.svg" alt="" />
           </div>
-          <!-- <div 
-          v-for="item in listTab"
-          :key="item.id"
-            class="menu__item"
-            :class="{'isActive':currentTab==item.id}"
-            @click="currentTab=item.id"
-          >
-          <img :src="`_nuxt/assets/icon/${item.id}.svg`" alt="">
-          </div> -->
-        </div>
-        <div class="top-nav__main__search">
-          <input id=""  type="text"  name="" placeholder="Type here to search...">
-          <img src="~assets/icon/search.svg" alt="">
         </div>
       </div>
       <div class="top-nav__main__right">
         <div class="notification">
-          <img src="~assets/icon/bell.svg" alt="">
+          <img src="~assets/icon/bell.svg" alt="" />
         </div>
-        <div class="account">
-          <img src="~assets/img/avt.png" alt="">
+        <div class="account" @click="toggleDropdown">
+          <img src="~assets/img/avt.png" alt="" />
           <span class="name">SGroup Member</span>
           <div class="icon-drop-down">
-            <img src="~assets/icon/drop-down-icon.svg" alt="">
+            <img src="~assets/icon/drop-down-icon.svg" alt="" />
+          </div>
+          <div v-show="isShowDropDown" class="dropdown-menu">
+            <nuxt-link class="item" to="/user/profile">Profile</nuxt-link>
+            <nuxt-link class="item" to="/auth/login">Logout</nuxt-link>
           </div>
         </div>
 
@@ -57,21 +48,35 @@ export default {
   data() {
     return {
       currentTab: 'home',
-      listTab:[
+      listTab: [
         {
-          id:'home',
-          icon:'home'
+          id: 'home',
+          icon: 'home',
         },
         {
-          id:'calendar',
-          icon:'calendar'
+          id: 'calendar',
+          icon: 'calendar',
         },
-      ]
+      ],
+      isShowDropDown: false
     }
   },
   methods: {
-    
-  }
+    navigation(item) {
+      this.currentTab = item
+      switch (item) {
+        case 'home':
+          this.$router.push('/')
+          break;
+        case 'calendar':
+          this.$router.push('/calendar')
+          break;
+      }
+    },
+    toggleDropdown() {
+      this.isShowDropDown = !this.isShowDropDown
+    }
+  },
 }
 </script>
 
@@ -92,7 +97,7 @@ export default {
     display: flex;
     align-items: center;
     gap: 10px;
-
+    cursor: pointer;
     img {
       height: 100%;
       object-fit: contain;
@@ -118,7 +123,7 @@ export default {
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      flex: 1 0 0 ;
+      flex: 1 0 0;
       gap: 17px;
     }
     &__menu {
@@ -126,7 +131,7 @@ export default {
       align-items: flex-start;
       gap: 20px;
       cursor: pointer;
-      
+
       .menu__item {
         display: flex;
         justify-content: center;
@@ -142,47 +147,6 @@ export default {
           align-items: flex-start;
           gap: 10px;
         }
-      }
-    }
-    &__search {
-      position: relative;
-      flex: 1;
-      max-width: 500px;
-      
-      input {
-        display: flex;
-        width: 100%;
-        padding: 9px 20px;
-        padding-right: 40px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-        border-radius: 10px;
-        outline: none;
-        color: #ccc;
-        /* Regular 14 */
-        font-family: Source Sans Pro;
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 22px; /* 157.143% */
-        background: $dark-4;
-        ::placeholder {
-          color: #858EAD;
-        }
-      }
-
-      img {
-        position: absolute;
-        display: flex;
-        width: 20px;
-        height: 20px;
-        padding: 0px 0.5px 0.5px 1px;
-        justify-content: center;
-        align-items: center;
-        top: 50%;
-        right: 20px;
-        transform: translateY(-50%);
       }
     }
     &__right {
@@ -213,12 +177,13 @@ export default {
         padding-right: 10px;
         position: relative;
         cursor: pointer;
+        margin-right: 40px;
         img {
           height: 100%;
           object-fit: contain;
         }
         .name {
-          color: #F7F7F7;
+          color: #f7f7f7;
           font-family: Source Sans Pro;
           font-size: 16px;
           font-style: normal;
@@ -230,6 +195,30 @@ export default {
           right: -10px;
           top: 50%;
           transform: translateY(-50%);
+        }
+        .dropdown-menu {
+          position: absolute;
+          display: inline-flex;
+          right: -20px;
+          top: 40px;
+          flex-direction: column;
+          background: $gray;
+          padding: 6px 12px;
+          border-radius: 8px;
+          width: 100%;
+
+          .item {
+            display: flex;
+            width: 100%;
+            padding: 6px 12px;
+            color: $orange;
+            border-radius: 8px;
+
+            &:hover {
+              color:$gray;
+              background: $orange;
+            }
+          }
         }
       }
     }

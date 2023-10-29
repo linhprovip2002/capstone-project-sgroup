@@ -4,9 +4,7 @@
           <TopNavBar class="top-nav"/>
         </div>
         <div class="default__body">
-          <TabLeft class="default__body__tableft"/>
-          <nuxt class="default__body__container"/>
-          <TabRight class="default__body__tabright"/>
+          <nuxt class="default__body__container w-full"/>
         </div>
     </div>
   </template>
@@ -38,26 +36,15 @@
       top: 0;
       z-index: 10;
     }
-    
-    &__tableft {
-        height: 100%;
-        max-width: 239px;
-    }
-    &__tabright {
-        height: 100%;
-        max-width: 239px;
-    }
     &__body {
       display: inline-flex;
       align-items: flex-start;
-      justify-content: space-between;
+      justify-content: center;
       gap: 20px;
       width: 100%;
       padding: 0 20px;
-      
-      &__container {
-        width: 100%;
-      }
+        
+
     }
   }
   </style>

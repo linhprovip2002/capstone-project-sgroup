@@ -4,7 +4,7 @@ import mongooseDelete from "mongoose-delete";
 const notificationSchema = new mongoose.Schema(
     {
         receiveUserId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-        content: { type: String, required: true },
+        content: { type: String, required: true }, 
     }
 )
 

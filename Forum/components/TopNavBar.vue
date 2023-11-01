@@ -184,10 +184,9 @@ export default {
         }
         .name {
           color: #f7f7f7;
-          font-family: Source Sans Pro;
-          font-size: 16px;
+          font-size: 14px;
           font-style: normal;
-          font-weight: 700;
+          font-weight: 500;
           line-height: 24px; /* 150% */
         }
         .icon-drop-down {

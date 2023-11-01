@@ -11,11 +11,11 @@
                 </div>
                 <div class="w-full flex flex-col gap-2">
                     <label for="" class="text-sm text-white font-medium">Password</label>
-                    <input v-model="password" type="text" class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 bg-[#2C353D]" placeholder="Email">
+                    <input v-model="password" type="text" class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 bg-[#2C353D]" placeholder="Password">
                 </div>
                 <div class="w-full flex flex-col gap-2">
                     <label for="" class="text-sm text-white font-medium">Password confirm</label>
-                    <input v-model="password_confirm" type="password" class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 bg-[#2C353D]" placeholder="Password">
+                    <input v-model="password_confirm" type="password" class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 bg-[#2C353D]" placeholder="Password confirm">
                 </div>
                 <hr>
                 <div class="flex justify-between w-full">
@@ -43,6 +43,7 @@ export default {
     methods: {
         submit() {
             this.$router.push('/auth/login')
+
         },
         toSignin(){
             this.$router.push('/auth/login')

@@ -8,6 +8,9 @@
           <nuxt class="default__body__container"/>
           <TabRight class="default__body__tabright"/>
         </div>
+        <div class="default__top">
+          <FooterBar class="footer"/>
+        </div>
     </div>
   </template>
   
@@ -58,6 +61,9 @@
       &__container {
         width: 100%;
       }
+    }
+    .footer {
+      
     }
   }
   </style>

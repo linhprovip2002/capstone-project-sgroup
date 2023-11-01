@@ -11,11 +11,11 @@
                 </div>
                 <div class="w-full flex flex-col gap-2">
                     <label for="" class="text-sm text-white font-medium">Password</label>
-                    <input v-model="password" type="text" class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 bg-[#2C353D]" placeholder="New password">
+                    <input v-model="newPassword" type="text" class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 bg-[#2C353D]" placeholder="New password">
                 </div>
                 <div class="w-full flex flex-col gap-2">
                     <label for="" class="text-sm text-white font-medium">Password confirm</label>
-                    <input v-model="password_confirm" type="password" class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 bg-[#2C353D]" placeholder="Password">
+                    <input v-model="confirmPassword" type="password" class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 bg-[#2C353D]" placeholder="Password confirm">
                 </div>
                 <hr>
                 <div class="flex justify-between w-full">

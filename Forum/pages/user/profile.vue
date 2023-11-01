@@ -18,20 +18,6 @@
           class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden"
           style="height: 70px"
         >
-          <svg
-            class="absolute bottom-0 overflow-hidden"
-            xmlns="http://www.w3.org/2000/svg"
-            preserveAspectRatio="none"
-            version="1.1"
-            viewBox="0 0 2560 100"
-            x="0"
-            y="0"
-          >
-            <polygon
-              class="text-gray-300 fill-current"
-              points="2560 0 2560 100 0 100"
-            ></polygon>
-          </svg>
         </div>
       </section>
       <section class="relative py-16 bg-[#2C353D]">
@@ -129,7 +115,7 @@
                     </div>
                     <span
                       v-if="!compareLength"
-                      class="font-normal text-[#FF571A] cursor"
+                      class="font-normal text-[#FF571A] cursor-pointer"
                       @click="showMore"
                       >Show more
                     </span>
@@ -141,7 +127,12 @@
         </div>
       </section>
     </main>
-  <EditProfile v-if="isEditProfile"/>
+  <EditProfile 
+    v-if="isEditProfile"
+    :user = "user"
+    @save="save"
+    @cancel="cancelSave"
+  />
   </div>
 </template>
 <script>
@@ -153,15 +144,16 @@ export default {
     BlogCard,
     EditProfile,
   },
-  layout: 'onlyheader',
+  layout: 'topandfooter',
   data() {
     return {
       user: {
+        id: 'user1',
         firstName: 'SGroup',
         lastName: 'Member',
         gender: true,
         dayOfBirth: '2022-2-10',
-        phone: 766748566,
+        phone: '766748566',
         avatar: require('~/assets/img/avt.png'),
       },
       news: [
@@ -227,6 +219,14 @@ export default {
     },
     EditProfile() {
       this.isEditProfile = true
+    },
+    cancelSave() {
+      this.isEditProfile = false
+    },
+    save(userProp) {
+     alert('Luu thanh cong:',JSON.stringify(userProp))
+     console.log(userProp);
+      this.isEditProfile = false
     }
   },
 }

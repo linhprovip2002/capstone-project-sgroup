@@ -6,6 +6,9 @@
         <div class="default__body">
           <nuxt class="default__body__container w-full"/>
         </div>
+        <div class="default__top">
+          <FooterBar class="footer"/>
+        </div>
     </div>
   </template>
   

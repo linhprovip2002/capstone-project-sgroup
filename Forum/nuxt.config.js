@@ -1,5 +1,5 @@
 export default {
-  ssr:false,
+  ssr: false,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'Forum',
@@ -13,16 +13,20 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['~/assets/css/main.css'
+  css: [
+    '~/assets/css/main.css',
+    'quill/dist/quill.snow.css',
   ],
-  
+
   styleResources: {
     scss: [
       '~/assets/scss/variables.scss',
     ]
   },
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    { src: '~plugins/vue-quill-editor.js', ssr: false },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -35,7 +39,7 @@ export default {
     '@nuxtjs/tailwindcss',
     // '@nuxtjs/style-resources',
   ],
-  
+
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -59,5 +63,11 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    extend(config, { }) {
+      config.node = {
+        fs: 'empty'
+      }
+    }
+  },
 }

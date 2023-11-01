@@ -32,16 +32,16 @@ export default {
   },
   props: {
     imageLink: {
-        type: String,
-        default:''
+      type: String,
+      default: ''
     },
     title: {
-        type:String,
-        default:''
+      type: String,
+      default: ''
     },
     author: {
-        type: String,
-        default:''
+      type: String,
+      default: ''
     },
     tags: {
       type: Array,
@@ -49,16 +49,16 @@ export default {
     },
     time: String,
     like: {
-        type:Number,
-        default:0
+      type: Number,
+      default: 0
     },
     dislike: {
-        type:Number,
-        default:0
+      type: Number,
+      default: 0
     },
     comments: {
-        type:Number,
-        default:0
+      type: Number,
+      default: 0
     },
   },
 }

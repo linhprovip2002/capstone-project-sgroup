@@ -29,4 +29,4 @@ async function validateStatusUser(req, res, next) {
 export { 
     validateUserUpdate,
     validateStatusUser
-}
+};

@@ -1,6 +1,5 @@
-import { User } from '../../database/models'
-import { Pagination } from '../../service';
-
+import { User } from '../../database/models';
+import { myCustomLabels } from '../../constant'
 class UserService {
     _constructor() {
     }
@@ -8,12 +7,19 @@ class UserService {
         try {
             page ? page : null;
             limit ? limit : null;
-            // const skipCount = (page - 1) * limit
-            // const users = await User.find({deleted:false}).limit(limit).skip(skipCount);
-            // return users;
-            const users = await User.find({deleted:false});
-            const pagination = new Pagination(users,page,limit);
-            return pagination.paginationData();
+              const options = {
+                page,
+                limit,
+                sort: { createdAt: -1 },
+                select: '_id firstName lastName email gender phone dayOfBirth profileImage isActive roleName createdAt updatedAt',
+                myCustomLabels,
+              };  
+
+            const users = await User.paginate({ deleted: false}, options, function (err, result) {
+                if (err) throw new Error('Error');
+                return result;
+              });
+            return users;
         } catch(error) {
             throw error;
         }
@@ -32,8 +38,10 @@ class UserService {
         try {
             const user = await User.findById({_id:id,deleted:false});
             if(!user) throw new Error('User not found');
-            await user.set({deleted:true});
-            await user.save();
+            // await user.set({deleted:true});
+            // await user.save();
+            user.delete();
+            return
         } catch(error) {
             throw error;
         }

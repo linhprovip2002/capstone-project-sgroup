@@ -1,8 +1,10 @@
-import mongoose from 'mongoose';
-import mongooseDelete from 'mongoose-delete';
+import { Schema, model } from 'mongoose';
+import MongooseDelete, { SoftDeleteModel } from 'mongoose-delete';
+import paginate from 'mongoose-paginate-v2';
 import { isActiveEnum,roleNameEnum } from './enum';
+import IUser from './interface/user.interface';
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema<IUser>({
     firstName: String,
     lastName: String,
     gender: Boolean,
@@ -16,10 +18,9 @@ const userSchema = new mongoose.Schema({
     roleName: { type: String, enum: roleNameEnum, default: roleNameEnum.USER },
   } , { timestamps: true});
 
-userSchema.plugin(mongooseDelete , { deletedAt : true });
-
-const User = mongoose.model('User', userSchema);
-
+userSchema.plugin(MongooseDelete , { deletedAt : true, overrideMethods: 'all' });
+userSchema.plugin(paginate);
+const User:SoftDeleteModel = model<IUser>('User', userSchema);
 export default User;
 
 

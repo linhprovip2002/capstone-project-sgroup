@@ -1,6 +1,6 @@
 import { Blog, User } from "../../database/models";
 import { isActiveEnum, statusBlogEnum } from "../../database/models/enum";
-import { Pagination } from "../../service";
+import { myCustomLabels } from "../../constant";
 class blogService {
     constructor() {
     }
@@ -12,9 +12,19 @@ class blogService {
         return false;
     }
     async getAllBlogs(page,limit) {
-        const blogs = await Blog.find({deleted: false, status: statusBlogEnum.APPROVED}).populate({ path: 'userId', select: 'name'});
-        const pagination = new Pagination(blogs,page,limit);
-        return pagination.paginationData();
+        const options = {
+            page,
+            limit,
+            populate: { path: 'userId', select: 'name' },
+            sort: { createdAt: -1 },
+            myCustomLabels,
+        };
+        const blogs = await Blog.paginate({ deleted: false, status: statusBlogEnum.APPROVED }, options, function (err, result) {
+            if (err)
+            throw new Error('Error');
+            return result;
+        });
+        return blogs;
     }
     async createBlogByIdUser(userId, blog) {
         if ( !this.checkUserBlockPosting(userId) ) {

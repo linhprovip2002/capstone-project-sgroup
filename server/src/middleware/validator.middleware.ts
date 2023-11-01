@@ -1,5 +1,4 @@
 import Joi from 'joi';
-// import { isActiveEnum } from '../database/models/enum';
 const schemaUserUpdate = Joi.object({
     firstName: Joi.string().min(3).max(30).required(),
     lastName: Joi.string().min(3).max(30).required(),

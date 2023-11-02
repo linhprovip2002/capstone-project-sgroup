@@ -1,15 +1,21 @@
 <template>
-  <div class="main">
+  <div class="main relative">
+    <div class="absolute top-20 left-0 w-full h-full flex items-center w-screen-80 justify-center">
+      <PostCreator v-if="isCreatingPost" @cancel="cancel" class="h-full absolute left-0 h-full flex z-10"/>
+    </div>
     <div class="container">
       <div class="w-full px-4">
-        <div class="search flex bg-[#262D34] gap-5 w-full p-5 my-5 rounded-lg">
-          <input
-            id=""
-            type="text"
-            name=""
-            placeholder="Type here to search..."
-          />
-          <img src="~assets/icon/search.svg" alt="" />
+        <div class="flex bg-[#262D34] gap-5 w-full px-5 items-center h-[80px] rounded-md">
+          <div class="search flex gap-5 w-full p-5 my-5 rounded-lg">
+            <input
+              id=""
+              type="text"
+              name=""
+              placeholder="Type here to search..."
+            />
+            <img src="~assets/icon/search.svg" alt="" />
+          </div>
+          <button class="h-[20px] text-white" @click="isCreatingPost=true">Create Post</button>
         </div>
         <div id="main-content">
           <div v-for="n in news" :key="n.id" class="blog" >
@@ -27,15 +33,19 @@
         </div>
       </div>
     </div>
+    
   </div>
 </template>
 
 <script>
 import BlogCard from '~/components/Card/BlogCard.vue'
+import PostCreator from '~/components/Blog/PostCreator.vue'
+
 export default {
   name: 'IndexPage',
   components: {
     BlogCard,
+    PostCreator
   },
   data() {
     return {
@@ -107,8 +117,14 @@ export default {
           comments: 201,
         },
       ],
+      isCreatingPost: true,
     }
   },
+  methods: {
+    cancel(){
+      this.isCreatingPost=false;
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -137,8 +153,8 @@ export default {
         outline: none;
         color: #ccc;
         /* Regular 14 */
-        font-family: Source Sans Pro;
-        font-size: 14px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 12px;
         font-style: normal;
         font-weight: 400;
         line-height: 22px; /* 157.143% */

@@ -111,8 +111,8 @@
           gap: 2px;
           .name {
             color: $neutral-0;
-            font-family: Source Sans Pro;
-            font-size: 14px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
             font-style: normal;
             font-weight: 600;
             line-height: 18px; /* 150% */
@@ -120,8 +120,8 @@
           .desc {
             color: #97989d;
             /* Regular 9 */
-            font-family: Source Sans Pro;
-            font-size: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
             font-style: normal;
             font-weight: 400;
             line-height: 14px; /* 155.556% */

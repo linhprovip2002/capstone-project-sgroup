@@ -107,11 +107,7 @@
       font-weight: 700;
       line-height: 38px;
       color: $orange;
-      font-family: Source Sans Pro;
-      font-size: 26px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: 38px;
+      font-family: 'Montserrat', sans-serif;
     }
   }
 }

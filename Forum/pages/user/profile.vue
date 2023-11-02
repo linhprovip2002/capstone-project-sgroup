@@ -133,6 +133,7 @@
     @save="save"
     @cancel="cancelSave"
   />
+
   </div>
 </template>
 <script>
@@ -192,7 +193,7 @@ export default {
         },
       ],
       filternews: [],
-      isEditProfile:false
+      isEditProfile:false,
     }
   },
   computed: {

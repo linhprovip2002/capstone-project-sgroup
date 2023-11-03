@@ -26,11 +26,20 @@ class blogService {
         });
         return blogs;
     }
-    async createBlogByIdUser(userId, blog) {
+    async createBlogByIdUser(userId, body) {
+        console.log("aaaa" + userId);
+        
         if ( !this.checkUserBlockPosting(userId) ) {
             throw new Error('User is blocked posting');
         }
-        const blogCreated = await Blog.create({ ...blog, userId });
+        const blog = new Blog( {
+            userId: userId,
+            title: body.title,
+            content: body.content,
+            blogImage: body.blogImages,
+            status: statusBlogEnum.PENDING,
+        })
+        const blogCreated = await Blog.create(blog);
         return blogCreated;
     }
     async updateBlogByIdUser(userId, id, blog) {
@@ -40,7 +49,23 @@ class blogService {
         } catch (error) {
             throw new Error('You do not have permission to edit this post');
         }
-
+    }
+    async getBlogAwaitingApproval(page,limit) {
+        if (page === undefined || limit === undefined) {
+            return await Blog.paginate({ deleted: false, status: statusBlogEnum.PENDING }, { myCustomLabels });
+        }
+        return await Blog.paginate({ deleted: false, status: statusBlogEnum.PENDING }, { page, limit, myCustomLabels });
+    }
+    async approvedOrRejectBlog(id, status) {
+        const blog = await Blog.findById(id);
+        if (!blog) {
+            throw new Error('Blog not found');
+        }
+        console.log("aaaaaaaaaa" + statusBlogEnum);
+        
+        blog.status = statusBlogEnum[status];
+        const blogUpdated = await blog.save();
+        return blogUpdated;
     }
 }
 

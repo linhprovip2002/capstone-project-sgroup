@@ -1,5 +1,5 @@
 import { User } from '../../database/models';
-import { myCustomLabels } from '../../constant'
+import { myCustomLabels } from '../../constant';
 class UserService {
     _constructor() {
     }
@@ -11,6 +11,7 @@ class UserService {
                 page,
                 limit,
                 sort: { createdAt: -1 },
+                // select: User.publicFields(),
                 select: '_id firstName lastName email gender phone dayOfBirth profileImage isActive roleName createdAt updatedAt',
                 myCustomLabels,
               };  
@@ -64,6 +65,23 @@ class UserService {
         } catch(error) {
             throw error;
         }
+    }
+    async changeRole(id, role) {
+        try {
+            const user = await User.findById({_id:id,deleted:false});
+            if(!user) throw new Error('User not found');
+            await user.set({role:role});
+            await user.save();
+        } catch(error) {
+            throw error;
+
+        }
+    }
+    async changeAvatar(id, avatar) {
+        const user = await User.findById({_id:id,deleted:false});
+        if(!user) throw new Error('User not found');
+        await user.set({profileImage:avatar});
+        await user.save();
     }
 }
 export default new UserService();

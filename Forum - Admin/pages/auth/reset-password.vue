@@ -30,8 +30,7 @@
     </div>
 </template>
 <script>
-import axios from 'axios';
-import constant from '~/constant';
+
 export default {
     layout: 'empty',
     data(){
@@ -43,29 +42,31 @@ export default {
     },
     methods: {
         submit(){
-            axios({
-                method: 'post',
-                url: `${constant.base_url}/auth/reset-password/${this.token}`,
-                data: {
-                    password: this.newPassword
-                }
-            }).then((response) => {
-                console.log(response);
-                // this.$notify({
-                //     title: "Success",
-                //     text: response.data.message,
-                //     type: 'success'
-                // });
-                this.$router.push('/auth/login')
-                return response.data;
-            }).catch((error) => {
-                console.error('Login error:', error);
-                // this.$notify({
-                //     title: "Error",
-                //     text: error.response.data.message,
-                //     type: 'error'
-                // });
-            });
+            this.$router.push('/auth/login')
+            // axios({
+            //     method: 'post',
+            //     url: `http://${import.meta.env.VITE_APP_BASE_URL}:3000/auth/reset-password`,
+            //     data: {
+            //         email: this.email,
+            //         newPassword: this.newPassword,
+            //         passwordResetToken: this.token
+            //     }
+            // }).then((response) => {
+            //     console.log(response);
+            //     this.$notify({
+            //         title: "Success",
+            //         text: response.data.message,
+            //         type: 'success'
+            //     });
+            //     return response.data;
+            // }).catch((error) => {
+            //     console.error('Login error:', error);
+            //     this.$notify({
+            //         title: "Error",
+            //         text: error.response.data.message,
+            //         type: 'error'
+            //     });
+            // });
         }
     }
 }

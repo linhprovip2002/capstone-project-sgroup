@@ -1,0 +1,226 @@
+<template>
+  <div class="top-nav">
+    <div class="top-nav__logo" @click="$router.push('/')">
+      <img src="~assets/img/logosgroup.png" alt="" />
+      <div class="name-web">S-Forum</div>
+    </div>
+    <div class="top-nav__main">
+      <div class="top-nav__main__left">
+        <div class="top-nav__main__menu">
+          <div
+            class="menu__item"
+            :class="{ isActive: currentTab == 'home' }"
+            @click="navigation('home')"
+          >
+            <img src="~/assets/icon/home.svg" alt="" />
+          </div>
+          <div
+            class="menu__item"
+            :class="{ isActive: currentTab == 'calendar' }"
+            @click="navigation('calendar')"
+          >
+            <img src="~/assets/icon/calendar.svg" alt="" />
+          </div>
+        </div>
+      </div>
+      <div class="top-nav__main__right">
+        <div class="notification">
+          <img src="~assets/icon/bell.svg" alt="" />
+        </div>
+        <div class="account" @click="toggleDropdown">
+          <img src="~assets/img/avt.png" alt="" />
+          <span class="name">SGroup Member</span>
+          <div class="icon-drop-down">
+            <img src="~assets/icon/drop-down-icon.svg" alt="" />
+          </div>
+          <div v-show="isShowDropDown" class="dropdown-menu">
+            <nuxt-link class="item" to="/user/profile">Profile</nuxt-link>
+            <nuxt-link class="item" to="/auth/login">Logout</nuxt-link>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      currentTab: 'home',
+      listTab: [
+        {
+          id: 'home',
+          icon: 'home',
+        },
+        {
+          id: 'calendar',
+          icon: 'calendar',
+        },
+      ],
+      isShowDropDown: false
+    }
+  },
+  methods: {
+    navigation(item) {
+      this.currentTab = item
+      switch (item) {
+        case 'home':
+          this.$router.push('/')
+          break;
+        case 'calendar':
+          this.$router.push('/calendar')
+          break;
+      }
+    },
+    toggleDropdown() {
+      this.isShowDropDown = !this.isShowDropDown
+    }
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+@import '~assets/scss/variables.scss';
+.top-nav {
+  display: inline-flex;
+  padding: 20px 22px;
+  flex-direction: row;
+  align-items: start;
+  gap: 84px;
+  background: $dark-3;
+  height: 100%;
+  width: 100%;
+
+  &__logo {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    img {
+      height: 100%;
+      object-fit: contain;
+    }
+    .name-web {
+      color: $orange;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 26px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 38px; /* 146.154% */
+    }
+  }
+  &__main {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 50px;
+    height: 100%;
+    width: 100%;
+    flex: 1;
+    &__left {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      flex: 1 0 0;
+      gap: 17px;
+    }
+    &__menu {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      cursor: pointer;
+
+      .menu__item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        border-radius: 8px;
+
+        &.isActive {
+          background: $orange;
+        }
+        img {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+        }
+      }
+    }
+    &__right {
+      height: 100%;
+      display: flex;
+      align-items: center;
+
+      gap: 25px;
+      .notification {
+        display: flex;
+        width: 20px;
+        height: 20px;
+        justify-content: center;
+        align-items: center;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          cursor: pointer;
+        }
+      }
+      .account {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        gap: 10px;
+        padding-right: 10px;
+        position: relative;
+        cursor: pointer;
+        margin-right: 40px;
+        img {
+          height: 100%;
+          object-fit: contain;
+        }
+        .name {
+          color: #f7f7f7;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 24px; /* 150% */
+        }
+        .icon-drop-down {
+          position: absolute;
+          right: -10px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+        .dropdown-menu {
+          position: absolute;
+          display: inline-flex;
+          right: -20px;
+          top: 40px;
+          flex-direction: column;
+          background: $gray;
+          padding: 6px 12px;
+          border-radius: 8px;
+          width: 100%;
+
+          .item {
+            display: flex;
+            width: 100%;
+            padding: 6px 12px;
+            color: $orange;
+            border-radius: 8px;
+
+            &:hover {
+              color:$gray;
+              background: $orange;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+</style>

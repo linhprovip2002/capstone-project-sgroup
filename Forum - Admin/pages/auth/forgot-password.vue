@@ -23,8 +23,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-import constant from '~/constant';
+// import axios from 'axios';
 // import { routerKey } from 'vue-router';
 
 export default {
@@ -36,29 +35,6 @@ export default {
     },
     methods: {
         SendCode() {
-            axios({
-                method: 'post',
-                url: `${constant.base_url}/auth/forgot-password`,
-                data: {
-                    email: this.email
-                }
-            }).then((response) => {
-                console.log(response);
-                // this.$notify({
-                //     title: "Success",
-                //     text: response.data.message,
-                //     type: 'success'
-                // });
-                this.$router.push('/auth/login')
-                return response.data;
-            }).catch((error) => {
-                console.error('Login error:', error);
-                // this.$notify({
-                //     title: "Error",
-                //     text: error.response.data.message,
-                //     type: 'error'
-                // });
-            });
             this.$router.push('/auth/reset-password')
         }
     }

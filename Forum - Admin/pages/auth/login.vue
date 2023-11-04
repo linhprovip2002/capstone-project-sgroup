@@ -28,8 +28,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-import constant from '~/constant';
+// import axios from 'axios';
 // import { routerKey } from 'vue-router';
 
 export default {
@@ -43,37 +42,36 @@ export default {
     methods: {
         submit() {
             this.$router.push('/')
-            axios({
-                method: 'post',
-                url: `${constant.base_url}/auth/login`,
-                data: {
-                    email: this.username,
-                    password: this.password
-                }
-            }).then((response) => {
-                if (response.data.token) {
-                    localStorage.setItem('accessToken', JSON.stringify(response.data.token));
-                    // Access the token directly from localStorage
-                    const accessToken = JSON.parse(localStorage.getItem('accessToken'));
-                    console.log('Access Token:', accessToken);
-                }
-                console.log('Login successfully');
-                // this.$notify({
-                //     title: "Welcome Back",
-                //     text: "Hello " + this.username,
-                //     type: 'success'
-                // });
-                // this.$router.push({path: '/', query: { page: 1, paging: 3 }});
-                this.$router.push('/');
-                return response.data;
-            }).catch((error) => {
-                console.error('Login error:', error);
-                // this.$notify({
-                //     title: "Error",
-                //     text: error.response.data.message,
-                //     type: 'error'
-                // });
-            });
+            // axios({
+            //     method: 'post',
+            //     url: `http://${import.meta.env.VITE_APP_BASE_URL}:3000/auth/login`,
+            //     data: {
+            //         username: this.username,
+            //         password: this.password
+            //     }
+            // }).then((response) => {
+            //     if (response.data.token) {
+            //         localStorage.setItem('accessToken', JSON.stringify(response.data.token));
+            //         // Access the token directly from localStorage
+            //         const accessToken = JSON.parse(localStorage.getItem('accessToken'));
+            //         console.log('Access Token:', accessToken);
+            //     }
+            //     console.log('Login successfully');
+            //     this.$notify({
+            //         title: "Welcome Back",
+            //         text: "Hello " + this.username,
+            //         type: 'success'
+            //     });
+            //     this.$router.push({path: '/', query: { page: 1, paging: 3 }});
+            //     return response.data;
+            // }).catch((error) => {
+            //     console.error('Login error:', error);
+            //     this.$notify({
+            //         title: "Error",
+            //         text: error.response.data.message,
+            //         type: 'error'
+            //     });
+            // });
         },
         toSignup(){
             this.$router.push('/auth/signup')

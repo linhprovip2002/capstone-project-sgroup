@@ -1,0 +1,72 @@
+@mixin text-style(
+  $font-size,
+  $line-height,
+  $font-weight,
+  $color-text,
+  $letter-spacing
+) {
+  font-size: $font-size;
+  line-height: $line-height;
+  font-weight: $font-weight;
+  letter-spacing: $letter-spacing;
+  color: $color-text;
+  font-family: inherit;
+}
+
+@mixin truncate($line) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-clamp: $line;
+  -webkit-line-clamp: $line;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  word-wrap: break-word;
+}
+@mixin text-color-gradient() {
+  background: $gradient-hover;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@mixin custom-scrollbar() {
+  //custom scrollbar
+  @-moz-document url-prefix() {
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: none;
+    cursor: pointer;
+    width: 10px !important;
+  }
+
+  &::-webkit-scrollbar {
+    height: 6px;
+    width: 10px;
+    background-color: none;
+    cursor: pointer;
+    opacity: 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $text-light-disable !important;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 1000ms linear;
+  }
+
+  &:hover {
+    &::-webkit-scrollbar {
+      opacity: 1;
+      cursor: pointer;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #aaaaaa;
+      cursor: pointer;
+    }
+  }
+}

@@ -31,8 +31,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-import constant from '~/constant';
 export default {
     layout: 'empty',
     data() {
@@ -44,32 +42,7 @@ export default {
     },
     methods: {
         submit() {
-            console.log(constant.base_url)
-            axios({
-                method: 'post',
-                url: `${constant.base_url}/auth/register`,
-                data: {
-                    email: this.username,
-                    password: this.password,
-                }
-            })
-            .then(response => {
-                console.log(response);
-                // this.$notify({
-                //     title: "Success",
-                //     text: response.data.message,
-                //     type: 'success'
-                // });
-                this.$router.push('/auth/login')
-            })
-            .catch(error => {
-                console.error('Login error:', error);
-                // this.$notify({
-                //     title: "Error",
-                //     text: error.response.data.message,
-                //     type: 'error'
-                // });
-            })
+            this.$router.push('/auth/login')
 
         },
         toSignin(){

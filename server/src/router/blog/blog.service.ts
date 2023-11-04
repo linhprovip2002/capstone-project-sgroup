@@ -1,6 +1,7 @@
 import { Blog, User } from "../../database/models";
 import { isActiveEnum, statusBlogEnum } from "../../database/models/enum";
 import { myCustomLabels } from "../../constant";
+import { Category } from "../../database/models";
 class blogService {
     constructor() {
     }
@@ -12,6 +13,10 @@ class blogService {
         return false;
     }
     async getAllBlogs(page,limit) {
+        if(page === undefined || limit === undefined)
+        {
+            return await Blog.find({ deleted: false, status: statusBlogEnum.APPROVED });
+        }
         const options = {
             page,
             limit,
@@ -44,6 +49,9 @@ class blogService {
     }
     async updateBlogByIdUser(userId, id, blog) {
         try {
+            if(blog.category) {
+                blog.category = await Category.findById(blog.category);
+            }
             const blogUpdated = await Blog.findOneAndUpdate({ _id: id, userId }, blog, { new: true });
             return blogUpdated;
         } catch (error) {
@@ -51,8 +59,9 @@ class blogService {
         }
     }
     async getBlogAwaitingApproval(page,limit) {
-        if (page === undefined || limit === undefined) {
-            return await Blog.paginate({ deleted: false, status: statusBlogEnum.PENDING }, { myCustomLabels });
+        if(page === undefined || limit === undefined)
+        {
+            return await Blog.find({ deleted: false, status: statusBlogEnum.PENDING });
         }
         return await Blog.paginate({ deleted: false, status: statusBlogEnum.PENDING }, { page, limit, myCustomLabels });
     }
@@ -61,7 +70,9 @@ class blogService {
         if (!blog) {
             throw new Error('Blog not found');
         }
-        console.log("aaaaaaaaaa" + statusBlogEnum);
+        console.log(status);
+        
+        console.log("aaaaaaaaaa" + statusBlogEnum[status]);
         
         blog.status = statusBlogEnum[status];
         const blogUpdated = await blog.save();

@@ -1,0 +1,92 @@
+[
+    {
+      "name": "General Discussion",
+      "description": "A place for general discussions and chit-chat.",
+      "status": "active",
+      "parentId": null
+    },
+    {
+      "name": "News and Updates",
+      "description": "Stay updated with the latest forum news and announcements.",
+      "status": "active",
+      "parentId": null
+    },
+    {
+      "name": "Technology",
+      "description": "Discuss the latest advancements in technology.",
+      "status": "active",
+      "parentId": null
+    },
+    {
+      "name": "Sports",
+      "description": "Talk about your favorite sports and athletes.",
+      "status": "active",
+      "parentId": null
+    },
+    {
+      "name": "Entertainment",
+      "description": "Share your thoughts on movies, TV shows, and more.",
+      "status": "active",
+      "parentId": null
+    },
+    {
+      "name": "Food and Cooking",
+      "description": "Exchange recipes and cooking tips with fellow food enthusiasts.",
+      "status": "active",
+      "parentId": null
+    },
+    {
+      "name": "Travel",
+      "description": "Discuss your travel experiences and dream destinations.",
+      "status": "active",
+      "parentId": null
+    },
+    {
+      "name": "Music",
+      "description": "Talk about your favorite music genres and artists.",
+      "status": "active",
+      "parentId": null
+    },
+    {
+      "name": "Gaming",
+      "description": "Connect with gamers and discuss the latest video games.",
+      "status": "active",
+      "parentId": null
+    },
+    {
+      "name": "Health and Fitness",
+      "description": "Share tips on maintaining a healthy lifestyle.",
+      "status": "active",
+      "parentId": null
+    },
+    {
+      "name": "Art and Creativity",
+      "description": "Showcase your creative works and discuss artistic endeavors.",
+      "status": "active",
+      "parentId": null
+    },
+    {
+      "name": "Science and Nature",
+      "description": "Explore the wonders of science and the natural world.",
+      "status": "active",
+      "parentId": null
+    },
+    {
+      "name": "Books and Literature",
+      "description": "Discuss your favorite books and literary works.",
+      "status": "active",
+      "parentId": null
+    },
+    {
+      "name": "Home and Garden",
+      "description": "Exchange tips on home improvement and gardening.",
+      "status": "active",
+      "parentId": null
+    },
+    {
+      "name": "Business and Finance",
+      "description": "Share insights on business strategies and financial planning.",
+      "status": "active",
+      "parentId": null
+    }
+  ]

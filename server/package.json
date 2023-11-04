@@ -4,7 +4,8 @@
     "tsc": "tsc",
     "dev": "ts-node-dev src/index.ts",
     "lint": "eslint --ext .ts .",
-    "seedUser": "ts-node src/database/seeders/seedAdmin.ts"
+    "seedUser": "ts-node src/database/seeders/seedAdmin.ts",
+    "seedCategory": "ts-node src/database/seeders/seedCategory.ts"
   },
   "devDependencies": {
     "axios": "^1.5.0",

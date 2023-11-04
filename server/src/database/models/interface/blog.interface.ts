@@ -2,6 +2,7 @@ import { Document } from 'mongoose';
 import { SoftDeleteDocument } from 'mongoose-delete';
 interface IBlog extends Document,SoftDeleteDocument {
     userId: object;
+    category:object;
     title: string;
     content: string;
     blogImage: string[];

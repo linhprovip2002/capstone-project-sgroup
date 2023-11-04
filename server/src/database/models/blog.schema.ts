@@ -6,6 +6,7 @@ import paginate from 'mongoose-paginate-v2';
 const blogSchema = new Schema<IBlog>({
    
     userId: { type: Schema.Types.ObjectId, ref: 'User',required: true },
+    category: { type: Schema.Types.ObjectId, ref: 'Category'},
     title: { type : String , required : true },
     content: { type : String , required : true },
     blogImage:[ { type : String , required : true } ],
@@ -14,7 +15,6 @@ const blogSchema = new Schema<IBlog>({
         {
             userId: { type: Schema.Types.ObjectId, ref: 'User',required: true },
             reaction: { type: String, enum: ['like', 'dislike'] },
-            
         }
     ],
   } , { timestamps: true} );

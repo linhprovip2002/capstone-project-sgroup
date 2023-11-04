@@ -27,7 +27,6 @@ class blogController {
             const { id } = req.params;
             const userId = req.userToken.id;
             console.log(userId);
-            
             const blog = await blogService.updateBlogByIdUser(userId,id,req.body);
             res.status(200).json(blog);
         } catch (error) {
@@ -46,7 +45,8 @@ class blogController {
     async approvedOrRejectBlog(req, res, next) {
         try {
             const { id } = req.params;
-            const { status} = req.body.status;
+            const { status} = req.body;
+            
             const blog = await blogService.approvedOrRejectBlog(id,status);
             console.log(blog);
             

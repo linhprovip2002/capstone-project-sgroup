@@ -5,8 +5,9 @@ class UserService {
     }
     async getUsers(page? , limit?) {
         try {
-            page ? page : null;
-            limit ? limit : null;
+            if(page === undefined || limit === undefined) {
+                return await User.find({ deleted: false})
+            }
               const options = {
                 page,
                 limit,

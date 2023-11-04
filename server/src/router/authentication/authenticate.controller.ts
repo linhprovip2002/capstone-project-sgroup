@@ -1,4 +1,5 @@
 import authenticateService from "./authenticate.service";
+import { HttpResponseBuilder } from "../../middleware/error";
 class AuthenticationController {
     constructor() {
     }
@@ -6,7 +7,7 @@ class AuthenticationController {
         try {
             const { password, email } = req.body;      
             await authenticateService.register( password, email)
-            return res.status(200).json({message:"User created successfully."});
+            return HttpResponseBuilder.buildOK(res, {message:"Register successfully."});
         } catch (error) {
             console.error("Error while saving:", error);
             next(error);
@@ -16,18 +17,18 @@ class AuthenticationController {
         try {
             const { email, password } = req.body;
             const token = await authenticateService.login(email, password);
-            return res.status(200).json({message:"Login successfully.", token: token});
-        } catch (error) {
-            next(error);
+            return HttpResponseBuilder.buildOK(res,{message:"Login successfully.", token: token});
+        } catch (error:any) {
+            next(HttpResponseBuilder.buildBadRequest(res, error.message));
           }
     }
     async forgotPassword(req, res, next) {
         try {
            const { email } = req.body;
            await authenticateService.forgotPassword(email);
-           return res.status(200).json({message:"Email sent successfully."});        
-        } catch (error) {
-            next(error);
+           return HttpResponseBuilder.buildOK(res,{message:"Email sent successfully."});        
+        } catch (error:any) {
+            next(HttpResponseBuilder.buildBadRequest(res, error.message));
           }
     }
     async resetPassword(req, res, next) {
@@ -35,9 +36,9 @@ class AuthenticationController {
             const { tokenResetPassword } = req.params;
             const { password } = req.body;
             await authenticateService.resetPassword(tokenResetPassword, password);
-            return res.status(200).json({message:"Password reset successfully."});
-        } catch (error) {
-            next(error);
+            return HttpResponseBuilder.buildOK(res,{message:"Password reset successfully."});
+        } catch (error:any) {
+            next(HttpResponseBuilder.buildBadRequest(res, error.message));
           }
     }
 

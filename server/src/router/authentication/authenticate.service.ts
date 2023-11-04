@@ -20,8 +20,8 @@ class AuthenticationService {
             const passwordResetToken = crypto.randomBytes(20).toString('hex');
             await User.create({ email: email, password: hashPasswordUser, passwordResetToken: passwordResetToken });
             return;
-        } catch (error) {
-            throw error;
+        } catch (error:any) {
+            throw error.message;
         }
     }
     
@@ -34,7 +34,7 @@ class AuthenticationService {
             
             const isMatch = bcrypt.compareSync(password, user.password);
             if (!isMatch) {
-                throw new Error("Password incorrect");
+                throw Error("Password not match");
             }
             const token = await signJwt(user, email);
             return token;

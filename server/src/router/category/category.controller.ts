@@ -1,3 +1,4 @@
+import { HttpResponseBuilder } from "../../middleware/error";
 import { categoryService } from "./index";
 class categoryController {
     constructor() {
@@ -7,19 +8,18 @@ class categoryController {
         try {
             const { slug } = req.params;
             const data = await categoryService.getCategories(slug, req.query.page, req.query.limit);
-            console.log(data + "aaaaaaaaaa");
             
-            res.status(200).json(data);
-        } catch (error) {
-            next(error);
+            return HttpResponseBuilder.buildOK(res, data);
+        } catch (error:any) {
+            next(HttpResponseBuilder);
         }
     }
     createCategory(req, res, next) {
         try {
             const category = categoryService.createCategory(req.body);
-            res.status(200).json({ category });
-        } catch (error) {
-            next(error);
+            return HttpResponseBuilder.buildCreated(res, category);
+        } catch (error:any) {
+            next(HttpResponseBuilder.buildBadRequest(res, error.message));
         }
     }
 }

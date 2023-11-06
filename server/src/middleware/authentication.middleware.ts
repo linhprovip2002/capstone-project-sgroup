@@ -15,21 +15,22 @@ export  function verify(req, res, next) {
       const accessToken = req.headers.authorization;
      
       const token = accessToken.split(' ')[1];
-      if ( !accessToken || !token) {
+      console.log(!accessToken, !token);
+      
+      if (token) {
         jwt.verify(token, jwtSecret, (err, decoded) => {
           if (err) {
-            next(HttpResponseBuilder.buildUnAuthorized(res, err.message));
+            throw HttpResponseBuilder.buildUnAuthorized(res, err.message);
           } else {
             req.userToken = decoded;
             next();
           }
         });
       } else {
-        next(HttpResponseBuilder.buildUnAuthorized(res, 'No token provided'));
+        throw HttpResponseBuilder.buildUnAuthorized(res, 'No token provided');
       }
     } catch (err:any) {
       err.status = 401;
       next(err);
     }
   }
-  

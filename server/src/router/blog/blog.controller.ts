@@ -56,6 +56,22 @@ class blogController {
             next(HttpResponseBuilder.buildBadRequest(res,error.message));
         }
     }
+    async getNewestBlog(req, res, next) {
+        try {
+            const blogs = await blogService.getNewestBlog();
+            return HttpResponseBuilder.buildOK(res, blogs);
+        } catch (error:any) {
+            next(HttpResponseBuilder.buildBadRequest(res,error.message));
+        }
+    }
+    async getPopularBlog(req, res, next) {
+        try {
+            const blogs = await blogService.getPopularBlog();
+            return HttpResponseBuilder.buildOK(res, blogs);
+        } catch (error:any) {
+            next(HttpResponseBuilder.buildBadRequest(res,error.message));
+        }
+    }
 }
 
 export default new blogController();

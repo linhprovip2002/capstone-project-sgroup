@@ -47,15 +47,32 @@ class blogService {
         const blogCreated = await Blog.create(blog);
         return blogCreated;
     }
-    async updateBlogByIdUser(userId, id, blog) {
+    async updateBlogByIdUser(userId, id, body) {
         try {
-            if(blog.category) {
-                blog.category = await Category.findById(blog.category);
-            }
-            const blogUpdated = await Blog.findOneAndUpdate({ _id: id, userId }, blog, { new: true });
+            if(body.category) {
+                body.category = await Category.findById(body.category);
+                const blogUpdated = await Blog.findOneAndUpdate({ _id: id, deleted:false }, body, { new: true });
             return blogUpdated;
-        } catch (error) {
-            throw new Error('You do not have permission to edit this post');
+            } 
+            if(body.blogImages) {
+                const blogUpdated = await Blog.findOneAndUpdate({ _id: id, deleted:false  }, body, { new: true });
+            return blogUpdated;
+            }
+            if(body.reaction) {
+                console.log(body.reaction);
+                
+                const blog = await Blog.findOne({ _id: id, deleted: false, status: statusBlogEnum.APPROVED});
+                console.log(blog);
+                
+                blog.reaction.push({
+                    userId: userId,
+                    reaction: body.reaction,
+                });
+                const updatedBlog = await blog.save();
+            return updatedBlog;
+            }
+        } catch (error:any) {
+            throw new Error(error.message);
         }
     }
     async getBlogAwaitingApproval(page,limit) {
@@ -70,13 +87,36 @@ class blogService {
         if (!blog) {
             throw new Error('Blog not found');
         }
-        console.log(status);
-        
-        console.log("aaaaaaaaaa" + statusBlogEnum[status]);
         
         blog.status = statusBlogEnum[status];
         const blogUpdated = await blog.save();
         return blogUpdated;
+    }
+    async getNewestBlog() {
+        return await Blog.find({ deleted: false, status: statusBlogEnum.APPROVED }).sort({ createdAt: -1 }).limit(5);
+    }
+    async getPopularBlog() {
+        // function get popular blog find follow reaction lenght > 10
+        const popularBlogs = await Blog.aggregate([
+            {
+                $match: {
+                    deleted: false,
+                    status: statusBlogEnum.APPROVED
+                }
+            },
+            {
+                $addFields: {
+                    reactionCount: { $size: "$reaction" }
+                }
+            },
+            {
+                $match: {
+                    reactionCount: { $gt: 1 }
+                }
+            }
+        ]);
+    
+        return popularBlogs;
     }
 }
 

@@ -56,6 +56,27 @@ class UserController {
             next(error);
         }
     }
+    async changeRole(req, res, next) {
+        try {
+            const { id } = req.params;
+            const { role } = req.body;
+            const user = await userService.changeRole(id, role);
+            return res.status(200).json({ message: 'User role changed successfully' , user });
+        } catch(error) {
+            next(error);
+        }
+    }
+    async changeAvatar(req, res, next) {
+        try {
+            const { id } = req.params;
+            const { avatar } = req.body;
+            const user = await userService.changeAvatar(id, avatar);
+            return res.status(200).json({ message: 'User avatar changed successfully' , user });
+        } catch(error) {
+            next(error);
+        }
+    }
+
 }
 
 export default new UserController();

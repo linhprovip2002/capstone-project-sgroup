@@ -1,8 +1,9 @@
 import mongooseSlugPlugin from 'mongoose-slug-plugin';
-import mongoose from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
 import mongooseDelete from 'mongoose-delete';
+import { ICategory } from './interface';
 
-const categorySchema = new mongoose.Schema({
+const categorySchema = new Schema<ICategory>({
     name: { type : String , required : true },
     slug: { type : String , slug : "name" , unique : true },
     description: { type : String , required : true },
@@ -11,5 +12,5 @@ const categorySchema = new mongoose.Schema({
 } , { timestamps: true} );
 categorySchema.plugin(mongooseSlugPlugin , { tmpl: '<%=name%>' });
 categorySchema.plugin(mongooseDelete , { overrideMethods: 'all',   deletedAt : true });
-const Category = mongoose.model('Category', categorySchema);
+const Category = model<ICategory>('Category', categorySchema);
 export default Category;

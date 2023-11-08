@@ -1,7 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import mongooseDelete from "mongoose-delete";
+import { INotification } from "./interface";
 
-const notificationSchema = new mongoose.Schema(
+const notificationSchema = new Schema<INotification>(
     {
         receiveUserId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
         content: { type: String, required: true }, 
@@ -10,4 +11,5 @@ const notificationSchema = new mongoose.Schema(
 
 notificationSchema.plugin(mongooseDelete, { overrideMethods: 'all' });
 
-export default mongoose.model('Notification', notificationSchema);
+const Notification = model<INotification>('Notification', notificationSchema);
+export default Notification;

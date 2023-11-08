@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 import env from 'dotenv';
+import { HttpResponseBuilder } from './error';
 env.config();
-export async function verify(req, res, next) {
+export  function verify(req, res, next) {
     try {
       const jwtSecret = process.env.JWT_SECRET;
   
@@ -12,27 +13,24 @@ export async function verify(req, res, next) {
       }
   
       const accessToken = req.headers.authorization;
-      if (!accessToken) {
-        throw new Error('No token provided');
-      }
-  
+     
       const token = accessToken.split(' ')[1];
+      console.log(!accessToken, !token);
+      
       if (token) {
         jwt.verify(token, jwtSecret, (err, decoded) => {
           if (err) {
-            console.log(err);
-            next(err);
+            throw HttpResponseBuilder.buildUnAuthorized(res, err.message);
           } else {
             req.userToken = decoded;
             next();
           }
         });
       } else {
-        throw new Error('No token provided');
+        throw HttpResponseBuilder.buildUnAuthorized(res, 'No token provided');
       }
     } catch (err:any) {
       err.status = 401;
       next(err);
     }
   }
-  

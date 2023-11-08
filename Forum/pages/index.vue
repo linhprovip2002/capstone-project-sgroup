@@ -5,7 +5,7 @@
     </div>
     <div class="container">
       <div class="w-full px-4">
-        <div class="flex bg-[#262D34] gap-5 w-full px-5 items-center h-[80px] rounded-md">
+        <div class="flex bg-[#262D34] gap-5 w-full px-5 items-center h-[80px] rounded-md mb-5">
           <div class="search flex gap-5 w-full p-5 my-5 rounded-lg">
             <input
               id=""

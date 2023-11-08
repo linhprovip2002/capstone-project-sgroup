@@ -15,6 +15,7 @@
 
 <script>
 import axios from 'axios'
+import constant from '~/constant';
 import TextEditor from '../../components/Blog/TextEditor.vue';
 export default {
     layout: 'topandfooter',
@@ -31,11 +32,10 @@ export default {
         submit(){
             axios({
                 method: 'post',
-                url: `http://${process.env.BASE_URL}:3000/auth/reset-password`,
+                url: `http://${constant.base_url}/blogs/`,
                 data: {
                     title: this.title,
                     content: this.content,
-                    createdAt: Date.now()
                 }
             }).then((response) => {
                 console.log(response);

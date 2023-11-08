@@ -119,57 +119,20 @@
 </style>
 
 <script>
-import Vue from 'vue'
-import { VTooltip, VPopover, VClosePopover } from 'v-tooltip'
 import EditProfile from '../User/EditProfile.vue'
+import constant from '~/constant'
+import axios from 'axios'
 
-Vue.directive('tooltip', VTooltip)
-Vue.directive('close-popover', VClosePopover)
-Vue.component('v-popover', VPopover)
 export default{
     components: {
         EditProfile
     },
+    props: {
+        users: Array,
+    },
     data(){
         return{
-            users: [
-                {
-                    id: 'user1',
-                    firstName: 'SGroup',
-                    lastName: 'Member',
-                    gender: true,
-                    dayOfBirth: '2022-2-10',
-                    phone: '766748566',
-                    email: 'toan1772@gmail.com',
-                    role: 'User',
-                    status: 'Online',
-                    avatar: require('~/assets/img/avt.png'),
-                },
-                {
-                    id: 'user2',
-                    firstName: 'SGroup',
-                    lastName: 'Member',
-                    gender: true,
-                    dayOfBirth: '2022-2-10',
-                    phone: '766748566',
-                    email: 'toan1772@gmail.com',
-                    role: 'User',
-                    status: 'Online',
-                    avatar: require('~/assets/img/avt.png'),
-                },
-                {
-                    id: 'user3',
-                    firstName: 'SGroup',
-                    lastName: 'Member',
-                    gender: true,
-                    dayOfBirth: '2022-2-10',
-                    phone: '766748566',
-                    email: 'toan1772@gmail.com',
-                    role: 'User',
-                    status: 'Online',
-                    avatar: require('~/assets/img/avt.png'),
-                },
-            ],
+            // users: [],
             currentUser: {
                 type: Object,
                 default: () => {}
@@ -209,9 +172,24 @@ export default{
             this.isEditProfile = true;
         },
         onDelete(id){
-            
+            axios({
+                method: 'post',
+                url: `${constant.base_url}/users/register`
+            })
         }
-    }
-    
+    },
+    mounted() {
+        // Correct the axios call and handle the response
+        axios({
+            method: 'get',
+            url: `${constant.base_url}/users/?page=1&limit=2`,
+        })
+        .then(response => {
+            this.users = response.data; // Update the component's users data
+        })
+        .catch(error => {
+            console.error('Error fetching users:', error);
+        });
+    },
 }
 </script>

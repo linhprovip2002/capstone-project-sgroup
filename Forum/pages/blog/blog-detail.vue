@@ -2,18 +2,65 @@
     <div class="p-10 flex flex-col gap-5 bg-gray-200 rounded-lg justify-center">
         <div class="text-6xl font-bold">{{ title }}</div>
         <div v-html="content"></div>
+        <div class="h-[1px] w-full bg-gray-300"></div>
+        <div class="flex justify-between">
+            <div class="flex justify-between gap-5"> 
+                <div class="flex justify-between items-center gap-1">
+                    <div class="text-gray-500">{{ blog.like }}</div> 
+                    <img src="~/assets/icon/upvote.svg" alt="" class="w-5 h-5">
+                </div>
+                <div class="flex justify-between items-center gap-1">
+                    <div class="text-gray-500">{{ blog.dislike }}</div>
+                    <img src="~/assets/icon/downvote.svg" alt="" class="w-5 h-5">
+                </div>
+            </div>
+            <div>
+                <div class="text-gray-500">{{ blog.comments.length }} Comments</div>
+            </div>
+        </div>
+        <div class="h-[1px] w-full bg-gray-300"></div>
+        <div class="relative bg-white rounded-lg">
+            <textarea name="" id="" cols="30" rows="5" class="w-full px-5 pt-2 pb-6 focus:outline-none rounded-lg"></textarea>
+            <div class="py-2 px-5 flex justify-end">
+                <img src="~/assets/icon/send.svg" alt="" class="w-10 h-10 right-4">
+            </div>
+        </div>
+        <div v-for="c in blog.comments" :key="c">
+            <CommentCard 
+                :comment="c"
+            />
+        </div>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
+import CommentCard from '~/components/Card/CommentCard.vue';
 export default {
     layout: 'topandfooter',
+    components: {
+        CommentCard,
+    },
     data() {
         return {
             title: 'New Company Rising',
             content: '<p><sub>sdlaknflnsdfklndfs</sub></p><p class="ql-align-center ql-indent-5"><strong>oeinlkfnsldnf</strong></p><p>onsdlnlkv lknsd</p><p class="ql-align-right">k ldks l f;fsld alkf fds</p><blockquote>kna sd;lnlkf;lskndflnla;nd;lfnlsnldkfnldsn;lf</blockquote><pre class="ql-syntax" spellcheck="false">ksnknklnvlks</pre><h1><span style="background-color: rgb(230, 0, 0);">sdfsadfsdfee</span></h1><p><br></p><p><span style="color: rgb(230, 0, 0);">iugklnononoin</span></p><p><br></p><p><img src="https://res.cloudinary.com/dvznvebzi/image/upload/v1698921611/signed_upload_demo_form/sfazz0jx6lzurhoym1rw.png" height="250" width="250"></p>'.replace(/"/g, "'"),
+            blog: {
+                like: 20,
+                dislike: 30,
+                comments: [
+                    'Great',
+                    'Wow',
+                    'Wtf'
+                ]
+            }
         }
+    },
+    props: {
+        // blog: {
+        //     type: Object,
+        //     default: () => {}
+        // }
     },
     mounted(){
         axios({

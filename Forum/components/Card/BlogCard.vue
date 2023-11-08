@@ -1,5 +1,5 @@
 <template>
-  <div class="flex bg-[#262D34] gap-5 w-full p-5 my-5 rounded-lg cursor-pointer">
+  <div class="flex bg-[#262D34] gap-5 w-full p-5 mb-5 rounded-lg cursor-pointer">
     <img :src="imageLink" alt="" class="w-[80px] h-[80px]" />
     <div class="flex flex-col justify-between w-full h-full gap-2">
       <div id="title" class="flex justify-between">

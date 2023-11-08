@@ -9,17 +9,17 @@
 
 <script>
 import { debounce } from 'vue-debounce';
-const cloudinary = require('cloudinary').v2;
+// const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 const UploadImage = require('../../api/uploadImage.js');
 // import { v2 as cloudinary } from 'cloudinary';
 // const streamifier = require('streamifier');
 
-cloudinary.config({
-    cloud_name: 'dvznvebzi',
-    api_key: '965548286235395',
-    api_secret: 'Wqbt7VvnH7bPQTWd_cPRD5K1kgE'
-});
+// cloudinary.config({
+//     cloud_name: 'dvznvebzi',
+//     api_key: '965548286235395',
+//     api_secret: 'Wqbt7VvnH7bPQTWd_cPRD5K1kgE'
+// });
 
 export default {
     props: {
@@ -83,8 +83,8 @@ export default {
                         try {
                             const res = await UploadImage(file);
                             console.log(res);
-                            const url = await cloudinary.image(`${res}`, {height: 250, width: 250, crop: "fill"})
-                            // const str = `<img src=${url}">`;
+                            // const url = await cloudinary.image(`${res}`, {height: 250, width: 250, crop: "fill"})
+                            const url = `<img src="${res}">`;
                             this.editedContent += url;
                         } catch (err) {
                             console.error(err);

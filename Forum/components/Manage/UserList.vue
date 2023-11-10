@@ -58,6 +58,83 @@
     </div>
 </template>
 
+
+<script>
+import axios from 'axios'
+import EditProfile from '../User/EditProfile.vue'
+import constant from '~/constant'
+
+export default{
+    components: {
+        EditProfile
+    },
+    props: {
+        users: Array,
+    },
+    data(){
+        return{
+            // users: [],
+            currentUser: {
+                type: Object,
+                default: () => {}
+            },
+            isEditProfile: false,
+        }
+    },
+    mounted() {
+        // Correct the axios call and handle the response
+        axios({
+            method: 'get',
+            url: `${constant.base_url}/users/?page=1&limit=2`,
+        })
+        .then(response => {
+            // this.users = response.data; // Update the component's users data
+        })
+        .catch(error => {
+            console.error('Error fetching users:', error);
+        });
+    },
+    methods: {
+        closeAllPopup() {
+            this.users.forEach(p => {
+                document.querySelector('#action-'+p.id).classList.add('hidden')
+            }
+            );
+        },
+        closeAllPopupExceptIndex(index) {
+            this.users.forEach(p => {
+                if(p.id !== index)
+                document.querySelector('#action-'+p.id).classList.add('hidden')
+            }
+            );
+        },
+        displayTooltip(id){
+            this.closeAllPopupExceptIndex(id)
+            const popup = document.querySelector("#action-" + id)
+            popup.classList.toggle('hidden')
+        },
+        cancelSave() {
+            this.isEditProfile = false
+        },
+        save(userProp) {
+            alert('Luu thanh cong:',JSON.stringify(userProp))
+            console.log(userProp);
+            this.isEditProfile = false;
+        },
+        showPopup(user){
+            this.currentUser = user;
+            this.isEditProfile = true;
+        },
+        onDelete(id){
+            axios({
+                method: 'post',
+                url: `${constant.base_url}/users/register`
+            })
+        }
+    },
+    
+}
+</script>
 <style lang="scss" scoped>
 @import '~/assets/scss/variables.scss';
 .user-list-information:hover{
@@ -117,79 +194,3 @@
     }
 }
 </style>
-
-<script>
-import EditProfile from '../User/EditProfile.vue'
-import constant from '~/constant'
-import axios from 'axios'
-
-export default{
-    components: {
-        EditProfile
-    },
-    props: {
-        users: Array,
-    },
-    data(){
-        return{
-            // users: [],
-            currentUser: {
-                type: Object,
-                default: () => {}
-            },
-            isEditProfile: false,
-        }
-    },
-    methods: {
-        closeAllPopup() {
-            this.users.forEach(p => {
-                document.querySelector('#action-'+p.id).classList.add('hidden')
-            }
-            );
-        },
-        closeAllPopupExceptIndex(index) {
-            this.users.forEach(p => {
-                if(p.id !== index)
-                document.querySelector('#action-'+p.id).classList.add('hidden')
-            }
-            );
-        },
-        displayTooltip(id){
-            this.closeAllPopupExceptIndex(id)
-            const popup = document.querySelector("#action-" + id)
-            popup.classList.toggle('hidden')
-        },
-        cancelSave() {
-            this.isEditProfile = false
-        },
-        save(userProp) {
-            alert('Luu thanh cong:',JSON.stringify(userProp))
-            console.log(userProp);
-            this.isEditProfile = false;
-        },
-        showPopup(user){
-            this.currentUser = user;
-            this.isEditProfile = true;
-        },
-        onDelete(id){
-            axios({
-                method: 'post',
-                url: `${constant.base_url}/users/register`
-            })
-        }
-    },
-    mounted() {
-        // Correct the axios call and handle the response
-        axios({
-            method: 'get',
-            url: `${constant.base_url}/users/?page=1&limit=2`,
-        })
-        .then(response => {
-            this.users = response.data; // Update the component's users data
-        })
-        .catch(error => {
-            console.error('Error fetching users:', error);
-        });
-    },
-}
-</script>

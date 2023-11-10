@@ -1,7 +1,9 @@
 <template>
   <div class="main relative">
-    <div class="absolute top-20 left-0 w-full h-full flex items-center w-screen-80 justify-center">
-      <PostCreator v-if="isCreatingPost" @cancel="cancel" class="h-full absolute left-0 h-full flex z-10"/>
+    <div v-if="isCreatingPost" class="post-creator" @click="cancel">
+      <div class="post-creator__container custom-scroll" @click.stop>
+        <PostCreator @cancel="cancel" class="post-creator__container custom-scroll"/>
+      </div>
     </div>
     <div class="container">
       <div class="w-full px-4">
@@ -15,7 +17,7 @@
             />
             <img src="~assets/icon/search.svg" alt="" />
           </div>
-          <button class="h-[20px] text-white" @click="isCreatingPost=true">Create Post</button>
+          <button class="text-white py-2 px-6 rounded-[10px] bg-[#FF571A]" @click="isCreatingPost=true">Create Post</button>
         </div>
         <div id="main-content">
           <div v-for="n in news" :key="n.id" class="blog" >
@@ -129,14 +131,39 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '~/assets/scss/variables.scss';
-.container {
-  display: flex;
-  width: 100%;
-  .blog {
-    width: 100%;
+.main {
+  .post-creator {
+    position: fixed;
+    inset: 0;
+    background: rgba(71, 79, 98, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    padding: 20px 0;
+    &__container {
+      height: 100%;
+      overflow-y: auto;
+      width: 100%;
+      max-width: 700px;
+    }
+    &__form {
+      width: 100%;
+      max-width: 800px;
+      padding: 40px 20px;
+      border-radius: 10px;
+      margin: auto;
+      // height: 100%;
+    }
   }
-  
-  .search {
+  .container {
+    display: flex;
+    width: 100%;
+    .blog {
+      width: 100%;
+    }
+
+    .search {
       position: relative;
       flex: 1;
       width: 100%;
@@ -177,5 +204,6 @@ export default {
         transform: translateY(-50%);
       }
     }
+  }
 }
 </style>

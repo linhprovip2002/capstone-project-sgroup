@@ -1,3 +1,3 @@
 module.exports = {
-    base_url: "https://obscure-palm-tree-rq6j4xpxxghx55-3000.app.github.dev/api/",
+    base_url: "https://capstone-be-deploy-production.up.railway.app/api",
 }

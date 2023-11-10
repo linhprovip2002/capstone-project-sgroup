@@ -11,7 +11,7 @@
                 </div>
                 <div class="w-full flex flex-col gap-2">
                     <label for="" class="text-sm text-white font-medium">Password</label>
-                    <input v-model="password" type="text" class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 bg-[#2C353D]" placeholder="Password">
+                    <input v-model="password" type="password" class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 bg-[#2C353D]" placeholder="Password">
                 </div>
                 <div class="w-full flex flex-col gap-2">
                     <label for="" class="text-sm text-white font-medium">Password confirm</label>
@@ -46,6 +46,7 @@ export default {
         submit() {
             console.log(constant.base_url)
             axios({
+                mode: 'no-cors',
                 method: 'post',
                 url: `${constant.base_url}/auth/register`,
                 data: {
@@ -55,20 +56,20 @@ export default {
             })
             .then(response => {
                 console.log(response);
-                // this.$notify({
-                //     title: "Success",
-                //     text: response.data.message,
-                //     type: 'success'
-                // });
+                this.$notify({
+                    title: "Success",
+                    text: response.data.message,
+                    type: 'success'
+                });
                 this.$router.push('/auth/login')
             })
             .catch(error => {
                 console.error('Login error:', error);
-                // this.$notify({
-                //     title: "Error",
-                //     text: error.response.data.message,
-                //     type: 'error'
-                // });
+                this.$notify({
+                    title: "Error",
+                    text: error.response.data.message,
+                    type: 'error'
+                });
             })
 
         },

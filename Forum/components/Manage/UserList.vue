@@ -21,9 +21,9 @@
                 <div class="user-list-row-cell status">Status</div>
                 <div class="tooltip"></div>
             </div>
-            <div v-for="user in users" class="user-list-row user-list-information" :key="user.lastName">
+            <div v-for="user in users" class="user-list-row user-list-information" :key="user._id">
                 <div class="avatar">
-                    <img :src="user.avatar">
+                    <img :src="user.profileImage">
                 </div>
                 <div class="user-list-row-cell first-name">{{user.firstName}}</div>
                 <div class="user-list-row-cell last-name">{{user.lastName}}</div>
@@ -31,16 +31,16 @@
                 <div class="user-list-row-cell phone">{{user.phone}}</div>
                 <div class="user-list-row-cell email">{{user.email}}</div>
                 <div class="user-list-row-cell birthday">{{user.dayOfBirth}}</div>
-                <div class="user-list-row-cell role">{{user.role}}</div>
-                <div class="user-list-row-cell status">{{user.status}}</div>
+                <div class="user-list-row-cell role">{{user.roleName}}</div>
+                <div class="user-list-row-cell status">{{user.isActive}}</div>
                 <div class="tooltip relative">
                     <img
                         src="~/assets/icon/more.svg"
-                        @mouseenter="displayTooltip(user.id)"
+                        @mouseenter="displayTooltip(user._id)"
                         
                         class="cursor-pointer"
                     />
-                    <div :id="'action-' + user.id" class="hidden absolute top-1 right-0 z-10" @mouseleave="closeAllPopup()">
+                    <div :id="'action-' + user._id" class="hidden absolute top-1 right-0 z-10" @mouseleave="closeAllPopup()">
                         <div class="px-1 py-1 bg-white rounded-lg">
                             <button class=" hover:bg-gray-500 hover:text-white text-gray-900 group flex rounded-md items-center w-full px-2 py-2 text-sm" @click="showPopup(user)">
                                 <svg xmlns="http://www.w3.org/2000/svg" class=" w-5 h-5 mr-2 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
@@ -70,10 +70,10 @@
     .user-list-row{
         display: flex;
         grid-template-columns: repeat(8, minmax(0, 1fr));
-        gap: 15px;
         font-size: 12px;
         align-items: center;
         border-radius: 10px;
+        min-height: 50px;
         &-cell {
             grid-column: span 1 / span 1;
         }
@@ -86,10 +86,10 @@
             }
         }
         .first-name{
-            width: 13%;
+            width: 20%;
         }
         .last-name{
-            width: 13%;
+            width: 20%;
         }
         .gender{
             width: 8%;
@@ -101,10 +101,10 @@
             width: 23%;
         }
         .birthday{
-            width: 10%;
+            width: 15%;
         }
         .role{
-            width: 5%;
+            width: 10%;
         }
         .status{
             width: 10%;
@@ -119,9 +119,9 @@
 </style>
 
 <script>
+import axios from 'axios'
 import EditProfile from '../User/EditProfile.vue'
 import constant from '~/constant'
-import axios from 'axios'
 
 export default{
     components: {
@@ -177,19 +177,6 @@ export default{
                 url: `${constant.base_url}/users/register`
             })
         }
-    },
-    mounted() {
-        // Correct the axios call and handle the response
-        axios({
-            method: 'get',
-            url: `${constant.base_url}/users/?page=1&limit=2`,
-        })
-        .then(response => {
-            this.users = response.data; // Update the component's users data
-        })
-        .catch(error => {
-            console.error('Error fetching users:', error);
-        });
     },
 }
 </script>

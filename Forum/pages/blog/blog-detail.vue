@@ -3,31 +3,18 @@
         <div class="text-6xl font-bold">{{ title }}</div>
         <div v-html="content"></div>
         <div class="h-[1px] w-full bg-gray-300"></div>
-        <div class="flex justify-between">
-            <div class="flex justify-between gap-5"> 
-                <div class="flex justify-between items-center gap-1">
-                    <div class="text-gray-500">{{ blog.like }}</div> 
-                    <img src="~/assets/icon/upvote.svg" alt="" class="w-5 h-5">
-                </div>
-                <div class="flex justify-between items-center gap-1">
-                    <div class="text-gray-500">{{ blog.dislike }}</div>
-                    <img src="~/assets/icon/downvote.svg" alt="" class="w-5 h-5">
-                </div>
-            </div>
-            <div>
-                <div class="text-gray-500">{{ blog.comments.length }} Comments</div>
-            </div>
-        </div>
+        <ReactAndComment :like="blog.like" :dislike="blog.dislike"  />
         <div class="h-[1px] w-full bg-gray-300"></div>
         <div class="relative bg-white rounded-lg">
-            <textarea name="" id="" cols="30" rows="5" class="w-full px-5 pt-2 pb-6 focus:outline-none rounded-lg"></textarea>
+            <textarea name="" id="" cols="30" rows="5" class="w-full px-5 pt-5 pb-6 focus:outline-none rounded-lg" placeholder="Bình luận"></textarea>
             <div class="py-2 px-5 flex justify-end">
                 <img src="~/assets/icon/send.svg" alt="" class="w-10 h-10 right-4">
             </div>
         </div>
         <div v-for="c in blog.comments" :key="c">
             <CommentCard 
-                :comment="c"
+                :comment="c.content"
+                :user="c.userId"
             />
         </div>
     </div>
@@ -36,10 +23,11 @@
 <script>
 import axios from 'axios'
 import CommentCard from '~/components/Card/CommentCard.vue';
+import ReactAndComment from '~/components/Blog/ReactAndComment.vue';
 export default {
-    layout: 'topandfooter',
     components: {
         CommentCard,
+        ReactAndComment
     },
     data() {
         return {
@@ -49,9 +37,20 @@ export default {
                 like: 20,
                 dislike: 30,
                 comments: [
-                    'Great',
-                    'Wow',
-                    'Wtf'
+                    {
+                        userId: "1",
+                        content: 'Great',
+                    },
+                    {
+                        userId: "2",
+                        content: 'Wow',
+                        
+                    },
+                    {
+                        userId: "3",
+                        content: 'Wtf',
+                    }
+                    
                 ]
             }
         }

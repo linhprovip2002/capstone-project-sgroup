@@ -86,9 +86,13 @@
         }
     },
     mounted(){
+        const authorization = `Bearer ${JSON.parse(localStorage.getItem('accessToken'))}`
         axios({
             method: 'get',
-            url: `${constant.base_url}/users/?page=1&limit=2`,
+            url: `${constant.base_url}/users`,
+            headers: {
+                Authorization: authorization
+            }
         })
         .then(response => {
             this.users = response.data; // Update the component's users data

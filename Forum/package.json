@@ -13,9 +13,9 @@
     "lintfix": "prettier --write --list-different . && yarn lint:js --fix"
   },
   "dependencies": {
+    "@nuxtjs/auth-next": "5.0.0-1667386184.dfbbb54",
     "@nuxtjs/axios": "5.13.6",
     "@nuxtjs/pwa": "3.3.5",
-    "axios": "^1.6.0",
     "cloudinary": "^1.41.0",
     "core-js": "3.25.3",
     "cors": "^2.8.5",

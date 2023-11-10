@@ -12,9 +12,5 @@
     "noImplicitAny": false,
     "noEmit":true,
     "allowImportingTsExtensions":true,
-    "types": [
-      "@nuxtjs/axios",
-      "@nuxtjs/auth-next",
-    ]
   }
 }

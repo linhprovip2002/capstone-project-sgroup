@@ -1,6 +1,6 @@
 <template>
   <div class="flex bg-[#262D34] gap-5 w-full p-5 mb-5 rounded-lg cursor-pointer">
-    <img :src="imageLink" alt="" class="w-[80px] h-[80px]" />
+    <img :src="imageLink[0]??'_nuxt/assets/img/nodejs.png'" alt="" class="w-[80px] h-[80px]" />
     <div class="flex flex-col justify-between w-full h-full gap-2">
       <div id="title" class="flex justify-between">
         <p class="text-white font-medium text-sm">{{ title }}</p>
@@ -15,8 +15,9 @@
         <p class="text-white text-sm font-semibold">{{ author }}</p>
         <div class="flex gap-5">
           <p class="text-[#C5D0E6] text-[10px]">{{ like }} Likes</p>
-          <p class="text-[#C5D0E6] text-[10px]">{{ dislike }} Dislikes</p>
-          <p class="text-[#C5D0E6] text-[10px]">{{ comments }} Comments</p>
+          <p class="text-[#C5D0E6] text-[10px]">{{ time.split('T')[0] }}</p>
+          <!-- <p class="text-[#C5D0E6] text-[10px]">{{ dislike }} Dislikes</p> -->
+          <!-- <p class="text-[#C5D0E6] text-[10px]">{{ comments }} Comments</p> -->
         </div>
       </div>
     </div>
@@ -32,8 +33,8 @@ export default {
   },
   props: {
     imageLink: {
-      type: String,
-      default: ''
+      type: Array,
+      default: () => []
     },
     title: {
       type: String,

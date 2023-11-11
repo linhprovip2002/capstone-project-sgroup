@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     submit() {
-      const authorization = localStorage.getItem('auth._token.local')
+      const authorization = localStorage.getItem('accessToken')
       this.$axios.post('/blogs', {
         headers: {
           Authorization: authorization

@@ -7,7 +7,8 @@
 <script>
 export default{
   created() {
-    if( localStorage.getItem('accessToken') && localStorage.getItem('accessToken')!=='false')
+    console.log(this.$route);
+    if(this.$route.name !=='admin' && localStorage.getItem('accessToken') && localStorage.getItem('accessToken')!=='false')
       this.$router.push('/')
   }
 }

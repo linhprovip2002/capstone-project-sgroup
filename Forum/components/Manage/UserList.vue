@@ -1,12 +1,7 @@
 <template>
     <div>
         <div>
-            <EditProfile 
-                v-if="isEditProfile"  
-                :user="currentUser" 
-                @cancel="cancelSave"  
-                @save="save"
-            />
+            <EditRole v-if="isEditProfile" :user="currentUser" @cancel="cancelSave" @save="save" />
         </div>
         <div class="user-list text-white font-medium p-5 w-full bg-[#262d34] rounded-[16px]">
             <div class="font-semibold user-list-row">
@@ -17,30 +12,26 @@
                 <div class="user-list-row-cell phone">Phone</div>
                 <div class="user-list-row-cell email">Email</div>
                 <div class="user-list-row-cell birthday">Birthday</div>
-                <div class="user-list-row-cell role">Role</div>
+                <!-- <div class="user-list-row-cell role">Role</div> -->
                 <div class="user-list-row-cell status">Status</div>
                 <div class="tooltip"></div>
             </div>
             <div v-for="user in users" class="user-list-row user-list-information" :key="user._id">
                 <div class="avatar">
-                    <img :src="user.profileImage">
+                    <img :src="user.profileImage" class="p-2 rounded-full">
                 </div>
-                <div class="user-list-row-cell first-name">{{user.firstName}}</div>
-                <div class="user-list-row-cell last-name">{{user.lastName}}</div>
-                <div class="user-list-row-cell gender" >{{user.gender}}</div>
-                <div class="user-list-row-cell phone">{{user.phone}}</div>
-                <div class="user-list-row-cell email">{{user.email}}</div>
-                <div class="user-list-row-cell birthday">{{user.dayOfBirth}}</div>
-                <div class="user-list-row-cell role">{{user.roleName}}</div>
-                <div class="user-list-row-cell status">{{user.isActive}}</div>
+                <div class="user-list-row-cell first-name">{{ user.firstName }}</div>
+                <div class="user-list-row-cell last-name">{{ user.lastName }}</div>
+                <div class="user-list-row-cell gender">{{ user.gender }}</div>
+                <div class="user-list-row-cell phone">{{ user.phone }}</div>
+                <div class="user-list-row-cell email">{{ user.email }}</div>
+                <div class="user-list-row-cell birthday">{{ user.dayOfBirth }}</div>
+                <!-- <div class="user-list-row-cell role">{{ user.roleName }}</div> -->
+                <div class="user-list-row-cell status">{{ user.isActive }}</div>
                 <div class="tooltip relative">
-                    <img
-                        src="~/assets/icon/more.svg"
-                        @mouseenter="displayTooltip(user._id)"
-                        
-                        class="cursor-pointer"
-                    />
-                    <div :id="'action-' + user._id" class="hidden absolute top-1 right-0 z-10" @mouseleave="closeAllPopup()">
+                    <img src="~/assets/icon/more.svg" @mouseenter="displayTooltip(user._id)" class="cursor-pointer" />
+                    <div :id="'action-' + user._id" class="hidden absolute top-1 right-0 z-10"
+                        @mouseleave="closeAllPopup()">
                         <div class="px-1 py-1 bg-white rounded-lg">
                             <button class=" hover:bg-gray-500 hover:text-white text-gray-900 group flex rounded-md items-center w-full px-2 py-2 text-sm" @click="showPopup(user)">
                                 <svg xmlns="http://www.w3.org/2000/svg" class=" w-5 h-5 mr-2 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
@@ -61,54 +52,41 @@
 
 <script>
 import axios from 'axios'
-import EditProfile from '../User/EditProfile.vue'
+import EditRole from '../User/EditRole.vue'
 import constant from '~/constant'
 
-export default{
+export default {
     components: {
-        EditProfile
+        EditRole,
     },
     props: {
         users: Array,
     },
-    data(){
-        return{
+    data() {
+        return {
             // users: [],
             currentUser: {
                 type: Object,
-                default: () => {}
+                default: () => { }
             },
             isEditProfile: false,
         }
     },
-    mounted() {
-        // Correct the axios call and handle the response
-        axios({
-            method: 'get',
-            url: `${constant.base_url}/users/?page=1&limit=2`,
-        })
-        .then(response => {
-            // this.users = response.data; // Update the component's users data
-        })
-        .catch(error => {
-            console.error('Error fetching users:', error);
-        });
-    },
     methods: {
         closeAllPopup() {
             this.users.forEach(p => {
-                document.querySelector('#action-'+p.id).classList.add('hidden')
+                document.querySelector('#action-' + p._id).classList.add('hidden')
             }
             );
         },
         closeAllPopupExceptIndex(index) {
             this.users.forEach(p => {
-                if(p.id !== index)
-                document.querySelector('#action-'+p.id).classList.add('hidden')
+                if (p._id !== index)
+                    document.querySelector('#action-' + p._id).classList.add('hidden')
             }
             );
         },
-        displayTooltip(id){
+        displayTooltip(id) {
             this.closeAllPopupExceptIndex(id)
             const popup = document.querySelector("#action-" + id)
             popup.classList.toggle('hidden')
@@ -117,76 +95,100 @@ export default{
             this.isEditProfile = false
         },
         save(userProp) {
-            alert('Luu thanh cong:',JSON.stringify(userProp))
+            alert('Luu thanh cong:', JSON.stringify(userProp))
             console.log(userProp);
             this.isEditProfile = false;
         },
-        showPopup(user){
+        showPopup(user) {
             this.currentUser = user;
             this.isEditProfile = true;
         },
-        onDelete(id){
+        setStatusUser(id){
+            axios({
+                method: 'post',
+                url: `${constant.base_url}/users/${id}`,
+                data: {
+
+                }
+            })
+        },
+        onDelete(id) {
             axios({
                 method: 'post',
                 url: `${constant.base_url}/users/register`
             })
         }
     },
-    
+
 }
 </script>
 <style lang="scss" scoped>
 @import '~/assets/scss/variables.scss';
-.user-list-information:hover{
+
+.user-list-information:hover {
     background-color: rgb(80, 80, 80);
 }
-.user-list{
+
+.user-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    .user-list-row{
+
+    .user-list-row {
         display: flex;
         grid-template-columns: repeat(8, minmax(0, 1fr));
         font-size: 12px;
         align-items: center;
         border-radius: 10px;
         min-height: 50px;
+
         &-cell {
             grid-column: span 1 / span 1;
         }
-        .avatar{
+
+        .avatar {
             width: 6%;
             display: flex;
             justify-content: center;
-            img{
+
+            img {
                 width: 50px;
             }
         }
-        .first-name{
+
+        .first-name {
             width: 20%;
         }
-        .last-name{
+
+        .last-name {
             width: 20%;
         }
-        .gender{
+
+        .gender {
             width: 8%;
         }
-        .phone{
+
+        .phone {
             width: 10%;
         }
-        .email{
+
+        .email {
             width: 23%;
         }
-        .birthday{
+
+        .birthday {
             width: 15%;
         }
-        .role{
+
+        .role {
             width: 10%;
         }
-        .status{
+
+        .status {
             width: 10%;
         }
-        .tooltip{
+
+        .tooltip {
             width: 2%;
             display: flex;
             justify-content: center;

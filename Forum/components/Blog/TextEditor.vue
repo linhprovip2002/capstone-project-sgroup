@@ -61,7 +61,7 @@ export default {
         debounceTextChange: debounce(function () {
             // don't use arrow function
             console.log(this.editedContent);
-            this.$emit('text-change', this.editedContent)
+            this.$emit('textChange', this.editedContent)
         }, 3000),
 
         uploadImage() {

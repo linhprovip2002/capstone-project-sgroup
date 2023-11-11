@@ -26,7 +26,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~plugins/vue-quill-editor.js', ssr: false },
-    { src: '~plugins/vue-notification.js', ssr: false },
+    '~/plugins/vue-notification.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -55,6 +55,10 @@ export default {
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     baseURL: 'https://capstone-be-deploy-production.up.railway.app/api',
+  },
+
+  router: {
+    middleware: 'middleware-auth'
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa

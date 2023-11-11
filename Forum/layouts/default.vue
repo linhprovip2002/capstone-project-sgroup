@@ -11,12 +11,16 @@
     <div class="default__top">
       <FooterBar class="footer" />
     </div>
+    <notifications group="foo" />
   </div>
 </template>
 
 <script>
 export default {
-  
+  created() {
+    if(!localStorage.getItem('accessToken') ||localStorage.getItem('accessToken')==='false' )
+      this.$router.push('/auth/login')
+  }
 }
 </script>
 

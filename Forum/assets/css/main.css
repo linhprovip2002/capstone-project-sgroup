@@ -1,26 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 html {
-    font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .custom-scroll::-webkit-scrollbar-track {
-    background-color: none;
-    cursor: pointer;
-    width: 10px !important;
+  background-color: none;
+  cursor: pointer;
+  width: 10px !important;
 }
 
 .custom-scroll::-webkit-scrollbar {
-    height: 6px;
-    width: 10px;
-    background-color: none;
-    cursor: pointer;
-    opacity: 0;
+  height: 6px;
+  width: 10px;
+  background-color: none;
+  cursor: pointer;
+  opacity: 0;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
-    background-color: #aaaa !important;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 1000ms linear;
+  background-color: #aaaa !important;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 1000ms linear;
+}
+.invalid:focus {
+  border: 1px solid #E02D3C;
 }

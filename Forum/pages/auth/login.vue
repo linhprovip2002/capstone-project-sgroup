@@ -2,7 +2,6 @@
   <div
     class="relative flex justify-center flex-col items-center h-[100vh] bg-[#262D34]"
   >
-    <!-- <img src="~/assets/img/Cool-Background-GIF.gif" alt="" class="absolute w-full h-full"> -->
     <div class="absolute w-full h-full bg-[#2C353D]"></div>
     <div class="z-10">
       <form
@@ -13,24 +12,45 @@
         <div class="w-full flex flex-col gap-2">
           <label for="" class="text-sm text-white font-medium">Email</label>
           <input
-            v-model="login.username"
+            v-model="login.email"
             type="text"
             class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 bg-[#2C353D]"
             placeholder="Email"
+            :class="{ invalid: !validateEmail }"
+            required
           />
         </div>
-        <div class="w-full flex flex-col gap-2">
+        <div class="w-full relative flex flex-col gap-2">
           <label for="" class="text-sm text-white font-medium">Password</label>
           <input
             v-model="login.password"
-            type="password"
-            class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 bg-[#2C353D]"
+            :type="isShowPassword ? 'text' : 'password'"
+            class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 pr-8 bg-[#2C353D]"
             placeholder="Password"
+            required
+          />
+          <img
+            v-if="isShowPassword"
+            src="~assets/icon/eye.svg"
+            class="absolute w-[20px] h-[16px] right-[10px] bottom-[17px] cursor-pointer"
+            alt=""
+            @click="toggleShowPassword()"
+          />
+          <img
+            v-else
+            src="~assets/icon/eye-slash.svg"
+            class="absolute w-[20px] h-[16px] right-[10px] bottom-[17px] cursor-pointer"
+            alt=""
+            @click="toggleShowPassword()"
           />
         </div>
         <hr />
         <div class="flex justify-between w-full">
-          <button class="text-sm text-[#676767]" @click.prevent="toSignup">
+          <button
+            class="text-sm text-[#676767]"
+            type="button"
+            @click.prevent="toSignup"
+          >
             Create new account?
           </button>
           <button
@@ -40,7 +60,6 @@
           >
             Forgot password
           </button>
-          <button type="button" @click="checklogin">Check</button>
         </div>
         <div class="flex justify-center items-center w-full">
           <button
@@ -66,64 +85,58 @@ export default {
   data() {
     return {
       login: {
-        username: '',
+        email: '',
         password: '',
       },
+      isShowPassword: false,
     }
   },
-  methods: {
-    checklogin() {
-      console.log('login:', this.$auth.loggedIn)
-      console.log(typeof localStorage.getItem('auth._token.local'))
+  computed: {
+    validateEmail() {
+      const regex =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      if (this.login.email) return this.login.email.toLowerCase().match(regex)
+      else return true
     },
-    // submit() {
-    //     this.$router.push('/')
-    //     axios({
-    //         method: 'post',
-    //         url: `${constant.base_url}/auth/login`,
-    //         data: {
-    //             email: this.username,
-    //             password: this.password
-    //         }
-    //     }).then((response) => {
-    //         if (response.data.token) {
-    //             localStorage.setItem('accessToken', JSON.stringify(response.data.token));
-    //             // Access the token directly from localStorage
-    //             const accessToken = JSON.parse(localStorage.getItem('accessToken'));
-    //             console.log('Access Token:', accessToken);
-    //         }
-    //         console.log('Login successfully');
-    //         // this.$notify({
-    //         //     title: "Welcome Back",
-    //         //     text: "Hello " + this.username,
-    //         //     type: 'success'
-    //         // });
-    //         // this.$router.push({path: '/', query: { page: 1, paging: 3 }});
-    //         this.$router.push('/');
-    //         return response.data;
-    //     }).catch((error) => {
-    //         console.error('Login error:', error);
-    //         // this.$notify({
-    //         //     title: "Error",
-    //         //     text: error.response.data.message,
-    //         //     type: 'error'
-    //         // });
-    //     });
-    // },
+  },
+  methods: {
+    toggleShowPassword() {
+      this.isShowPassword = !this.isShowPassword
+    },
     async userLogin() {
-      alert('Login ?')
-      try {
-        const response = await this.$auth.loginWith('local', {
-          data: {
-            email: this.login.username,
-            password: this.login.password,
-          },
+      if (!this.validateEmail) {
+        this.$notify({
+          group: 'foo',
+          title: 'Lỗi',
+          text: 'Vui lòng điền đầy đủ thông tin',
+          type: 'error',
         })
-        console.log(response)
-      } catch (err) {
-        console.log(err)
-      }
-      
+      } else
+        try {
+          await this.$axios
+            .post('/auth/login', {
+              email: this.login.email,
+              password: this.login.password,
+            })
+            .then((res) => {
+              localStorage.setItem(
+                'accessToken',
+                `Bearer ${res.data.token}`
+              )
+              this.$router.push('/')
+            })
+            .catch((err) => {
+              console.log('Lỗi:', err.response)
+              this.$notify({
+                group: 'foo',
+                title:'Lỗi',
+                text:err.response.data.error,
+                type: 'error'
+              })
+            })
+        } catch (err) {
+          console.log('Lỗi nè ông già');
+        }
     },
     toSignup() {
       this.$router.push('/auth/signup')
@@ -134,3 +147,7 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+@import '~assets/scss/variables.scss';
+</style>

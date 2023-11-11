@@ -35,7 +35,7 @@
           </div>
           <div v-show="isShowDropDown" class="dropdown-menu">
             <nuxt-link class="item" to="/user/profile">Profile</nuxt-link>
-            <nuxt-link class="item" to="/auth/login">Logout</nuxt-link>
+            <p class="item" @click="logout()">Logout</p>
           </div>
         </div>
 
@@ -72,6 +72,10 @@ export default {
           this.$router.push('/calendar')
           break;
       }
+    },
+    logout() {
+      localStorage.setItem('accessToken','false')
+      this.$router.push('/auth/login')
     },
     toggleDropdown() {
       this.isShowDropDown = !this.isShowDropDown

@@ -29,11 +29,12 @@
             Create Post
           </button>
         </div>
-        <div id="main-content">
-          <div v-for="n in news" :key="n._id" class="blog">
+        <LoadingSpinner v-if="isLoading"/>
+        <div v-else id="main-content">
+          <div v-for="n in news" :key="n._id" class="blog" @click="GoToDetails(n._id)">
             <BlogCard
               :image-link="n.blogImage ?? null"
-              :author="n.userId"
+              :author="`${n.userId.firstName??''} ${n.userId.lastName??''}`"
               :comments="n.comments"
               :like="
                 n.reaction.map((e) => {
@@ -60,6 +61,7 @@
 import BlogCard from '~/components/Card/BlogCard.vue'
 import PostCreator from '~/components/Blog/PostCreator.vue'
 import ModalAlert from '~/components/Modal/ModalAlert.vue'
+import LoadingSpinner from '~/components/Animation/LoadingSpinner.vue'
 
 export default {
   name: 'IndexPage',
@@ -67,10 +69,12 @@ export default {
     BlogCard,
     PostCreator,
     ModalAlert,
+    LoadingSpinner
   },
   data() {
     return {
       news: [],
+      isLoading:true,
       isCreatingPost: false,
       alert: {
         isShowModal: false,
@@ -85,11 +89,15 @@ export default {
   },
   async created() {
     await this.getListBlog()
+    this.isLoading=false
     // await this.modifyListBlog()
   },
   methods: {
     cancel() {
       this.isCreatingPost = false
+    },
+    GoToDetails(id) {
+      this.$router.push(`/blog/${id}`)
     },
     async getListBlog() {
       const authorization = localStorage.getItem('accessToken')
@@ -101,7 +109,7 @@ export default {
         })
         .then((res) => {
           console.log(res)
-          this.news = res.data
+          this.news = res.data.docs
         })
         .catch((err) => {
           if (err.response.data.code === 'ERR-401')

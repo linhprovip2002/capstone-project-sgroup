@@ -1,0 +1,109 @@
+/* Style the Quill editor container */
+.ql-container {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Style the Quill editor content area */
+  .ql-editor {
+    min-height: 150px;
+    font-size: 16px;
+  }
+  
+  /* Text Size */
+  .ql-size-small {
+    font-size: 0.8em;
+  }
+  
+  .ql-size-large {
+    font-size: 1.2em;
+  }
+  
+  .ql-size-huge {
+    font-size: 2em;
+  }
+  
+  /* Text Align */
+  .ql-align-left {
+    text-align: left;
+  }
+  
+  .ql-align-center {
+    text-align: center;
+  }
+  
+  .ql-align-right {
+    text-align: right;
+  }
+  
+  .ql-align-justify {
+    text-align: justify;
+  }
+  
+  /* Text Color */
+  .ql-color-red {
+    color: red;
+  }
+  
+  .ql-color-green {
+    color: green;
+  }
+  
+  .ql-color-blue {
+    color: blue;
+  }
+  
+  /* Background Color */
+  .ql-background-red {
+    background-color: red;
+  }
+  
+  .ql-background-green {
+    background-color: green;
+  }
+  
+  .ql-background-blue {
+    background-color: blue;
+  }
+  
+  /* Bold, Italic, Underline */
+  .ql-bold {
+    font-weight: bold;
+  }
+  
+  .ql-italic {
+    font-style: italic;
+  }
+  
+  .ql-underline {
+    text-decoration: underline;
+  }
+  
+  /* Lists */
+  .ql-list {
+    list-style-type: none;
+  }
+  
+  .ql-bullet::before {
+    content: '\2022';
+    color: #333;
+    font-size: 1.5em;
+    margin-right: 5px;
+  }
+  
+  .ql-number::before {
+    content: counter(item) ".";
+    counter-increment: item;
+  }
+  
+  /* Link and Image */
+  .ql-link {
+    color: blue;
+    text-decoration: underline;
+  }
+  
+  .ql-image {
+    max-width: 100%;
+    height: auto;
+  }
+  

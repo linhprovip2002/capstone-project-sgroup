@@ -34,7 +34,7 @@
           <div v-for="n in news" :key="n._id" class="blog" @click="GoToDetails(n._id)">
             <BlogCard
               :image-link="n.blogImage ?? null"
-              :author="`${n.userId.firstName??''} ${n.userId.lastName??''}`"
+              :author="`${n.userId?.firstName??''} ${n.userId?.lastName??''}`"
               :comments="n.comments"
               :like="
                 n.reaction.map((e) => {

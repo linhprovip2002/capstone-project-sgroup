@@ -21,7 +21,7 @@
             <div class="image">
                 <img src="" alt="">
             </div>
-            <div class="author">{{ getName(n.userId.firstName, n.userId.lastName) }}</div>
+            <div class="author">{{ getName(n.userId?.firstName, n.userId?.lastName) }}</div>
             <div class="title">{{ n.title }}</div>
             <div class="createdAt">{{ formatDay(n.createdAt) }}</div>
             <div class="button">

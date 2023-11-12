@@ -71,7 +71,7 @@ export default {
       })
       .then((res) => {
         console.log(res)
-        this.users = res.data
+        this.users = res.data.docs
       })
       .catch((err) => {
         console.error(err)
@@ -84,7 +84,7 @@ export default {
       })
       .then((res) => {
         console.log(res)
-        this.pendingNews = res.data
+        this.pendingNews = res.data.docs
       })
       .catch((err) => {
         console.error(err)
@@ -97,7 +97,7 @@ export default {
       })
       .then((res) => {
         console.log(res)
-        this.news = res.data
+        this.news = res.data.docs
       })
       .catch((err) => {
         console.error(err)
@@ -149,7 +149,9 @@ export default {
         })
         .then((res) => {
           console.log(res)
-          this.users = res.data
+          const docs = res.data.docs
+          console.log("doc user: " + docs)
+          this.users = docs
         })
         .catch((err) => {
           console.error(err)

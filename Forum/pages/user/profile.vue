@@ -132,6 +132,7 @@
     :user = "user"
     @save="save"
     @cancel="cancelSave"
+    @fetchInfoUser="fetchInfoUser"
   />
 
   </div>
@@ -193,7 +194,25 @@ export default {
      alert('Luu thanh cong:',JSON.stringify(userProp))
      console.log(userProp);
       this.isEditProfile = false
-    }
+    },
+    fetchInfoUser(data) {
+      console.log('Fetch user for edit');
+        const authorization = localStorage.getItem('accessToken')
+        this.$axios.get('/users/me', {
+          headers: {
+            Authorization: authorization
+          },
+        }).then(res => {
+          console.log(JSON.stringify(data));
+          localStorage.setItem('user', JSON.stringify(data))
+          // console.log(JSON.stringify(res.data))
+          this.user=data
+          console.log(JSON.stringify(this.user))
+        }).catch(err => {
+          console.log(err);
+        })
+        
+      },
   },
 }
 </script>

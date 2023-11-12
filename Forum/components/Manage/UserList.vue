@@ -6,8 +6,7 @@
         <div class="user-list text-white font-medium p-5 w-full bg-[#262d34] rounded-[16px]">
             <div class="font-semibold user-list-row">
                 <div class="user-list-row-cell avatar"></div>
-                <div class="user-list-row-cell first-name">First Name</div>
-                <div class="user-list-row-cell last-name">Last Name</div>
+                <div class="user-list-row-cell first-name">Name</div>
                 <div class="user-list-row-cell gender">Gender</div>
                 <div class="user-list-row-cell phone">Phone</div>
                 <div class="user-list-row-cell email">Email</div>
@@ -20,9 +19,8 @@
                 <div class="avatar">
                     <img :src="user.profileImage" class="p-2 rounded-full">
                 </div>
-                <div class="user-list-row-cell first-name">{{ user.firstName }}</div>
-                <div class="user-list-row-cell last-name">{{ user.lastName }}</div>
-                <div class="user-list-row-cell gender">{{ user.gender }}</div>
+                <div class="user-list-row-cell first-name">{{ getName(user.firstName, user.lastName) }}</div>
+                <div class="user-list-row-cell gender">{{ user.gender?'Male':'Female' }}</div>
                 <div class="user-list-row-cell phone">{{ user.phone }}</div>
                 <div class="user-list-row-cell email">{{ user.email }}</div>
                 <div class="user-list-row-cell birthday">{{ formatBirthday(user.dayOfBirth) }}</div>
@@ -127,6 +125,9 @@ export default {
                     Authorization: authorization
                 }
             })
+            .then(res => {
+                this.reload()
+            })
         },
         formatBirthday(date) {
             console.log(date)
@@ -139,6 +140,11 @@ export default {
         },
         reload(){
             this.$emit('reload')
+        },
+        getName(firstName, lastName){
+            if(!firstName) firstName = ""
+            if(!lastName) lastName = ""
+            return firstName + " " + lastName
         }
     },
 
@@ -169,7 +175,7 @@ export default {
         }
 
         .avatar {
-            width: 6%;
+            width: 10%;
             display: flex;
             justify-content: center;
 

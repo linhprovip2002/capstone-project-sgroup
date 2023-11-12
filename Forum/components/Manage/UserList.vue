@@ -57,6 +57,8 @@
                     </div>
                 </div>
             </div>
+            <div class="w-full h-[1px] bg-gray-500"></div>
+            <Pagination :count="count" @changePage="changePage"/>
         </div>
     </div>
 </template>
@@ -67,13 +69,16 @@ import axios from 'axios'
 import { format } from 'date-fns'
 import EditRole from '../User/EditRole.vue'
 import constant from '~/constant'
+import Pagination from '~/components/Pagination.vue'
 
 export default {
     components: {
         EditRole,
+        Pagination
     },
     props: {
         users: Array,
+        count: Number
     },
     data() {
         return {
@@ -145,6 +150,10 @@ export default {
             if(!firstName) firstName = ""
             if(!lastName) lastName = ""
             return firstName + " " + lastName
+        },
+        changePage(page, limit){
+            console.log('to user lít ')
+            this.$emit('changePage', page, limit)
         }
     },
 

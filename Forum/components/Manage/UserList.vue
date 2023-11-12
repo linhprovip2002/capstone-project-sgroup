@@ -46,7 +46,7 @@
                             </button>
                             <button
                                 class=" hover:bg-red-400 hover:text-white text-gray-900 group flex rounded-md items-center w-full px-2 py-2 text-sm"
-                                @click="onDelete(user.id)">
+                                @click="onDelete(user._id)">
                                 <svg xmlns="http://www.w3.org/2000/svg" class=" w-5 h-5 mr-2 text-violet-400" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -119,9 +119,13 @@ export default {
             this.isEditProfile = true;
         },
         onDelete(id) {
+            const authorization = localStorage.getItem('accessToken')
             axios({
-                method: 'post',
-                url: `${constant.base_url}/users/register`
+                method: 'delete',
+                url: `${constant.base_url}/users/${id}`,
+                headers: {
+                    Authorization: authorization
+                }
             })
         },
         formatBirthday(date) {

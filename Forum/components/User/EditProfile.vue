@@ -39,7 +39,7 @@
             <label class="label" for="name">Birthday</label>
             <input
               id="year"
-              v-model="userProfile.dayOfBirth"
+              v-model="formattedDate"
               type="date"
               name="phone"
               class="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
@@ -125,10 +125,31 @@ export default {
   methods: {
     save() {
       alert(this.userProfile.dayOfBirth)
-      // this.$emit('save', this.userProfile)
+      this.$axios.put(`/users/${this.userProfile._id}`, {
+        firstName: this.userProfile.firstName,
+        lastName: this.userProfile.lastName,
+        gender: this.userProfile.gender,
+        dayOfBirth: this.formattedDate,
+        phone: this.userProfile.phone
+      })
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
     },
     cancel() {
       this.$emit('cancel')
+    },
+  },
+  computed: {
+    formattedDate() {
+      const date = new Date(this.userProfile.dayOfBirth);
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      return `${year}-${month}-${day}`;
     },
   },
 }

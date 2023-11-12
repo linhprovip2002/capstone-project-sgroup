@@ -27,6 +27,7 @@ export default {
   plugins: [
     { src: '~plugins/vue-quill-editor.js', ssr: false },
     '~/plugins/vue-notification.js',
+    '~/plugins/axios-interceptor.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -1,6 +1,6 @@
 <template>
     <div class="blog-list text-white font-medium p-5 w-full bg-[#262d34] rounded-[16px]">
-        <div class="blog-list-row blog-list-information">
+        <div class="blog-list-row">
             <div class="image"></div>
             <div class="author">Author</div>
             <div class="title">Title</div>
@@ -21,7 +21,7 @@
             <div class="image">
                 <img src="" alt="">
             </div>
-            <div class="author">{{ n.userId.firstName }}</div>
+            <div class="author">{{ getName(n.userId.firstName, n.userId.lastName) }}</div>
             <div class="title">{{ n.title }}</div>
             <div class="createdAt">{{ formatDay(n.createdAt) }}</div>
             <div class="button">
@@ -116,6 +116,11 @@ export default{
                 console.log(err)
             })
         },
+        getName(firstName, lastName){
+            if(!firstName) firstName = ""
+            if(!lastName) lastName = ""
+            return firstName + " " + lastName
+        }
     }
 }
 </script>

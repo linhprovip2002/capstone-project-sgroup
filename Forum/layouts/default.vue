@@ -8,7 +8,7 @@
       <nuxt class="default__body__container" />
       <TabRight class="default__body__tabright" />
     </div>
-    <div class="default__top">
+    <div class="default__bottom">
       <FooterBar class="footer" />
     </div>
     <notifications group="foo" />
@@ -20,6 +20,23 @@ export default {
   created() {
     if(!localStorage.getItem('accessToken') ||localStorage.getItem('accessToken')==='false' )
       this.$router.push('/auth/login')
+      this.fetchInfoUser()
+  },
+  methods: {
+    fetchInfoUser() {
+      console.log('Fetch user');
+        const authorization = localStorage.getItem('accessToken')
+        this.$axios.get('/users/me', {
+          headers: {
+            Authorization: authorization
+          },
+        }).then(res => {
+          localStorage.setItem('user', JSON.stringify(res.data))
+        }).catch(err => {
+          console.log(err);
+        })
+        
+      },
   }
 }
 </script>

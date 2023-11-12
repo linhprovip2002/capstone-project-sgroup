@@ -21,6 +21,26 @@ export default {
       localStorage.getItem('accessToken') === 'false'
     )
       this.$router.push('/auth/login')
+    this.fetchInfoUser()
+  },
+
+  methods: {
+    fetchInfoUser() {
+      console.log('Fetch user');
+      const authorization = localStorage.getItem('accessToken')
+      this.$axios
+        .get('/users/me', {
+          headers: {
+            Authorization: authorization,
+          },
+        })
+        .then((res) => {
+          localStorage.setItem('user', JSON.stringify(res.data))
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
   },
 }
 </script>

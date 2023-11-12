@@ -32,7 +32,7 @@
         <div id="main-content">
           <div v-for="n in news" :key="n._id" class="blog">
             <BlogCard
-              :image-link="n.blogImage?? null"
+              :image-link="n.blogImage ?? null"
               :author="n.userId"
               :comments="n.comments"
               :like="
@@ -104,16 +104,29 @@ export default {
           this.news = res.data
         })
         .catch((err) => {
-          this.alert = {
-            ...this.alert,
-            ...{
-              isShowModal: true,
-              title: 'Lỗi',
-              buttonOkContent: 'Đóng',
-              content: err.response.data.error,
-              type: 'failed',
-            },
-          }
+          if (err.response.data.code === 'ERR-401')
+            this.alert = {
+              ...this.alert,
+              ...{
+                isShowModal: true,
+                title: 'Lỗi',
+                buttonOkContent: 'Đăng nhập lại',
+                content: 'Hết phiên đăng nhập, vui lòng đăng nhập lại',
+                type: 'failed',
+                typeSubmit: 'loginagain',
+              },
+            }
+          else
+            this.alert = {
+              ...this.alert,
+              ...{
+                isShowModal: true,
+                title: 'Lỗi',
+                buttonOkContent: 'Đóng',
+                content: err.response.data.error,
+                type: 'failed',
+              },
+            }
         })
     },
     modifyListBlog() {
@@ -129,11 +142,14 @@ export default {
         e.listImages = listImage
         e.blogImage = e.listImages[0]
       })
-      console.log('News:',this.news);
+      console.log('News:', this.news)
     },
     onCloseModal(typeSubmit) {
       switch (typeSubmit) {
-        case '':
+        case 'loginagain':
+          localStorage.setItem('accessToken', 'false')
+          localStorage.setItem('user', 'false')
+          this.$router.push('/auth/login')
           this.resetAlert()
           break
         default:

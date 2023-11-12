@@ -36,6 +36,17 @@
             />
           </div>
           <div class="mb-[20px]">
+            <label class="label" for="name">Birthday</label>
+            <input
+              id="year"
+              v-model="userProfile.dayOfBirth"
+              type="date"
+              name="phone"
+              class="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
+              placeholder="Enter year"
+            />
+          </div>
+          <div class="mb-[20px]">
             <label class="label" for="name">Phone number</label>
             <input
               id="phone"
@@ -53,9 +64,9 @@
                 class="item-radio flex items-center gap-[8px] cursor-pointer"
               >
                 <input
-                  class="cursor-pointer"
                   id="male"
                   v-model="userProfile.gender"
+                  class="cursor-pointer"
                   value="true"
                   type="radio"
                 />
@@ -65,9 +76,9 @@
                 class="item-radio flex items-center gap-[8px] cursor-pointer"
               >
                 <input
-                  class="cursor-pointer"
                   id="female"
                   v-model="userProfile.gender"
+                  class="cursor-pointer"
                   value="false"
                   type="radio"
                 />
@@ -75,21 +86,21 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="button-group space-x-4 mt-8">
-          <button
-            type="button"
-            class="save py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50"
-            @click="save"
-          >
-            Save
-          </button>
-          <button
-            class="cancel py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50"
-            @click="cancel"
-          >
-            Cancel
-          </button>
+          <div class="button-group space-x-4 mt-8">
+            <button
+              class="cancel py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50"
+              @click="cancel"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="save py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50"
+              @click="save"
+            >
+              Save
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -113,7 +124,8 @@ export default {
   },
   methods: {
     save() {
-      this.$emit('save', this.userProfile)
+      alert(this.userProfile.dayOfBirth)
+      // this.$emit('save', this.userProfile)
     },
     cancel() {
       this.$emit('cancel')
@@ -139,7 +151,8 @@ export default {
     }
     .form {
       label {
-        color: $orange;
+        color: #fff;
+        font-weight: 600;
       }
       .label {
         display: flex;

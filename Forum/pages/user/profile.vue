@@ -31,7 +31,7 @@
                   <div class="relative">
                     <img
                       alt="..."
-                      :src="user.avatar"
+                      :src="user.avatar??require('~/assets/img/logosgroup.png')"
                       class="shadow-xl rounded-full h-[150px] border-none absolute -m-16 -ml-20 lg:-ml-16"
                       style="max-width: 150px"
                     />
@@ -47,7 +47,7 @@
                       <span
                         class="text-4xl font-semibold leading-normal mb-2 text-[#fafcfe] mb-2"
                       >
-                        {{ user.firstName }} {{ user.lastName }}
+                        {{ user?.firstName }} {{ user?.lastName }}
                       </span>
                       <div
                         class="text-sm leading-normal mt-0 mb-2 text-[#fafcfe] font-bold uppercase"
@@ -57,7 +57,7 @@
                       <div
                         class="text-sm leading-normal mt-0 mb-2 text-[#fafcfe] font-bold uppercase"
                       >
-                        Birthday: {{ user.dayOfBirth }}
+                        Birthday: {{ user.dayOfBirth?.split('T')[0].split('-')[2] }}-{{ user.dayOfBirth?.split('T')[0].split('-')[1] }}-{{ user.dayOfBirth?.split('T')[0].split('-')[0] }}
                       </div>
                       <div
                         class="text-sm leading-normal mt-0 mb-2 text-[#fafcfe] font-bold uppercase"
@@ -102,7 +102,7 @@
                     <div id="main-content">
                       <div v-for="n in filternews" :key="n.id">
                         <BlogCard
-                          :image-link="n.imageLink"
+                          
                           :author="n.author"
                           :comments="n.comments"
                           :dislike="n.dislike"
@@ -148,19 +148,11 @@ export default {
   layout: 'topandfooter',
   data() {
     return {
-      user: {
-        id: 'user1',
-        firstName: 'SGroup',
-        lastName: 'Member',
-        gender: true,
-        dayOfBirth: '2022-2-10',
-        phone: '766748566',
-        avatar: require('~/assets/img/avt.png'),
-      },
+      user: {},
       news: [
         {
           id: 'bai1',
-          imageLink: require('~/assets/img/logosgroup.png'),
+          imageLink: [require('~/assets/img/logosgroup.png')],
           title: 'The new company in Danang',
           author: 'SGroup Member',
           tags: ['finance', 'ecommerce'],
@@ -171,7 +163,7 @@ export default {
         },
         {
           id: 'bai3',
-          imageLink: require('~/assets/img/image_post.jpg'),
+          imageLink: [require('~/assets/img/image_post.jpg')],
           title: 'Blockchain developer best practices',
           author: 'SGroup Member',
           tags: ['seo', 'blogging', 'traffic'],
@@ -182,7 +174,7 @@ export default {
         },
         {
           id: 'bai2',
-          imageLink: require('~/assets/img/nodejs.png'),
+          imageLink: [require('~/assets/img/nodejs.png')],
           title: 'Blockchain developer best practices',
           author: 'SGroup Member',
           tags: ['seo', 'blogging', 'traffic'],
@@ -211,10 +203,16 @@ export default {
       return this.filternews.length === this.news.length
     },
   },
+  created() {
+    this.getProfile()
+  },
   beforeMount() {
     this.filternews = this.news.slice(0, 2)
   },
   methods: {
+    getProfile() {
+      this.user = JSON.parse(localStorage.getItem('user'))
+    },
     showMore() {
       this.filternews = this.news
     },
@@ -238,7 +236,7 @@ export default {
   img {
     width: 150px;
     height: 150px;
-    object-fit: cover;
+    object-fit: contain;
   }
 }
 @media screen and (max-width: 1024px) {

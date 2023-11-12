@@ -1,6 +1,6 @@
 <template>
   <div class="flex bg-[#262D34] gap-5 w-full p-5 mb-5 rounded-lg cursor-pointer">
-    <img :src="imageLink[0]??'_nuxt/assets/img/nodejs.png'" alt="" class="w-[80px] h-[80px]" />
+    <img :src="imageLink[0]??'https://sgroupvn.org/_nuxt/img/logo-sgroup-symbol.ae66e60.png'" alt="" class="w-[80px] h-[80px]" />
     <div class="flex flex-col justify-between w-full h-full gap-2">
       <div id="title" class="flex justify-between">
         <p class="text-white font-medium text-sm">{{ title }}</p>

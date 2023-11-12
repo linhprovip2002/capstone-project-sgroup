@@ -28,8 +28,8 @@
           <img src="~assets/icon/bell.svg" alt="" />
         </div>
         <div class="account" @click="toggleDropdown">
-          <img src="~assets/img/avt.png" alt="" />
-          <span class="name">SGroup Member</span>
+          <img :src="user.avatar??require('~/assets/img/logosgroup.png')" alt="" />
+          <span class="name">{{ user?.firstName?? 'Sgroup' }} {{ user?.lastName?? 'Member' }}</span>
           <div class="icon-drop-down">
             <img src="~assets/icon/drop-down-icon.svg" alt="" />
           </div>
@@ -53,6 +53,7 @@ export default {
   components: { ModalAlert },
   data() {
     return {
+      user:{},
       alert: {
         isShowModal: false,
         title: '',
@@ -76,6 +77,9 @@ export default {
       isShowDropDown: false,
     }
   },
+  created() {
+    this.getProfile()
+  },
   methods: {
     navigation(item) {
       this.currentTab = item
@@ -87,6 +91,10 @@ export default {
           this.$router.push('/calendar')
           break
       }
+    },
+    getProfile() {
+      this.user = JSON.parse(localStorage.getItem('user'))
+      console.log('User nè:',this.user);
     },
     logout() {
       this.alert = {
@@ -109,6 +117,7 @@ export default {
       switch (typeSubmit) {
         case 'confirmLogout':
           localStorage.setItem('accessToken', 'false')
+          localStorage.setItem('user', 'false')
           this.$router.push('/auth/login')
           break
         default:

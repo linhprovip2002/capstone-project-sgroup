@@ -145,6 +145,19 @@ export default {
             })
             .then((res) => {
               localStorage.setItem('accessToken', `Bearer ${res.data.token}`)
+
+              this.$axios
+                .get('/users/me', {
+                  headers: {
+                    Authorization: localStorage.getItem('accessToken'),
+                  },
+                })
+                .then((res) => {
+                  localStorage.setItem('user', JSON.stringify(res.data))
+                })
+                .catch((err) => {
+                  console.log(err)
+                })
               this.$router.push('/')
             })
             .catch((err) => {

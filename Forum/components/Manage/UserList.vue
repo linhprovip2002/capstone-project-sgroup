@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            <EditRole v-if="isEditProfile" :user="currentUser" @cancel="cancelSave" @save="save" />
+            <EditRole v-if="isEditProfile" :user="currentUser" @cancel="cancelSave" @save="save" @reload="reload"/>
         </div>
         <div class="user-list text-white font-medium p-5 w-full bg-[#262d34] rounded-[16px]">
             <div class="font-semibold user-list-row">
@@ -25,7 +25,7 @@
                 <div class="user-list-row-cell gender">{{ user.gender }}</div>
                 <div class="user-list-row-cell phone">{{ user.phone }}</div>
                 <div class="user-list-row-cell email">{{ user.email }}</div>
-                <div class="user-list-row-cell birthday">{{ user.dayOfBirth }}</div>
+                <div class="user-list-row-cell birthday">{{ formatBirthday(user.dayOfBirth) }}</div>
                 <!-- <div class="user-list-row-cell role">{{ user.roleName }}</div> -->
                 <div class="user-list-row-cell status">{{ user.isActive }}</div>
                 <div class="tooltip relative">
@@ -33,13 +33,27 @@
                     <div :id="'action-' + user._id" class="hidden absolute top-1 right-0 z-10"
                         @mouseleave="closeAllPopup()">
                         <div class="px-1 py-1 bg-white rounded-lg">
-                            <button class=" hover:bg-gray-500 hover:text-white text-gray-900 group flex rounded-md items-center w-full px-2 py-2 text-sm" @click="showPopup(user)">
-                                <svg xmlns="http://www.w3.org/2000/svg" class=" w-5 h-5 mr-2 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                Edit 
+                            <button
+                                class=" hover:bg-gray-500 hover:text-white text-gray-900 group flex rounded-md items-center w-full px-2 py-2 text-sm"
+                                @click="showPopup(user)">
+                                <svg xmlns="http://www.w3.org/2000/svg" class=" w-5 h-5 mr-2 text-violet-400" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
+                                    </path>
+                                </svg>
+                                Edit
                             </button>
-                            <button class=" hover:bg-red-400 hover:text-white text-gray-900 group flex rounded-md items-center w-full px-2 py-2 text-sm" @click="onDelete(user.id)">
-                                <svg xmlns="http://www.w3.org/2000/svg" class=" w-5 h-5 mr-2 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg> 
-                                Delete 
+                            <button
+                                class=" hover:bg-red-400 hover:text-white text-gray-900 group flex rounded-md items-center w-full px-2 py-2 text-sm"
+                                @click="onDelete(user.id)">
+                                <svg xmlns="http://www.w3.org/2000/svg" class=" w-5 h-5 mr-2 text-violet-400" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                    </path>
+                                </svg>
+                                Delete
                             </button>
                         </div>
                     </div>
@@ -52,6 +66,7 @@
 
 <script>
 import axios from 'axios'
+import { format } from 'date-fns'
 import EditRole from '../User/EditRole.vue'
 import constant from '~/constant'
 
@@ -103,20 +118,23 @@ export default {
             this.currentUser = user;
             this.isEditProfile = true;
         },
-        setStatusUser(id){
-            axios({
-                method: 'post',
-                url: `${constant.base_url}/users/${id}`,
-                data: {
-
-                }
-            })
-        },
         onDelete(id) {
             axios({
                 method: 'post',
                 url: `${constant.base_url}/users/register`
             })
+        },
+        formatBirthday(date) {
+            console.log(date)
+            if(date){
+                const jsDate = new Date(date);
+    
+                return format(jsDate, 'dd/MM/yyyy');
+            }
+            return '';
+        },
+        reload(){
+            this.$emit('reload')
         }
     },
 
@@ -126,7 +144,7 @@ export default {
 @import '~/assets/scss/variables.scss';
 
 .user-list-information:hover {
-    background-color: rgb(80, 80, 80);
+    background-color: $dark-4;
 }
 
 .user-list {
@@ -177,7 +195,7 @@ export default {
         }
 
         .birthday {
-            width: 15%;
+            width: 10%;
         }
 
         .role {
@@ -185,7 +203,7 @@ export default {
         }
 
         .status {
-            width: 10%;
+            width: 15%;
         }
 
         .tooltip {
@@ -194,5 +212,4 @@ export default {
             justify-content: center;
         }
     }
-}
-</style>
+}</style>

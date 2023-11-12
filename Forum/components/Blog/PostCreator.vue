@@ -14,7 +14,7 @@
       <input type="text" class="outline-none bg-gray-200 border-2 border-gray-300 text-sm p-2 rounded-sm text-gray-800"
         placeholder="Gắn thẻ" />
     </div>
-    <TextEditor @textChange="updateContent" />
+    <TextEditor @textChange="updateContent" @addImage="updateImage"/>
     <button class="bg-gray-800 p-2 text-white w-[200px] rounded-lg m-auto" @click="submit">
       Xuất bản
     </button>
@@ -32,6 +32,7 @@ export default {
     return {
       title: '',
       content: '',
+      blogImage: []
     }
   },
   methods: {
@@ -42,7 +43,8 @@ export default {
           Authorization: authorization
         },
         title: this.title,
-        content: this.content
+        content: this.content,
+        blogImage: this.blogImage
       }).then(res => {
         console.log(res)
       }).catch(err => {
@@ -54,6 +56,9 @@ export default {
     },
     updateContent(updatedContent){
       this.content = updatedContent
+    },
+    updateImage(imageLink){
+      this.blogImage.push(imageLink)
     }
   },
 }

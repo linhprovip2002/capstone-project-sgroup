@@ -72,18 +72,31 @@
         </div>
       </form>
     </div>
+    <modal-alert
+      v-if="alert.isShowModal"
+      :width="480"
+      v-bind="alert"
+      @close="onCloseModal"
+    />
   </div>
 </template>
 
 <script>
-// import axios from 'axios'
-// import constant from '~/constant';
-// import { routerKey } from 'vue-router';
-
+import ModalAlert from '~/components/Modal/ModalAlert.vue'
 export default {
+  components: { ModalAlert },
   layout: 'empty',
   data() {
     return {
+      alert: {
+        isShowModal: false,
+        title: 'Xác nhận',
+        type: 'confirm',
+        content: 'Cần được xác nhận',
+        buttonCancelContent: '',
+        buttonOkContent: 'Ok',
+        typeSubmit: '',
+      },
       login: {
         email: '',
         password: '',
@@ -98,44 +111,56 @@ export default {
       if (this.login.email) return this.login.email.toLowerCase().match(regex)
       else return true
     },
+    checkData() {
+      return this.login.email && this.login.password
+    },
   },
   methods: {
     toggleShowPassword() {
       this.isShowPassword = !this.isShowPassword
     },
+
     async userLogin() {
-      if (!this.validateEmail) {
-        this.$notify({
-          group: 'foo',
-          title: 'Lỗi',
-          text: 'Vui lòng điền đầy đủ thông tin',
-          type: 'error',
-        })
+      if (!this.validateEmail || !this.checkData) {
+        if (!this.validateEmail)
+          this.$notify({
+            group: 'foo',
+            title: 'Lỗi',
+            text: 'Vui lòng điền email đúng định dạng',
+            type: 'error',
+          })
+        else
+          this.$notify({
+            group: 'foo',
+            title: 'Lỗi',
+            text: 'Vui lòng điền đầy đủ thông tin',
+            type: 'error',
+          })
       } else
         try {
           await this.$axios
             .post('/auth/login', {
-              email: this.login.email,
+              email: this.login.email.toLowerCase().trim(),
               password: this.login.password,
             })
             .then((res) => {
-              localStorage.setItem(
-                'accessToken',
-                `Bearer ${res.data.token}`
-              )
+              localStorage.setItem('accessToken', `Bearer ${res.data.token}`)
               this.$router.push('/')
             })
             .catch((err) => {
-              console.log('Lỗi:', err.response)
-              this.$notify({
-                group: 'foo',
-                title:'Lỗi',
-                text:err.response.data.error,
-                type: 'error'
-              })
+              this.alert = {
+                ...this.alert,
+                ...{
+                  isShowModal: true,
+                  title: 'Lỗi',
+                  buttonOkContent: 'Đóng',
+                  content: err.response.data.error,
+                  type: 'failed',
+                },
+              }
             })
         } catch (err) {
-          console.log('Lỗi nè ông già');
+          console.log('Lỗi nè ông già')
         }
     },
     toSignup() {
@@ -143,6 +168,27 @@ export default {
     },
     toFogotPassword() {
       this.$router.push('/auth/forgot-password')
+    },
+    onCloseModal(typeSubmit) {
+      switch (typeSubmit) {
+        case '':
+          this.resetAlert()
+          break
+        default:
+          this.resetAlert()
+          break
+      }
+    },
+    resetAlert() {
+      this.alert = {
+        isShowModal: false,
+        title: '',
+        type: 'failed',
+        content: '',
+        buttonCancelContent: '',
+        buttonOkContent: '',
+        typeSubmit: '',
+      }
     },
   },
 }

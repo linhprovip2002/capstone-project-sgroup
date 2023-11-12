@@ -38,15 +38,30 @@
             <p class="item" @click="logout()">Logout</p>
           </div>
         </div>
-
       </div>
     </div>
+    <modal-alert
+      v-if="alert.isShowModal"
+      v-bind="alert"
+      @close="onCloseModal"
+    />
   </div>
 </template>
 <script>
+import ModalAlert from '~/components/Modal/ModalAlert.vue'
 export default {
+  components: { ModalAlert },
   data() {
     return {
+      alert: {
+        isShowModal: false,
+        title: '',
+        type: 'confirm',
+        content: '',
+        buttonCancelContent: '',
+        buttonOkContent: 'Ok',
+        typeSubmit: '',
+      },
       currentTab: 'home',
       listTab: [
         {
@@ -58,7 +73,7 @@ export default {
           icon: 'calendar',
         },
       ],
-      isShowDropDown: false
+      isShowDropDown: false,
     }
   },
   methods: {
@@ -67,19 +82,51 @@ export default {
       switch (item) {
         case 'home':
           this.$router.push('/')
-          break;
+          break
         case 'calendar':
           this.$router.push('/calendar')
-          break;
+          break
       }
     },
     logout() {
-      localStorage.setItem('accessToken','false')
-      this.$router.push('/auth/login')
+      this.alert = {
+        ...this.alert,
+        ...{
+          isShowModal: true,
+          title: 'Xác nhận',
+          buttonCancelContent:'Đóng',
+          buttonOkContent: 'Xác nhận',
+          content: 'Bạn có muốn đăng xuất?',
+          type: 'confirm',
+          typeSubmit:'confirmLogout'
+        },
+      }
     },
     toggleDropdown() {
       this.isShowDropDown = !this.isShowDropDown
-    }
+    },
+    onCloseModal(typeSubmit) {
+      switch (typeSubmit) {
+        case 'confirmLogout':
+          localStorage.setItem('accessToken', 'false')
+          this.$router.push('/auth/login')
+          break
+        default:
+          this.resetAlert()
+          break
+      }
+    },
+    resetAlert() {
+      this.alert = {
+        isShowModal: false,
+        title: '',
+        type: 'failed',
+        content: '',
+        buttonCancelContent: '',
+        buttonOkContent: '',
+        typeSubmit: '',
+      }
+    },
   },
 }
 </script>
@@ -218,7 +265,7 @@ export default {
             border-radius: 8px;
 
             &:hover {
-              color:$gray;
+              color: $gray;
               background: $orange;
             }
           }

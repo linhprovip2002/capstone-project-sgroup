@@ -9,24 +9,24 @@
         action=""
         class="flex flex-col form gap-7 py-[60px] justify-center items-center w-[400px] rounded-md bg-[#1E252B] px-10"
       >
-        <div class="text-3xl font-bold text-white">Sign up</div>
+        <div class="text-3xl font-bold text-white">Reset Password</div>
         <div class="w-full flex flex-col gap-2">
-          <label for="" class="text-sm text-white font-medium">Email</label>
+          <label for="" class="text-sm text-white font-medium">Token</label>
           <input
-            v-model="email"
+            disabled
+            v-model="token"
             type="text"
             class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 bg-[#2C353D]"
-            placeholder="Email"
-            :class="{ invalid: !validateEmail }"
+            placeholder="Token"
           />
         </div>
         <div class="w-full relative flex flex-col gap-2">
           <label for="" class="text-sm text-white font-medium">Password</label>
           <input
-            v-model="password"
+            v-model="newPassword"
             :type="isShowPassword ? 'text' : 'password'"
-            class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 pr-8 bg-[#2C353D]"
-            placeholder="Password"
+            class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 bg-[#2C353D]"
+            placeholder="New password"
           />
           <img
             v-if="isShowPassword"
@@ -48,9 +48,9 @@
             >Password confirm</label
           >
           <input
-            v-model="password_confirm"
+            v-model="confirmPassword"
             :type="isShowPasswordConfirm ? 'text' : 'password'"
-            class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 pr-8 bg-[#2C353D]"
+            class="focus:outline-0 text-white h-[50px] w-full rounded-md pl-5 bg-[#2C353D]"
             placeholder="Password confirm"
             :class="{ invalid: !validateMatchPassword }"
           />
@@ -71,12 +71,9 @@
         </div>
         <hr />
         <div class="flex justify-between w-full">
-          <button
-            class="text-sm text-[#FF4B26] font-medium"
-            @click.prevent="toSignin"
+          <nuxt-link to="/auth/login" class="text-sm text-[#FF4B26] font-medium"
+            >Go to sign in</nuxt-link
           >
-            Go to sign in
-          </button>
         </div>
         <div class="flex justify-center items-center w-full">
           <button
@@ -84,7 +81,7 @@
             @click="submit"
             class="text-[16px] font-bold text-white bg-[#FF4401] rounded-[25px] py-[8px] px-[40px]"
           >
-            Sign up
+            Reset
           </button>
         </div>
       </form>
@@ -96,19 +93,19 @@
     />
   </div>
 </template>
-
 <script>
 import ModalAlert from '~/components/Modal/ModalAlert.vue'
+
 export default {
-  components: { ModalAlert },
+  comments: { ModalAlert },
   layout: 'empty',
   data() {
     return {
-      email: '',
-      password: '',
-      password_confirm: '',
-      isShowPassword:false,
+      isShowPassword: false,
       isShowPasswordConfirm: false,
+      token: '',
+      newPassword: '',
+      confirmPassword: '',
       alert: {
         isShowModal: false,
         title: 'Xác nhận',
@@ -120,41 +117,32 @@ export default {
       },
     }
   },
+
   computed: {
-    validateEmail() {
-      const regex =
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      if (this.email) return this.email.toLowerCase().match(regex)
-      else return true
-    },
     validateMatchPassword() {
-      if (this.password_confirm) return this.password_confirm === this.password
+      if (this.confirmPassword) return this.confirmPassword === this.newPassword
       else return true
     },
     checkData() {
-      return this.email && this.password && this.password_confirm
+      return this.newPassword && this.confirmPassword
     },
   },
+  created() {
+    // console.log(this.$route.params.code);
+    if (this.$route.params.code) {
+      this.token = this.$route.params.code
+    } else this.$router.push('/auth/login')
+  },
+
   methods: {
     submit() {
-      if (
-        !this.checkData ||
-        !this.validateEmail ||
-        !this.validateMatchPassword
-      ) {
-        if (!this.checkData) {
+        if(!this.checkData || !this.validateMatchPassword) {
+            if (!this.checkData) {
           this.$notify({
             title: 'Lỗi',
             text: 'Vui lòng điền đầy đủ thông tin',
             type: 'error',
             group: 'foo',
-          })
-        } else if (!this.validateEmail) {
-          this.$notify({
-            group: 'foo',
-            title: 'Lỗi',
-            text: 'Vui lòng điền email đúng định dạng',
-            type: 'error',
           })
         } else {
           this.$notify({
@@ -164,16 +152,16 @@ export default {
             type: 'error',
           })
         }
-      } else {
-        this.$axios.post('/auth/register', {
-          email: this.email.toLowerCase().trim(),
-          password: this.password,
+        }
+        else {
+            this.$axios.post(`/auth/reset-password/${this.token}`, {
+                password: this.newPassword,
         }).then(res => {
           this.alert = {... this.alert,
             ...{
               isShowModal : true,
               title: 'Thành công',
-              content:'Bạn đã đăng kí thành công, hãy đăng nhập để sử dụng trang web',
+              content:'Bạn đã đổi mật khẩu thành công, hãy đăng nhập để sử dụng trang web',
               type:'success',
               buttonOkContent:'Đến sign in',
               typeSubmit:'gotologin'
@@ -183,24 +171,12 @@ export default {
             ...{
               isShowModal : true,
               title: 'Thất bại',
-              content: res.response.data.message[0].message,
+              content: res.response.data.error,
               type:'failed',
               buttonOkContent:'Đóng'
           }}
         })
-      }
-    },
-    toSignin() {
-      this.$router.push('/auth/login')
-    },
-    toggleShowPassword() {
-      this.isShowPassword = !this.isShowPassword
-    },
-    toggleShowPasswordConfirm() {
-      this.isShowPasswordConfirm = !this.isShowPasswordConfirm
-    },
-    toFogotPassword() {
-      this.$router.push('/auth/forgot-password')
+        }
     },
     onCloseModal(typeSubmit) {
       switch (typeSubmit) {
@@ -222,6 +198,12 @@ export default {
         buttonOkContent: '',
         typeSubmit: '',
       }
+    },
+    toggleShowPassword() {
+      this.isShowPassword = !this.isShowPassword
+    },
+    toggleShowPasswordConfirm() {
+      this.isShowPasswordConfirm = !this.isShowPasswordConfirm
     },
   },
 }

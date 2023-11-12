@@ -18,7 +18,7 @@
               <span class="name">Pending Blog</span>
             </div>
           </div>
-          <div class="category__item" @click="changeOption(2)">
+          <div class="category__item" @click="changeOption(3)">
             <img src="~/assets/icon/popular.svg" alt="" />
             <div class="category__item__info">
               <span class="name">Published Blog</span>
@@ -26,8 +26,9 @@
           </div>
         </div>
       </div>
-      <UserList class="w-full" :users="users" v-if="manageOption === 1" />
-      <BlogList v-if="manageOption === 2" :news="news" class="w-full" />
+      <UserList class="w-full" :users="users" @reload="reload" v-if="manageOption === 1" />
+      <BlogList v-if="manageOption === 2" @reload="reload" :news="pendingNews" class="w-full" />
+      <BlogList v-if="manageOption === 3" @reload="reload" :news="news" class="w-full" />
     </div>
   </div>
 </template>
@@ -47,6 +48,7 @@ export default {
     return {
       title: '',
       content: '',
+      pendingNews: [],
       news: [],
       users: [],
       manageOption: 1,
@@ -76,6 +78,19 @@ export default {
       })
     this.$axios
       .get(`/blogs/awaiting-approval`, {
+        headers: {
+          Authorization: authorization,
+        },
+      })
+      .then((res) => {
+        console.log(res)
+        this.pendingNews = res.data
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+    this.$axios
+      .get(`/blogs`, {
         headers: {
           Authorization: authorization,
         },
@@ -124,8 +139,50 @@ export default {
     changeOption(optionNumber) {
       this.manageOption = optionNumber
     },
+    reload() {
+      const authorization = localStorage.getItem('accessToken')
+      this.$axios
+        .get(`/users`, {
+          headers: {
+            Authorization: authorization,
+          },
+        })
+        .then((res) => {
+          console.log(res)
+          this.users = res.data
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+      this.$axios
+        .get(`/blogs/awaiting-approval`, {
+          headers: {
+            Authorization: authorization,
+          },
+        })
+        .then((res) => {
+          console.log(res)
+          this.pendingNews = res.data
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+      this.$axios
+        .get(`/blogs`, {
+          headers: {
+            Authorization: authorization,
+          },
+        })
+        .then((res) => {
+          console.log(res)
+          this.news = res.data
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    }
   },
-  
+
 }
 </script>
 
@@ -177,8 +234,7 @@ export default {
     }
   }
 
-  .footer {
-  }
+  .footer {}
 }
 
 .tableft {

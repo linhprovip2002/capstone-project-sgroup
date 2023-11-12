@@ -2,28 +2,15 @@
 <template>
     <div class="main" @click="cancel">
         <div class="container relative p-8 py-12 rounded border border-[#1E252B] bg-[#2C353D]" @click.stop>
-            <h1 class="font-medium text-3xl text-[#FF571A]">Edit User</h1>
+            <h1 class="font-medium text-3xl text-[#FF571A]">Edit Status</h1>
             <img src="~/assets/icon/close.svg" class="w-[30px] h-[30px] absolute right-8 top-8 cursor-pointer"
                 @click="cancel" />
             <form>
-                <div class="flex justify-between">
+                <div class="flex justify-center w-full">
                     <div class="w-full">
                         <div class="form">
-                            <div class="mb-[20px] flex items-center gap-5">
-                                <label class="label" for="name">Role</label>
-                                <select class="p-2 rounded-sm" v-model="selectedRole" @change="handleChange">
-                                    <option value="USER">User</option>
-                                    <option value="MODERATOR">Moderator</option>
-                                    <option value="ADMIN">Admin</option>
-                                    <!-- Add more roles as needed -->
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-full">
-                        <div class="form">
-                            <div class="mb-[20px] flex items-center gap-5">
-                                <label class="label" for="name">Status</label>
+                            <div class="w-full flex flex-col items-center">
+                                <!-- <label class="label" for="name">Status</label> -->
                                 <select class="p-2 rounded-sm" v-model="selectedStatus" @change="handleChange">
                                     <option value="ACTIVE">Active</option>
                                     <option value="BANNER">Banner</option>
@@ -53,6 +40,8 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+import constant from '~/constant'
 export default {
     props: {
         user: {
@@ -74,12 +63,41 @@ export default {
     },
     methods: {
         save() {
-            this.$axios.post(`/${this.userProfile._id}`,)
+            const authorization = localStorage.getItem('accessToken')
+            console.log(authorization)
+            // update status
+            axios({
+                method: 'post',
+                url: `${constant.base_url}/users/${this.userProfile._id}/changeStatus`,
+                headers: {
+                    Authorization: authorization
+                },
+                data: {
+                    isActive: this.selectedStatus.toLowerCase()
+                }
+            })
+                .then(res => {
+                    console.log(res)
+                    this.$notify({
+                        title: 'Success',
+                        text: res.data.message,
+                        type: 'success',
+                    })
+                    this.$emit('reload')
+                })
+                .catch(err => {
+                    console.error(err)
+                    this.$notify({
+                        title: 'Error',
+                        text: err.data.message,
+                        type: 'error',
+                    })
+                })
         },
         cancel() {
             this.$emit('cancel')
         },
-        handleChange(){
+        handleChange() {
             console.log(this.selectedRole)
             console.log(this.selectedStatus.toUpperCase())
         }

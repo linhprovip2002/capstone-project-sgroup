@@ -86,6 +86,7 @@ export default {
                             // const url = await cloudinary.image(`${res}`, {height: 250, width: 250, crop: "fill"})
                             const url = `<img src="${res}">`;
                             this.editedContent += url;
+                            this.$emit('addImage', res);
                         } catch (err) {
                             console.error(err);
                         }

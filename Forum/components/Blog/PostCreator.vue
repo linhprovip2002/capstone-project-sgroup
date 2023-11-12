@@ -49,6 +49,7 @@ export default {
     return {
       title: '',
       content: '',
+      blogImage: []
     }
   },
   methods: {
@@ -86,6 +87,9 @@ export default {
     updateContent(updatedContent) {
       this.content = updatedContent
     },
+    updateImage(imageLink){
+      this.blogImage.push(imageLink)
+    }
   },
 }
 </script>

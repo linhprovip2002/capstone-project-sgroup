@@ -27,11 +27,14 @@
         </div>
       </div>
       <UserList class="w-full" :users="users" @reload="reload" v-if="manageOption === 1" @changePage="changeUserPage"
-        :count="userCount" />
+        :count="userCount" :recordsPerPage="recordsPerPage"/>
       <BlogList v-if="manageOption === 2" @reload="reload" :news="pendingNews" class="w-full" @changePage="changePendingPage"
-       :count="pendingNewsCount" />
+       :count="pendingNewsCount" @setLoading="setLoading" @doneLoading="doneLoading" :recordsPerPage="recordsPerPage"/>
       <BlogList v-if="manageOption === 3" @reload="reload" :news="news" class="w-full" @changePage="changeNewsPage"
-       :count="newsCount" />
+       :count="newsCount"  @setLoading="setLoading" @doneLoading="doneLoading" :recordsPerPage="recordsPerPage"/>
+      <div v-if="isLoading" class="absolute bg-gray-800 bg-opacity-80 w-full h-full flex justify-center items-center">
+        <LoadingSpinner/>
+      </div>
     </div>
   </div>
 </template>
@@ -40,11 +43,13 @@
 import axios from 'axios'
 import UserList from '~/components/Manage/UserList.vue'
 import BlogList from '~/components/Manage/BlogList.vue'
+import LoadingSpinner from '~/components/Animation/LoadingSpinner.vue'
 // import constant from '~/constant'
 export default {
   components: {
     UserList,
     BlogList,
+    LoadingSpinner
   },
   layout: 'admin',
   data() {
@@ -58,6 +63,8 @@ export default {
       userCount: Number,
       pendingNewsCount: Number,
       newsCount: Number,
+      isLoading: true,
+      recordsPerPage: 5
     }
   },
   created() {
@@ -69,7 +76,7 @@ export default {
   },
   mounted() {
     this.$axios
-      .get(`/users/?page=1&limit=4`)
+      .get(`/users/?page=1&limit=${this.recordsPerPage}`)
       .then((res) => {
         console.log(res)
         this.users = res.data.docs
@@ -80,7 +87,7 @@ export default {
       })
 
     this.$axios
-      .get(`/blogs/awaiting-approval/?page=1&limit=4`)
+      .get(`/blogs/awaiting-approval/?page=1&limit=${this.recordsPerPage}`)
       .then((res) => {
         console.log(res)
         this.pendingNews = res.data.docs
@@ -90,7 +97,7 @@ export default {
         console.error(err)
       })
     this.$axios
-      .get(`/blogs/?page=1&limit=4`, {})
+      .get(`/blogs/?page=1&limit=${this.recordsPerPage}`, {})
       .then((res) => {
         console.log(res)
         this.news = res.data.docs
@@ -99,6 +106,7 @@ export default {
       .catch((err) => {
         console.error(err)
       })
+      this.isLoading = false;
   },
   methods: {
     submit() {
@@ -134,7 +142,7 @@ export default {
     },
     reload() {
       this.$axios
-        .get(`/users/?page=1&limit=4`)
+        .get(`/users/?page=1&limit=${this.recordsPerPage}`)
         .then((res) => {
           console.log(res)
           this.users = res.data.docs
@@ -145,7 +153,7 @@ export default {
         })
 
       this.$axios
-        .get(`/blogs/awaiting-approval/?page=1&limit=4`)
+        .get(`/blogs/awaiting-approval/?page=1&limit=${this.recordsPerPage}`)
         .then((res) => {
           console.log(res)
           this.pendingNews = res.data.docs
@@ -155,7 +163,7 @@ export default {
           console.error(err)
         })
       this.$axios
-        .get(`/blogs/?page=1&limit=4`, {})
+        .get(`/blogs/?page=1&limit=${this.recordsPerPage}`, {})
         .then((res) => {
           console.log(res)
           this.news = res.data.docs
@@ -164,10 +172,12 @@ export default {
         .catch((err) => {
           console.error(err)
         })
+        this.isLoading = false
     },
     changeUserPage(page, limit) {
       console.log("page: " + page + " limit: " + limit)
       console.log('oke');
+      this.isLoading = true;
       this.$axios.get(`/users/?page=${page}&limit=${limit}`)
         .then(res => {
           this.users = res.data.docs
@@ -176,10 +186,14 @@ export default {
         .catch(err => {
           console.log(err)
         })
+        .finally(() => {
+          this.isLoading = false;
+        }) 
     },
     changePendingPage(page, limit) {
       console.log("page: " + page + " limit: " + limit)
       console.log('oke');
+      this.isLoading = true;
       this.$axios.get(`/blogs/awaiting-approval/?page=${page}&limit=${limit}`)
         .then(res => {
           this.pendingNews = res.data.docs
@@ -188,10 +202,14 @@ export default {
         .catch(err => {
           console.log(err)
         })
+        .finally(() => {
+          this.isLoading = false;
+        })
     },
     changeNewsPage(page, limit) {
       console.log("page: " + page + " limit: " + limit)
       console.log('oke');
+      this.isLoading = true;
       this.$axios.get(`/blogs/?page=${page}&limit=${limit}`)
         .then(res => {
           this.news = res.data.docs
@@ -200,6 +218,15 @@ export default {
         .catch(err => {
           console.log(err)
         })
+        .finally(() => {
+          this.isLoading = false;
+        })
+    },
+    setLoading(){
+      this.isLoading = true
+    },
+    doneLoading(){
+      this.isLoading = false
     },
   },
 }

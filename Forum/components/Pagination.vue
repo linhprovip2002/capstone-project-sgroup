@@ -13,11 +13,11 @@ Vue.component('paginate-component', PaginateComponent);
 export default {
     props: {
         count: Number,
+        recordsPerPage: Number,
     },
     data() {
         return {
             activePage: 1,
-            recordsPerPage: 4,
             paginationContainerClass: 'pagination',
             pageItemClass: 'page-item',
         };

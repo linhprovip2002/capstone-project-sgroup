@@ -6,8 +6,7 @@
         <div class="user-list text-white font-medium p-5 w-full bg-[#262d34] rounded-[16px]">
             <div class="font-semibold user-list-row">
                 <div class="user-list-row-cell avatar"></div>
-                <div class="user-list-row-cell first-name">First Name</div>
-                <div class="user-list-row-cell last-name">Last Name</div>
+                <div class="user-list-row-cell first-name">Name</div>
                 <div class="user-list-row-cell gender">Gender</div>
                 <div class="user-list-row-cell phone">Phone</div>
                 <div class="user-list-row-cell email">Email</div>
@@ -20,9 +19,8 @@
                 <div class="avatar">
                     <img :src="user.profileImage" class="p-2 rounded-full">
                 </div>
-                <div class="user-list-row-cell first-name">{{ user.firstName }}</div>
-                <div class="user-list-row-cell last-name">{{ user.lastName }}</div>
-                <div class="user-list-row-cell gender">{{ user.gender }}</div>
+                <div class="user-list-row-cell first-name">{{ getName(user.firstName, user.lastName) }}</div>
+                <div class="user-list-row-cell gender">{{ user.gender?'Male':'Female' }}</div>
                 <div class="user-list-row-cell phone">{{ user.phone }}</div>
                 <div class="user-list-row-cell email">{{ user.email }}</div>
                 <div class="user-list-row-cell birthday">{{ formatBirthday(user.dayOfBirth) }}</div>
@@ -46,7 +44,7 @@
                             </button>
                             <button
                                 class=" hover:bg-red-400 hover:text-white text-gray-900 group flex rounded-md items-center w-full px-2 py-2 text-sm"
-                                @click="onDelete(user.id)">
+                                @click="onDelete(user._id)">
                                 <svg xmlns="http://www.w3.org/2000/svg" class=" w-5 h-5 mr-2 text-violet-400" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -59,6 +57,8 @@
                     </div>
                 </div>
             </div>
+            <div class="w-full h-[1px] bg-gray-500"></div>
+            <Pagination :count="count" @changePage="changePage"/>
         </div>
     </div>
 </template>
@@ -69,13 +69,16 @@ import axios from 'axios'
 import { format } from 'date-fns'
 import EditRole from '../User/EditRole.vue'
 import constant from '~/constant'
+import Pagination from '~/components/Pagination.vue'
 
 export default {
     components: {
         EditRole,
+        Pagination
     },
     props: {
         users: Array,
+        count: Number
     },
     data() {
         return {
@@ -119,9 +122,16 @@ export default {
             this.isEditProfile = true;
         },
         onDelete(id) {
+            const authorization = localStorage.getItem('accessToken')
             axios({
-                method: 'post',
-                url: `${constant.base_url}/users/register`
+                method: 'delete',
+                url: `${constant.base_url}/users/${id}`,
+                headers: {
+                    Authorization: authorization
+                }
+            })
+            .then(res => {
+                this.reload()
             })
         },
         formatBirthday(date) {
@@ -135,6 +145,15 @@ export default {
         },
         reload(){
             this.$emit('reload')
+        },
+        getName(firstName, lastName){
+            if(!firstName) firstName = ""
+            if(!lastName) lastName = ""
+            return firstName + " " + lastName
+        },
+        changePage(page, limit){
+            console.log('to user lít ')
+            this.$emit('changePage', page, limit)
         }
     },
 
@@ -165,7 +184,7 @@ export default {
         }
 
         .avatar {
-            width: 6%;
+            width: 10%;
             display: flex;
             justify-content: center;
 

@@ -26,9 +26,12 @@
           </div>
         </div>
       </div>
-      <UserList class="w-full" :users="users" @reload="reload" v-if="manageOption === 1" />
-      <BlogList v-if="manageOption === 2" @reload="reload" :news="pendingNews" class="w-full" />
-      <BlogList v-if="manageOption === 3" @reload="reload" :news="news" class="w-full" />
+      <UserList class="w-full" :users="users" @reload="reload" v-if="manageOption === 1" @changePage="changeUserPage"
+        :count="userCount" />
+      <BlogList v-if="manageOption === 2" @reload="reload" :news="pendingNews" class="w-full" @changePage="changePendingPage"
+       :count="pendingNewsCount" />
+      <BlogList v-if="manageOption === 3" @reload="reload" :news="news" class="w-full" @changePage="changeNewsPage"
+       :count="newsCount" />
     </div>
   </div>
 </template>
@@ -52,6 +55,9 @@ export default {
       news: [],
       users: [],
       manageOption: 1,
+      userCount: Number,
+      pendingNewsCount: Number,
+      newsCount: Number,
     }
   },
   created() {
@@ -62,50 +68,37 @@ export default {
       this.$router.push('/auth/login')
   },
   mounted() {
-    const authorization = localStorage.getItem('accessToken')
     this.$axios
-      .get(`/users`, {
-        headers: {
-          Authorization: authorization,
-        },
-      })
+      .get(`/users/?page=1&limit=4`)
       .then((res) => {
         console.log(res)
-        this.users = res.data
+        this.users = res.data.docs
+        this.userCount = res.data.totalDocs
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+
+    this.$axios
+      .get(`/blogs/awaiting-approval/?page=1&limit=4`)
+      .then((res) => {
+        console.log(res)
+        this.pendingNews = res.data.docs
+        this.pendingNewsCount = res.data.totalDocs
       })
       .catch((err) => {
         console.error(err)
       })
     this.$axios
-      .get(`/blogs/awaiting-approval`, {
-        headers: {
-          Authorization: authorization,
-        },
-      })
+      .get(`/blogs/?page=1&limit=4`, {})
       .then((res) => {
         console.log(res)
-        this.pendingNews = res.data
+        this.news = res.data.docs
+        this.newsCount = res.data.totalDocs
       })
       .catch((err) => {
         console.error(err)
       })
-    this.$axios
-      .get(`/blogs`, {
-        headers: {
-          Authorization: authorization,
-        },
-      })
-      .then((res) => {
-        console.log(res)
-        this.news = res.data
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-    //         axios({
-    //     method: 'get',
-    //     url: `${constant.base_url}/blogs`
-    // })
   },
   methods: {
     submit() {
@@ -140,49 +133,75 @@ export default {
       this.manageOption = optionNumber
     },
     reload() {
-      const authorization = localStorage.getItem('accessToken')
       this.$axios
-        .get(`/users`, {
-          headers: {
-            Authorization: authorization,
-          },
-        })
+        .get(`/users/?page=1&limit=4`)
         .then((res) => {
           console.log(res)
-          this.users = res.data
+          this.users = res.data.docs
+          this.userCount = res.data.totalDocs
         })
         .catch((err) => {
           console.error(err)
         })
-      this.$axios
-        .get(`/blogs/awaiting-approval`, {
-          headers: {
-            Authorization: authorization,
-          },
-        })
-        .then((res) => {
-          console.log(res)
-          this.pendingNews = res.data
-        })
-        .catch((err) => {
-          console.error(err)
-        })
-      this.$axios
-        .get(`/blogs`, {
-          headers: {
-            Authorization: authorization,
-          },
-        })
-        .then((res) => {
-          console.log(res)
-          this.news = res.data
-        })
-        .catch((err) => {
-          console.error(err)
-        })
-    }
-  },
 
+      this.$axios
+        .get(`/blogs/awaiting-approval/?page=1&limit=4`)
+        .then((res) => {
+          console.log(res)
+          this.pendingNews = res.data.docs
+          this.pendingNewsCount = res.data.totalDocs
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+      this.$axios
+        .get(`/blogs/?page=1&limit=4`, {})
+        .then((res) => {
+          console.log(res)
+          this.news = res.data.docs
+          this.newsCount = res.data.totalDocs
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    },
+    changeUserPage(page, limit) {
+      console.log("page: " + page + " limit: " + limit)
+      console.log('oke');
+      this.$axios.get(`/users/?page=${page}&limit=${limit}`)
+        .then(res => {
+          this.users = res.data.docs
+          this.userCount = res.data.totalDocs
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    changePendingPage(page, limit) {
+      console.log("page: " + page + " limit: " + limit)
+      console.log('oke');
+      this.$axios.get(`/blogs/awaiting-approval/?page=${page}&limit=${limit}`)
+        .then(res => {
+          this.pendingNews = res.data.docs
+          this.pendingNewsCount = res.data.totalDocs
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    changeNewsPage(page, limit) {
+      console.log("page: " + page + " limit: " + limit)
+      console.log('oke');
+      this.$axios.get(`/blogs/?page=${page}&limit=${limit}`)
+        .then(res => {
+          this.news = res.data.docs
+          this.newsCount = res.data.totalDocs
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+  },
 }
 </script>
 

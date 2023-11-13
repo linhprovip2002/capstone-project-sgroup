@@ -1,13 +1,13 @@
 <template>
     <div class="blog-list text-white font-medium p-5 w-full bg-[#262d34] rounded-[16px]">
-        <div class="blog-list-row blog-list-information">
+        <div class="blog-list-row">
             <div class="image"></div>
             <div class="author">Author</div>
             <div class="title">Title</div>
             <div class="createdAt">Created Time</div>
             <div class="button"></div>
         </div>
-        <div v-for="n in news" :key="n.id" class="blog-list-row blog-list-information" >
+        <div v-for="n in news" :key="n.id" class="blog-list-row blog-list-information">
             <!-- <BlogCard
               :image-link="n.imageLink"
               :author="n.author"
@@ -21,42 +21,50 @@
             <div class="image">
                 <img src="" alt="">
             </div>
-            <div class="author">{{ n.userId.firstName }}</div>
+            <div class="author">{{ getName(n.userId?.firstName, n.userId?.lastName) }}</div>
             <div class="title">{{ n.title }}</div>
             <div class="createdAt">{{ formatDay(n.createdAt) }}</div>
             <div class="button">
-                <button @click="approve(n._id)" class="w-[100px] mx-2 rounded-lg bg-green-500 px-5 py-2" v-if="n.status==='pending'">Approve</button>
-                <button @click="revert(n._id)" class="w-[100px] mx-2 rounded-lg bg-yellow-500 px-5 py-2" v-if="n.status==='approved'">Revert</button>
+                <button @click="approve(n._id)" class="w-[100px] mx-2 rounded-lg bg-green-500 px-5 py-2"
+                    v-if="n.status === 'pending'">Approve</button>
+                <button @click="revert(n._id)" class="w-[100px] mx-2 rounded-lg bg-yellow-500 px-5 py-2"
+                    v-if="n.status === 'approved'">Revert</button>
                 <button @click="reject(n._id)" class="w-[100px] mx-2 rounded-lg bg-red-500 px-5 py-2">Reject</button>
             </div>
-          </div>
+        </div>
+        <Pagination :count="count" @changePage="changePage" />
     </div>
 </template>
 
 <script>
 import { format } from 'date-fns'
 import axios from 'axios'
+import Pagination from '~/components/Pagination.vue'
 import constant from '~/constant'
-export default{
+export default {
+    components: {
+        Pagination
+    },
     props: {
         news: [],
+        count: Number
     },
     methods: {
         formatDay(date) {
             console.log(date)
-            if(date){
+            if (date) {
                 const jsDate = new Date(date);
-    
+
                 return format(jsDate, 'dd/MM/yyyy');
             }
             return '';
         },
-        approve(id){
+        approve(id) {
             // this.$axios.post(`/blogs/${id}/review`, {
             //     status: "APPROVED"
             // })
             const authorization = localStorage.getItem('accessToken')
-            
+
             console.log(`${constant.base_url}/blogs/${id}/review`)
             axios({
                 method: 'patch',
@@ -68,15 +76,15 @@ export default{
                     status: "APPROVED"
                 },
             })
-            .then(res => {
-                console.log(res)
-                this.$emit('reload')
-            })
-            .catch(err => {
-                console.log(err)
-            })
+                .then(res => {
+                    console.log(res)
+                    this.$emit('reload')
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         },
-        revert(id){
+        revert(id) {
             const authorization = localStorage.getItem('accessToken')
             axios({
                 method: 'patch',
@@ -88,15 +96,15 @@ export default{
                     status: "PENDING"
                 },
             })
-            .then(res => {
-                console.log(res)
-                this.$emit('reload')
-            })
-            .catch(err => {
-                console.log(err)
-            })
+                .then(res => {
+                    console.log(res)
+                    this.$emit('reload')
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         },
-        reject(id){
+        reject(id) {
             const authorization = localStorage.getItem('accessToken')
             axios({
                 method: 'patch',
@@ -108,14 +116,23 @@ export default{
                     status: "REJECTED"
                 },
             })
-            .then(res => {
-                console.log(res)
-                this.$emit('reload')        
-            })
-            .catch(err => {
-                console.log(err)
-            })
+                .then(res => {
+                    console.log(res)
+                    this.$emit('reload')
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         },
+        getName(firstName, lastName) {
+            if (!firstName) firstName = ""
+            if (!lastName) lastName = ""
+            return firstName + " " + lastName
+        },
+        changePage(page, limit){
+            console.log('to blog lít ')
+            this.$emit('changePage', page, limit)
+        }
     }
 }
 </script>

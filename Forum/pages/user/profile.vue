@@ -132,6 +132,7 @@
     :user = "user"
     @save="save"
     @cancel="cancelSave"
+    @fetchInfoUser="fetchInfoUser"
   />
 
   </div>
@@ -149,41 +150,7 @@ export default {
   data() {
     return {
       user: {},
-      news: [
-        {
-          id: 'bai1',
-          imageLink: [require('~/assets/img/logosgroup.png')],
-          title: 'The new company in Danang',
-          author: 'SGroup Member',
-          tags: ['finance', 'ecommerce'],
-          time: '2/2/2022',
-          like: 1000,
-          dislike: 65,
-          comments: 657,
-        },
-        {
-          id: 'bai3',
-          imageLink: [require('~/assets/img/image_post.jpg')],
-          title: 'Blockchain developer best practices',
-          author: 'SGroup Member',
-          tags: ['seo', 'blogging', 'traffic'],
-          time: '2/2/2022',
-          like: 2000,
-          dislike: 11,
-          comments: 992,
-        },
-        {
-          id: 'bai2',
-          imageLink: [require('~/assets/img/nodejs.png')],
-          title: 'Blockchain developer best practices',
-          author: 'SGroup Member',
-          tags: ['seo', 'blogging', 'traffic'],
-          time: '2/2/2022',
-          like: 2000,
-          dislike: 11,
-          comments: 992,
-        },
-      ],
+      news: [],
       filternews: [],
       isEditProfile:false,
     }
@@ -212,6 +179,7 @@ export default {
   methods: {
     getProfile() {
       this.user = JSON.parse(localStorage.getItem('user'))
+      
     },
     showMore() {
       this.filternews = this.news
@@ -226,7 +194,25 @@ export default {
      alert('Luu thanh cong:',JSON.stringify(userProp))
      console.log(userProp);
       this.isEditProfile = false
-    }
+    },
+    fetchInfoUser(data) {
+      console.log('Fetch user for edit');
+        const authorization = localStorage.getItem('accessToken')
+        this.$axios.get('/users/me', {
+          headers: {
+            Authorization: authorization
+          },
+        }).then(res => {
+          console.log(JSON.stringify(data));
+          localStorage.setItem('user', JSON.stringify(data))
+          // console.log(JSON.stringify(res.data))
+          this.user=data
+          console.log(JSON.stringify(this.user))
+        }).catch(err => {
+          console.log(err);
+        })
+        
+      },
   },
 }
 </script>

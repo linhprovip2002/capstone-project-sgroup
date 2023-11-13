@@ -12,7 +12,7 @@ html {
 
 .custom-scroll::-webkit-scrollbar {
   height: 6px;
-  width: 10px;
+  width: 8px;
   background-color: none;
   cursor: pointer;
   opacity: 0;

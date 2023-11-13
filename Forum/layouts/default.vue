@@ -18,8 +18,6 @@
 <script>
 export default {
   created() {
-    if(!localStorage.getItem('accessToken') ||localStorage.getItem('accessToken')==='false' )
-      this.$router.push('/auth/login')
       this.fetchInfoUser()
   },
   methods: {
@@ -34,6 +32,11 @@ export default {
           localStorage.setItem('user', JSON.stringify(res.data))
         }).catch(err => {
           console.log(err);
+          if (err.response.data.status === 401)
+            localStorage.removeItem('accessToken')
+            localStorage.removeItem('user')
+            this.$router.push('/auth/login')
+
         })
         
       },
@@ -83,6 +86,7 @@ export default {
 
     &__container {
       width: 100%;
+      
     }
   }
   .footer {

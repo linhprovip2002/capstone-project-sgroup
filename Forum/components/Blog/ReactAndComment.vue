@@ -11,7 +11,7 @@
             </div>
         </div>
         <div>
-            <div class="text-gray-500">Comments</div>
+            <div class="text-gray-500">{{comments}} Comments</div>
         </div>
     </div>
 </template>
@@ -21,7 +21,7 @@ export default{
     props: {
         like: Number,
         dislike: Number,
-        comments: [],
+        comments: Number,
     }
 }
 </script>

@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="container">
-      <div class="w-full px-4">
+      <div class="w-full px-4 flex justify-center flex-col items-center">
         <div
           class="flex bg-[#262D34] gap-5 w-full px-5 items-center h-[80px] rounded-md mb-5"
         >
@@ -29,16 +29,23 @@
             Create Post
           </button>
         </div>
-        <LoadingSpinner v-if="isLoading"/>
-        <div v-else id="main-content">
+        <div v-if="isLoading" class="loading w-full h-[100px] flex items-center justify-center ">
+          <LoadingSpinner/>
+        </div>
+        <div v-else class="main-content w-full">
           <div v-for="n in news" :key="n._id" class="blog" @click="GoToDetails(n._id)">
             <BlogCard
               :image-link="n.blogImage ?? null"
-              :author="`${n.userId.firstName??''} ${n.userId.lastName??''}`"
+              :author="`${n.userId?.firstName??''} ${n.userId?.lastName??''}`"
               :comments="n.comments"
               :like="
-                n.reaction.map((e) => {
+                n.reaction?.filter((e) => {
                   return e.reaction === 'like'
+                }).length
+              "
+              :dislike="
+                n.reaction?.filter((e) => {
+                  return e.reaction === 'dislike'
                 }).length
               "
               :title="n.title"
@@ -112,7 +119,7 @@ export default {
           this.news = res.data.docs
         })
         .catch((err) => {
-          if (err.response.data.code === 'ERR-401')
+          if (err.response.data.status === 401)
             this.alert = {
               ...this.alert,
               ...{
@@ -209,6 +216,8 @@ export default {
   .container {
     display: flex;
     width: 100%;
+    max-width: 750px;
+    margin: auto;
     .blog {
       width: 100%;
     }
@@ -254,6 +263,9 @@ export default {
         transform: translateY(-50%);
       }
     }
+  }
+  .main-content {
+
   }
 }
 </style>

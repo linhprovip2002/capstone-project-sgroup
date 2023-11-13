@@ -116,8 +116,8 @@ export default {
     onCloseModal(typeSubmit) {
       switch (typeSubmit) {
         case 'confirmLogout':
-          localStorage.setItem('accessToken', 'false')
-          localStorage.setItem('user', 'false')
+          localStorage.removeItem('accessToken')
+          localStorage.removeItem('user')
           this.$router.push('/auth/login')
           break
         default:

@@ -6,11 +6,7 @@
 </template>
 <script>
 export default{
-  created() {
-    console.log(this.$route);
-    if(this.$route.name !=='admin' && localStorage.getItem('accessToken') && localStorage.getItem('accessToken')!=='false')
-      this.$router.push('/')
-  }
+  middleware:'middleware-guest'
 }
 </script>
 <style scoped></style>

@@ -143,13 +143,12 @@ export default {
               email: this.login.email.toLowerCase().trim(),
               password: this.login.password,
             })
-            .then((res) => {
-              localStorage.setItem('accessToken', `Bearer ${res.data.token}`)
-
-              this.$axios
+            .then(async (res) => {
+              const token = `Bearer ${res.data.token}`
+              await this.$axios
                 .get('/users/me', {
                   headers: {
-                    Authorization: localStorage.getItem('accessToken'),
+                    Authorization: token,
                   },
                 })
                 .then((res) => {
@@ -158,6 +157,8 @@ export default {
                 .catch((err) => {
                   console.log(err)
                 })
+                
+              localStorage.setItem('accessToken', token)
               this.$router.push('/')
             })
             .catch((err) => {

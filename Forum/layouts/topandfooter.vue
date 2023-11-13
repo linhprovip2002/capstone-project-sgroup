@@ -16,11 +16,6 @@
 <script>
 export default {
   created() {
-    if (
-      !localStorage.getItem('accessToken') ||
-      localStorage.getItem('accessToken') === 'false'
-    )
-      this.$router.push('/auth/login')
     this.fetchInfoUser()
   },
 

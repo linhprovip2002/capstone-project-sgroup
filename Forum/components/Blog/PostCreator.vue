@@ -41,10 +41,10 @@
 <script>
 import TextEditor from '../../components/Blog/TextEditor.vue'
 export default {
-  layout: 'topandfooter',
   components: {
     TextEditor,
   },
+  layout: 'topandfooter',
   data() {
     return {
       title: '',

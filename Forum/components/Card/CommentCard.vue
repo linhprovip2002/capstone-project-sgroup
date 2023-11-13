@@ -1,31 +1,32 @@
 <template>
-    <div class="text-xl text-[#858EAD] font-medium flex gap-5">
+    <div class="text-xl text-[#858EAD] font-medium flex gap-[10px]">
         <div>
-            <img src="~/assets/img/avatar.jpg" alt="" class="w-10 h-10 rounded-full">
+            <img src="~/assets/img/avt.png" alt="" class="w-[40px] h-[40px] object-contain rounded-full">
         </div>
-        <div class="px-5 py-3 text-[16px] bg-white w-full rounded-lg">
-            <p>{{ user }}</p> 
-            <p>{{ comment }}</p> 
+        <div class="px-4 py-2 text-[16px] bg-white w-full rounded-lg">
+            <p class="text-[#000] text-[13px] font-semibold" >{{ user.firstName??'' }} {{ user.lastName??'' }}</p> 
+            <p class="text-[#050505] text-[15px] font-normal" v-html="comment" ></p> 
         </div>
-        <ReactAndComment :like="comment.like" :dislike="comment.dislike" :comments="comment.comments" />
+        <!-- <ReactAndComment :like="comment.like" :dislike="comment.dislike" :comments="comment.comments" /> -->
     </div>
 </template>
 <script>
-import axios from 'axios';
-import ReactAndComment from '../Blog/ReactAndComment.vue';
+// import ReactAndComment from '../Blog/ReactAndComment.vue';
 export default{
     components: {
-        ReactAndComment
+        // ReactAndComment
     },
     props: {
-        comment: String,
-        user: String
+        comment: {
+            type: String,
+            default:''
+        },
+        user: {
+            type: Object,
+            default: ()=> {}
+        }
     },
     mounted(){
-        axios({
-            method: 'get',
-            url: ''
-        })
     }
 }
 </script>

@@ -29,6 +29,8 @@ export default {
     { src: '~plugins/vue-quill-editor.js', ssr: false },
     '~/plugins/vue-notification.js',
     '~/plugins/axios-interceptor.js',
+    '~/plugins/axios-interceptor.js',
+    '~/plugins/Behavior/scrollToTop.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -68,29 +70,7 @@ export default {
     manifest: {
       lang: 'en',
     },
-  },
-  auth: {
-    redirect: {
-      login: '/auth/login',
-      logout: '/auth/login',
-      home: '/',
-    },
-    strategies: {
-      local: {
-        scheme: 'refresh',
-        token: {
-          property: 'token',
-        },
-        endpoints: {
-          login: { url: '/auth/login', method: 'post' },
-          user: false,
-          refresh: false,
-          logout: false,
-        },
-      },
-    },
-  },
-  
+  },  
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     extend(config, {_}) {

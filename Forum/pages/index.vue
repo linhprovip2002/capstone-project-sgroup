@@ -29,14 +29,24 @@
             Create Post
           </button>
         </div>
-        <div v-if="isLoading" class="loading w-full h-[100px] flex items-center justify-center ">
-          <LoadingSpinner/>
+        <div
+          v-if="isLoading"
+          class="loading w-full h-[100px] flex items-center justify-center"
+        >
+          <LoadingSpinner />
         </div>
         <div v-else class="main-content w-full">
-          <div v-for="n in news" :key="n._id" class="blog" @click="GoToDetails(n._id)">
+          <div
+            v-for="n in news"
+            :key="n._id"
+            class="blog"
+            @click="GoToDetails(n._id)"
+          >
             <BlogCard
               :image-link="n.blogImage ?? null"
-              :author="`${n.userId?.firstName??''} ${n.userId?.lastName??''}`"
+              :author="`${n.userId?.firstName ?? ''} ${
+                n.userId?.lastName ?? ''
+              }`"
               :comments="n.comments"
               :like="
                 n.reaction?.filter((e) => {
@@ -53,6 +63,13 @@
             />
           </div>
         </div>
+        <Pagination
+          v-show="!isLoading"
+          :count="totalBlogs"
+          :records-per-page="recordsPerPage"
+          @changePage="changePage"
+          class="bg-[#fafcfe] px-[40px] py-2 rounded-[10px]"
+        />
       </div>
     </div>
     <modal-alert
@@ -76,13 +93,15 @@ export default {
     BlogCard,
     PostCreator,
     ModalAlert,
-    LoadingSpinner
+    LoadingSpinner,
   },
   data() {
     return {
       news: [],
-      isLoading:true,
+      isLoading: true,
       isCreatingPost: false,
+      totalBlogs: 0,
+      recordsPerPage: 4,
       alert: {
         isShowModal: false,
         title: '',
@@ -96,10 +115,13 @@ export default {
   },
   async created() {
     await this.getListBlog()
-    this.isLoading=false
+    this.isLoading = false
     // await this.modifyListBlog()
   },
   methods: {
+    ScrollToTop() {
+      this.$scrollToTop();
+    },
     cancel() {
       this.isCreatingPost = false
     },
@@ -109,7 +131,7 @@ export default {
     async getListBlog() {
       const authorization = localStorage.getItem('accessToken')
       await this.$axios
-        .get('/blogs', {
+        .get(`/blogs?page=1&limit=${this.recordsPerPage}`, {
           headers: {
             Authorization: authorization,
           },
@@ -117,6 +139,7 @@ export default {
         .then((res) => {
           console.log(res)
           this.news = res.data.docs
+          this.totalBlogs = res.data.totalDocs
         })
         .catch((err) => {
           if (err.response.data.status === 401)
@@ -142,6 +165,19 @@ export default {
                 type: 'failed',
               },
             }
+        })
+    },
+    changePage(page, limit) {
+      this.isLoading = true
+      this.$axios
+        .get(`/blogs?page=${page}&limit=${limit}`)
+        .then((res) => {
+          this.news = res.data.docs
+          this.isLoading = false
+          console.log(this.news)
+        })
+        .catch((err) => {
+          console.log(err)
         })
     },
     modifyListBlog() {
@@ -202,7 +238,6 @@ export default {
       height: 100%;
       overflow-y: auto;
       width: 100%;
-      max-width: 700px;
     }
     &__form {
       width: 100%;
@@ -265,7 +300,6 @@ export default {
     }
   }
   .main-content {
-
   }
 }
 </style>

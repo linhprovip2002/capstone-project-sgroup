@@ -42,11 +42,11 @@ import UserList from '~/components/Manage/UserList.vue'
 import BlogList from '~/components/Manage/BlogList.vue'
 // import constant from '~/constant'
 export default {
-  layout: 'empty',
   components: {
     UserList,
     BlogList,
   },
+  layout: 'admin',
   data() {
     return {
       title: '',

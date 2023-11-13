@@ -5,6 +5,8 @@
         <PostCreator
           @cancel="cancel"
           class="post-creator__container custom-scroll"
+          @setLoading="isLoading=true"
+          @doneLoading="isLoading=false"
         />
       </div>
     </div>

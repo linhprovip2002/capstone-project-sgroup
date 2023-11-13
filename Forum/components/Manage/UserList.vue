@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="w-full h-[1px] bg-gray-500"></div>
-            <Pagination :count="count" @changePage="changePage"/>
+            <Pagination :count="count" @changePage="changePage" :recordsPerPage="recordsPerPage"/>
         </div>
     </div>
 </template>
@@ -78,7 +78,8 @@ export default {
     },
     props: {
         users: Array,
-        count: Number
+        count: Number,
+        recordsPerPage: Number
     },
     data() {
         return {

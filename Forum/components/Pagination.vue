@@ -18,6 +18,7 @@ import PaginateComponent from 'vuejs-paginate'
 Vue.component('paginate-component', PaginateComponent)
 
 export default {
+<<<<<<< HEAD
   props: {
     count: Number,
     recordsPerPage: {
@@ -40,6 +41,18 @@ export default {
       return `${this.pageItemClass} ${
         this.activePage === this.currentPage ? 'active' : ''
       }`
+=======
+    props: {
+        count: Number,
+        recordsPerPage: Number,
+    },
+    data() {
+        return {
+            activePage: 1,
+            paginationContainerClass: 'pagination',
+            pageItemClass: 'page-item',
+        };
+>>>>>>> 20e24a03122a761b41da29679d758f7ee8e26e94
     },
   },
   methods: {

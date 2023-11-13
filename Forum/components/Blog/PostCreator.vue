@@ -12,8 +12,11 @@
     </div>
     <div class="flex flex-col gap-1">
       <label class="text-sm font-medium" for="">Gắn thẻ</label>
-      <input type="text" class="outline-none bg-gray-200 border-2 border-gray-300 text-sm p-2 rounded-sm text-gray-800"
-        placeholder="Gắn thẻ" />
+      <select v-model="selectedCategory" id="categoryDropdown"
+        class="outline-none bg-gray-200 border-2 border-gray-300 text-sm p-2 rounded-sm text-gray-800">
+        <option value="" selected disabled>Select a category</option>
+        <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
+      </select>
     </div>
     <TextEditor @textChange="updateContent" />
     <button class="bg-gray-800 p-2 text-white w-[200px] rounded-lg m-auto" @click="submit">
@@ -33,8 +36,19 @@ export default {
     return {
       title: '',
       content: '',
-      blogImage: []
+      blogImage: [],
+      categories: [],
+      selectedCategory: "",
     }
+  },
+  created() {
+    this.$emit('setLoading')
+    this.$axios.get('/categories')
+    .then(res => {
+      console.log(res.data)
+      this.categories = res.data
+      this.$emit('doneLoading')
+    })
   },
   methods: {
     submit() {
@@ -44,6 +58,7 @@ export default {
           {
             title: this.title,
             content: this.content,
+            // catogory: this.selectedCategory
           },
           {
             headers: {

@@ -7,7 +7,7 @@
             <div class="createdAt">Created Time</div>
             <div class="button"></div>
         </div>
-        <div v-for="n in news" :key="n.id" class="blog-list-row blog-list-information">
+        <div v-for="n in news" :key="n._id" class="blog-list-row blog-list-information cursor-pointer" @click="toBlogDetail(n._id)">
             <!-- <BlogCard
               :image-link="n.imageLink"
               :author="n.author"
@@ -25,14 +25,14 @@
             <div class="title">{{ n.title }}</div>
             <div class="createdAt">{{ formatDay(n.createdAt) }}</div>
             <div class="button">
-                <button @click="approve(n._id)" class="w-[100px] mx-2 rounded-lg bg-green-500 px-5 py-2"
+                <button @click.stop="approve(n._id)" class="w-[100px] mx-2 rounded-lg bg-green-500 px-5 py-2"
                     v-if="n.status === 'pending'">Approve</button>
-                <button @click="revert(n._id)" class="w-[100px] mx-2 rounded-lg bg-yellow-500 px-5 py-2"
+                <button @click.stop="revert(n._id)" class="w-[100px] mx-2 rounded-lg bg-yellow-500 px-5 py-2"
                     v-if="n.status === 'approved'">Revert</button>
-                <button @click="reject(n._id)" class="w-[100px] mx-2 rounded-lg bg-red-500 px-5 py-2">Reject</button>
+                <button @click.stop="reject(n._id)" class="w-[100px] mx-2 rounded-lg bg-red-500 px-5 py-2">Reject</button>
             </div>
         </div>
-        <Pagination :count="count" @changePage="changePage" />
+        <Pagination :count="count" @changePage="changePage" :recordsPerPage="recordsPerPage"/>
     </div>
 </template>
 
@@ -47,7 +47,8 @@ export default {
     },
     props: {
         news: [],
-        count: Number
+        count: Number,
+        recordsPerPage: Number,
     },
     methods: {
         formatDay(date) {
@@ -60,11 +61,8 @@ export default {
             return '';
         },
         approve(id) {
-            // this.$axios.post(`/blogs/${id}/review`, {
-            //     status: "APPROVED"
-            // })
+            this.$emit('setLoading')
             const authorization = localStorage.getItem('accessToken')
-
             console.log(`${constant.base_url}/blogs/${id}/review`)
             axios({
                 method: 'patch',
@@ -78,13 +76,29 @@ export default {
             })
                 .then(res => {
                     console.log(res)
+                    this.$notify({
+                        title: 'Thành công',
+                        text: 'Duyệt thành công',
+                        type: 'success',
+                        group: 'foo',
+                    })
                     this.$emit('reload')
                 })
                 .catch(err => {
                     console.log(err)
+                    this.$notify({
+                        title: 'Thất bại',
+                        text: 'Duyệt thất bại: ' + err.response.data.message,
+                        type: 'success',
+                        group: 'foo',
+                    })
+                })
+                .finally(() => {
+                    this.$emit('doneLoading')
                 })
         },
         revert(id) {
+            this.$emit('setLoading')
             const authorization = localStorage.getItem('accessToken')
             axios({
                 method: 'patch',
@@ -98,13 +112,29 @@ export default {
             })
                 .then(res => {
                     console.log(res)
+                    this.$notify({
+                        title: 'Thành công',
+                        text: 'Đưa về hàng đợi thành công',
+                        type: 'success',
+                        group: 'foo',
+                    })
                     this.$emit('reload')
                 })
                 .catch(err => {
                     console.log(err)
+                    this.$notify({
+                        title: 'Thất bại',
+                        text: 'Duyệt thất bại: ' + err.response.data.message,
+                        type: 'success',
+                        group: 'foo',
+                    })
+                })
+                .finally(() => {
+                    this.$emit('doneLoading')
                 })
         },
         reject(id) {
+            this.$emit('setLoading')
             const authorization = localStorage.getItem('accessToken')
             axios({
                 method: 'patch',
@@ -118,10 +148,25 @@ export default {
             })
                 .then(res => {
                     console.log(res)
+                    this.$notify({
+                        title: 'Thành công',
+                        text: 'Hủy thành công',
+                        type: 'success',
+                        group: 'foo',
+                    })
                     this.$emit('reload')
                 })
                 .catch(err => {
                     console.log(err)
+                    this.$notify({
+                        title: 'Thất bại',
+                        text: 'Duyệt thất bại: ' + err.response.data.message,
+                        type: 'success',
+                        group: 'foo',
+                    })
+                })
+                .finally(() => {
+                    this.$emit('doneLoading')
                 })
         },
         getName(firstName, lastName) {
@@ -129,9 +174,12 @@ export default {
             if (!lastName) lastName = ""
             return firstName + " " + lastName
         },
-        changePage(page, limit){
+        changePage(page, limit) {
             console.log('to blog lít ')
             this.$emit('changePage', page, limit)
+        },
+        toBlogDetail(id){
+            this.$router.push(`/blog/${id}`)
         }
     }
 }
@@ -188,4 +236,5 @@ export default {
             display: flex;
         }
     }
-}</style>
+}
+</style>

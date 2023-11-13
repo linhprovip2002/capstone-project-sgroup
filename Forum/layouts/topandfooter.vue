@@ -22,13 +22,8 @@ export default {
   methods: {
     fetchInfoUser() {
       console.log('Fetch user');
-      const authorization = localStorage.getItem('accessToken')
       this.$axios
-        .get('/users/me', {
-          headers: {
-            Authorization: authorization,
-          },
-        })
+        .get('/users/me')
         .then((res) => {
           localStorage.setItem('user', JSON.stringify(res.data))
         })

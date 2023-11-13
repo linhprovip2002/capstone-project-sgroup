@@ -28,7 +28,7 @@
           <img src="~assets/icon/bell.svg" alt="" />
         </div>
         <div class="account" @click="toggleDropdown">
-          <img :src="user.avatar??require('~/assets/img/logosgroup.png')" alt="" />
+          <img :src="user.profileImage??require('~/assets/img/logosgroup.png')" alt="" class="rounded-[50px]" />
           <span class="name">{{ user?.firstName?? 'Sgroup' }} {{ user?.lastName?? 'Member' }}</span>
           <div class="icon-drop-down">
             <img src="~assets/icon/drop-down-icon.svg" alt="" />

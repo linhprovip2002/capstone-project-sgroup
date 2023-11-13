@@ -7,4 +7,10 @@ export default function({$axios}){
         }
         return config
     })
+
+    $axios.onError((error) => {
+        // Xử lý lỗi response
+        console.error('Request error:', error);
+        return Promise.reject(error);
+      });
 }

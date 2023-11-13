@@ -129,13 +129,8 @@ export default {
       this.$router.push(`/blog/${id}`)
     },
     async getListBlog() {
-      const authorization = localStorage.getItem('accessToken')
       await this.$axios
-        .get(`/blogs?page=1&limit=${this.recordsPerPage}`, {
-          headers: {
-            Authorization: authorization,
-          },
-        })
+        .get(`/blogs?page=1&limit=${this.recordsPerPage}`)
         .then((res) => {
           console.log(res)
           this.news = res.data.docs

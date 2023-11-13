@@ -31,7 +31,7 @@
                   <div class="relative">
                     <img
                       alt="..."
-                      :src="user.avatar??require('~/assets/img/logosgroup.png')"
+                      :src="user.profileImage??require('~/assets/img/logosgroup.png')"
                       class="shadow-xl rounded-full h-[150px] border-none absolute -m-16 -ml-20 lg:-ml-16"
                       style="max-width: 150px"
                     />
@@ -50,17 +50,17 @@
                         {{ user?.firstName }} {{ user?.lastName }}
                       </span>
                       <div
-                        class="text-sm leading-normal mt-0 mb-2 text-[#fafcfe] font-bold uppercase"
+                        class="text-sm leading-normal mt-0 mb-2 text-[#fafcfe] font-semibold uppercase"
                       >
                         Gender: {{ user.gender ? 'Male' : 'Female' }}
                       </div>
                       <div
-                        class="text-sm leading-normal mt-0 mb-2 text-[#fafcfe] font-bold uppercase"
+                        class="text-sm leading-normal mt-0 mb-2 text-[#fafcfe] font-semibold uppercase"
                       >
                         Birthday: {{ user.dayOfBirth?.split('T')[0].split('-')[2] }}-{{ user.dayOfBirth?.split('T')[0].split('-')[1] }}-{{ user.dayOfBirth?.split('T')[0].split('-')[0] }}
                       </div>
                       <div
-                        class="text-sm leading-normal mt-0 mb-2 text-[#fafcfe] font-bold uppercase"
+                        class="text-sm leading-normal mt-0 mb-2 text-[#fafcfe] font-semibold uppercase"
                       >
                         Phone number: {{ user.phone }}
                       </div>
@@ -197,12 +197,7 @@ export default {
     },
     fetchInfoUser(data) {
       console.log('Fetch user for edit');
-        const authorization = localStorage.getItem('accessToken')
-        this.$axios.get('/users/me', {
-          headers: {
-            Authorization: authorization
-          },
-        }).then(res => {
+        this.$axios.get('/users/me').then(res => {
           console.log(JSON.stringify(data));
           localStorage.setItem('user', JSON.stringify(data))
           // console.log(JSON.stringify(res.data))

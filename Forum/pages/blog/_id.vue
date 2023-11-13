@@ -8,12 +8,17 @@
     </div>
     <div
       v-else
-      class="p-10 flex flex-col gap-5 bg-[#e9edf7] rounded-lg justify-center"
+      class="p-10 flex flex-col gap-5 bg-[#fff] rounded-lg justify-center ql-container ql-snow"
     >
-      <div class="text-[32px] font-semibold border-b-[1px] border-[#000] pb-2">
-        {{ blog.title }}
+      <div class="header border-b-[1px] border-[#000]">
+        <p class="text-[32px] font-[600] pb-2">
+          {{ blog.title }}
+        </p>
+        <span class="text-[#050505] text-[12px] font-normal">Asked : {{ blog.createdAt.split('T')[0] }}</span>
+        <span class="text-[#050505] text-[12px] font-normal ml-[20px]">Modified: {{ blog.updatedAt.split('T')[0] }}</span>
+        <span class="text-[#050505] text-[12px] font-normal ml-[20px]">Author: {{ blog.userId.firstName??'' }} {{ blog.userId.lastName??'' }}</span>
       </div>
-      <div class="content" v-html="blog.content"></div>
+      <div class="content ql-editor" v-html="blog.content"></div>
       <div class="h-[1px] w-full bg-gray-300"></div>
       <ReactAndComment
         :like="countLike"
@@ -84,13 +89,8 @@ export default {
   },
   methods: {
     async fetchBlogDetail() {
-      const authorization = localStorage.getItem('accessToken')
       await this.$axios
-        .get(`/blogs/${this.id}`, {
-          headers: {
-            Authorization: authorization,
-          },
-        })
+        .get(`/blogs/${this.id}`)
         .then((res) => {
           this.blog = res.data
           console.log(this.blog)
@@ -103,27 +103,21 @@ export default {
     mainComment(content) {
       console.log('content:', content)
       const contentComment = content
-      const authorization = localStorage.getItem('accessToken')
       this.$axios
         .post(
           `/blog/${this.blog._id}/comments/`,
           {
             // Thêm body của request ở đây
             content: contentComment,
-          },
-          {
-            // Thêm headers Authorization ở đây
-            headers: {
-              Authorization: authorization,
-            },
           }
         )
         .then((res) => {
           console.log(res)
           this.fetchBlogComment()
         })
-        .catch((err) => {
-          if (err.response.data.status === 401) {
+        .catch((error) => {
+          console.error('Error:', error);
+          if (error.response.status === 401) {
             localStorage.removeItem('accessToken')
             localStorage.removeItem('user')
             this.$router.push('/auth/login')
@@ -137,13 +131,8 @@ export default {
         })
     },
     async fetchBlogComment() {
-      const authorization = localStorage.getItem('accessToken')
       await this.$axios
-        .get(`/blog/${this.id}/comments/`, {
-          headers: {
-            Authorization: authorization,
-          },
-        })
+        .get(`/blog/${this.id}/comments/`)
         .then((res) => {
           this.comment = res.data
         })

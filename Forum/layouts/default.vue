@@ -23,12 +23,7 @@ export default {
   methods: {
     fetchInfoUser() {
       console.log('Fetch user');
-        const authorization = localStorage.getItem('accessToken')
-        this.$axios.get('/users/me', {
-          headers: {
-            Authorization: authorization
-          },
-        }).then(res => {
+        this.$axios.get('/users/me').then(res => {
           localStorage.setItem('user', JSON.stringify(res.data))
         }).catch(err => {
           console.log(err);
@@ -87,7 +82,7 @@ export default {
     &__container {
       width: 100%;
       
-      max-width: 700px;
+      max-width: 780px;
     }
   }
   .footer {

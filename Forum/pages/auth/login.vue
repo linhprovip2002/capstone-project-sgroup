@@ -146,7 +146,11 @@ export default {
             .then(async (res) => {
               const token = `Bearer ${res.data.token}`
               await this.$axios
-                .get('/users/me')
+                .get('/users/me', {
+                  headers: {
+                    Authorization: token,
+                  },
+                })
                 .then((res) => {
                   localStorage.setItem('user', JSON.stringify(res.data))
                 })

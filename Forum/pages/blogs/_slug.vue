@@ -25,7 +25,12 @@
               placeholder="Type title blog to search..."
               @keydown.enter="searchBlog"
             />
-            <img src="~assets/icon/search.svg" class="cursor-pointer" alt="" @click="searchBlog" />
+            <img
+              src="~assets/icon/search.svg"
+              class="cursor-pointer"
+              alt=""
+              @click="searchBlog"
+            />
           </div>
           <button
             class="text-white py-2 px-6 rounded-[10px] bg-[#FF571A]"
@@ -33,6 +38,14 @@
           >
             Create Post
           </button>
+        </div>
+        <div class="info-category w-full pb-[20px]">
+          <h2 class="text-[#f7f7f7] text-[18px] font-[500]">
+            {{ categoryInfo.name }}
+          </h2>
+          <p class="text-[#f7f7f7] text-[14px]">
+            {{ categoryInfo.description }}
+          </p>
         </div>
         <div
           v-if="isLoading"
@@ -82,10 +95,10 @@
         </div>
         <Pagination
           v-show="!isLoading && totalBlogs != 0"
+          class="bg-[#fafcfe] px-[40px] py-2 rounded-[10px]"
           :count="totalBlogs"
           :records-per-page="recordsPerPage"
           @changePage="changePage"
-          class="bg-[#fafcfe] px-[40px] py-2 rounded-[10px]"
         />
       </div>
     </div>
@@ -115,8 +128,10 @@ export default {
   data() {
     return {
       news: [],
+      listBlog:[],
       isLoading: true,
       searchValue: '',
+      categoryInfo: {},
       isCreatingPost: false,
       totalBlogs: 0,
       recordsPerPage: 4,
@@ -129,12 +144,15 @@ export default {
         buttonOkContent: '',
         typeSubmit: '',
       },
+      slug: '',
     }
   },
   async created() {
-    await this.getListBlog()
-    this.isLoading = false
-    // await this.modifyListBlog()
+    if (this.$route.params.slug) {
+      this.slug = this.$route.params.slug
+      await this.getListBlog()
+      this.isLoading = false
+    } else this.$router.push('/')
   },
   methods: {
     ScrollToTop() {
@@ -148,11 +166,20 @@ export default {
     },
     async getListBlog() {
       await this.$axios
-        .get(`/blogs?page=1&limit=${this.recordsPerPage}`)
+        .get(`/blogs/${this.slug}`)
         .then((res) => {
-          console.log(res)
-          this.news = res.data.docs
-          this.totalBlogs = res.data.totalDocs
+          const data = res.data
+          this.categoryInfo = {
+            _id: data._id,
+            name: data.name,
+            description: data.description,
+            slug: data.slug,
+          }
+          this.news = data.docs
+          this.listBlog = this.news
+          this.news = this.news.slice(0,this.recordsPerPage)
+          console.log('news:',this.news);
+          this.totalBlogs = this.listBlog.length
         })
         .catch((err) => {
           if (err.response.data.status === 401)
@@ -181,17 +208,7 @@ export default {
         })
     },
     changePage(page, limit) {
-      this.isLoading = true
-      this.$axios
-        .get(`/blogs?page=${page}&limit=${limit}`)
-        .then((res) => {
-          this.news = res.data.docs
-          this.isLoading = false
-          console.log(this.news)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      this.news = this.listBlog.slice(limit*(page-1),limit*(page-1)+this.recordsPerPage)
     },
     modifyListBlog() {
       this.news.forEach((e) => {
@@ -329,7 +346,7 @@ export default {
         color: #fff;
         /* Regular 14 */
         font-family: 'Montserrat', sans-serif;
-        font-size: 14px;
+        font-size: 12px;
         font-style: normal;
         font-weight: 400;
         line-height: 22px; /* 157.143% */

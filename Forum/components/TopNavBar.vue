@@ -15,6 +15,7 @@
             <img src="~/assets/icon/home.svg" alt="" />
           </div>
           <div
+          v-if="user.roleName==='ADMIN'"
             class="menu__item"
             :class="{ isActive: getPath == 'admin' }"
             @click="navigation('calendar')"

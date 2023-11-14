@@ -7,6 +7,7 @@
           v-for="item in categories"
           :key="item._id"
           class="category__item"
+          @click="goToCategory(item.slug)"
         >
           <img src="~/assets/icon/category.svg" alt="" />
           <div class="category__item__info">
@@ -55,6 +56,9 @@ export default {
 
       this.isShowFull = !this.isShowFull
     },
+    goToCategory(slug) {
+      this.$router.push(`/categories/${slug}`)
+    }
   },
 }
 </script>

@@ -18,23 +18,24 @@
 <script>
 export default {
   created() {
-      this.fetchInfoUser()
+    this.fetchInfoUser()
   },
   methods: {
     fetchInfoUser() {
-        this.$axios.get('/users/me').then(res => {
+      this.$axios
+        .get('/users/me')
+        .then((res) => {
           localStorage.setItem('user', JSON.stringify(res.data))
-        }).catch(err => {
-          console.log(err);
+        })
+        .catch((err) => {
+          console.log(err)
           if (err.response.data.status === 401)
             localStorage.removeItem('accessToken')
-            localStorage.removeItem('user')
-            this.$router.push('/auth/login')
-
+          localStorage.removeItem('user')
+          this.$router.push('/auth/login')
         })
-        
-      },
-  }
+    },
+  },
 }
 </script>
 
@@ -77,11 +78,11 @@ export default {
     gap: 20px;
     width: 100%;
     padding: 0 20px;
-
     &__container {
       width: 100%;
       height: 100%;
       max-width: 780px;
+      min-height: 490px;
     }
   }
   .footer {

@@ -1,21 +1,14 @@
 <template>
   <div class="tableft">
     <div class="tableft__item category">
-      <div class="category__item">
+      <div class="category__item" @click="navigate('newest')">
         <img src="~/assets/icon/new-star.svg" alt="" />
         <div class="category__item__info">
           <span class="name">Newest and Recent</span>
           <span class="desc">Find the last udpate</span>
         </div>
       </div>
-      <div class="category__item">
-        <img src="~/assets/icon/person.svg" alt="" />
-        <div class="category__item__info">
-          <span class="name">Following</span>
-          <span class="desc">Explore from your favorite person</span>
-        </div>
-      </div>
-      <div class="category__item">
+      <div class="category__item" @click="navigate('popular')">
         <img src="~/assets/icon/popular.svg" alt="" />
         <div class="category__item__info">
           <span class="name">Popular of the day</span>
@@ -46,6 +39,9 @@ export default {
       .catch((err) => {
           console.log(err)
         })
+    },
+    navigate(item) {
+      this.$router.push(`/blogs/${item}`)
     }
   }
 }
@@ -63,7 +59,7 @@ export default {
     border-radius: 16px;
     background: $dark-3;
     display: flex;
-    width: 210px;
+    width: 300px;
     padding: 10px;
     flex-direction: column;
     align-items: flex-start;

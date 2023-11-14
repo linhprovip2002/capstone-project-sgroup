@@ -48,7 +48,7 @@
         <hr />
         <div class="flex justify-between w-full">
           <button
-            class="text-sm text-[#676767]"
+            class="text-sm text-white"
             type="button"
             @click.prevent="toSignup"
           >

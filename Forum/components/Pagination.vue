@@ -21,9 +21,9 @@ export default {
   props: {
     count: Number,
     recordsPerPage: {
-        type: Number,
-        default: 4
-    }
+      type: Number,
+      default: 4,
+    },
   },
   data() {
     return {
@@ -49,25 +49,32 @@ export default {
       this.$emit('changePage', this.activePage, this.recordsPerPage)
     },
   },
-  
 }
 </script>
 
-<style lang="css">
+<style lang="scss">
 .pagination {
   display: flex;
   width: 100%;
   gap: 20px;
   justify-content: center;
   font-size: 14px;
+  a {
+    padding: 6px 12px;
+  }
 }
 
 .page-item {
   cursor: pointer;
+  border-radius: 6px;
+  &:hover {
+    background: #333;
+    color: #fff;
+  }
 }
 
 .page-item.active {
-  text-decoration: underline;
-  /* Apply underline for the active page */
+  background: #333;
+  color: #fff;
 }
 </style>

@@ -62,6 +62,7 @@
               "
               :title="n.title"
               :time="n.createdAt"
+              :category="n.category"
             />
           </div>
           <div v-if="totalBlogs === 0" class="empty-data flex flex-col gap-[20px] items-center">

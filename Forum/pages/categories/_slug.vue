@@ -60,11 +60,10 @@
             class="blog"
             @click="GoToDetails(n._id)"
           >
+            <!-- <h2>{{ n?.user?.firstName??'khong co' }}</h2> -->
             <BlogCard
               :image-link="n.blogImage ?? null"
-              :author="`${n.userId?.firstName ?? ''} ${
-                n.userId?.lastName ?? ''
-              }`"
+              :author="`${n.user?.firstName ?? ''} ${n.user?.lastName ?? ''}`"
               :comments="n.comments"
               :like="
                 n.reaction?.filter((e) => {
@@ -128,7 +127,7 @@ export default {
   data() {
     return {
       news: [],
-      listBlog:[],
+      listBlog: [],
       isLoading: true,
       searchValue: '',
       categoryInfo: {},
@@ -175,11 +174,24 @@ export default {
             description: data.description,
             slug: data.slug,
           }
-          this.news = data.blogs
-          this.listBlog = this.news
-          this.news = this.news.slice(0,this.recordsPerPage)
-          console.log('news:',this.news);
-          this.totalBlogs = this.listBlog.length
+          // await data.blogs.forEach(async (e) => {
+          //   await this.$axios
+          //     .get(`/users/${e.userId}`)
+          //     .then((res) => {
+          //       const userX = res.data
+          //       e.user = userX
+          //     })
+          //     .catch((err) => {
+          //       console.log(err)
+          //     })
+          // })
+          
+            this.news = data.blogs
+            this.listBlog = this.news
+            this.news = this.news.slice(0, this.recordsPerPage)
+            console.log('news:', this.news)
+            this.totalBlogs = this.listBlog.length
+          
         })
         .catch((err) => {
           if (err.response.data.status === 401)
@@ -207,8 +219,25 @@ export default {
             }
         })
     },
+    async getUserInfo(idUser) {
+      let user = {}
+      await this.$axios
+        .get(`/users/${idUser}`)
+        .then((res) => {
+          user = res.data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      return user
+    },
     changePage(page, limit) {
-      this.news = this.listBlog.slice(limit*(page-1),limit*(page-1)+this.recordsPerPage)
+      this.isLoading = true
+      this.news = this.listBlog.slice(
+        limit * (page - 1),
+        limit * (page - 1) + this.recordsPerPage
+      )
+      this.isLoading = false
     },
     modifyListBlog() {
       this.news.forEach((e) => {

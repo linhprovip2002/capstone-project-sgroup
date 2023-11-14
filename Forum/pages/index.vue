@@ -25,7 +25,12 @@
               placeholder="Type title blog to search..."
               @keydown.enter="searchBlog"
             />
-            <img src="~assets/icon/search.svg" class="cursor-pointer" alt="" @click="searchBlog" />
+            <img
+              src="~assets/icon/search.svg"
+              class="cursor-pointer"
+              alt=""
+              @click="searchBlog"
+            />
           </div>
           <button
             class="text-white py-2 px-6 rounded-[10px] bg-[#FF571A]"
@@ -84,8 +89,8 @@
           v-show="!isLoading && totalBlogs != 0"
           :count="totalBlogs"
           :records-per-page="recordsPerPage"
-          @changePage="changePage"
           class="bg-[#fafcfe] px-[40px] py-2 rounded-[10px]"
+          @changePage="changePage"
         />
       </div>
     </div>

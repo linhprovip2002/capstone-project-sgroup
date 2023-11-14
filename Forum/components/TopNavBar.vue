@@ -7,18 +7,10 @@
     <div class="top-nav__main">
       <div class="top-nav__main__left">
         <div class="top-nav__main__menu">
-          <div
-            class="menu__item"
-            :class="{ isActive: getPath !=='admin' }"
-            @click="navigation('home')"
-          >
+          <div class="menu__item" :class="{ isActive: getPath !== 'admin' }" @click="navigation('home')">
             <img src="~/assets/icon/home.svg" alt="" />
           </div>
-          <div
-            class="menu__item"
-            :class="{ isActive: getPath == 'admin' }"
-            @click="navigation('calendar')"
-          >
+          <div class="menu__item" :class="{ isActive: getPath == 'admin' }" @click="navigation('calendar')">
             <img src="~/assets/icon/calendar.svg" alt="" />
           </div>
         </div>
@@ -28,23 +20,20 @@
           <img src="~assets/icon/bell.svg" alt="" />
         </div>
         <div class="account" @click="toggleDropdown">
-          <img :src="user.profileImage??require('~/assets/img/avt.png')" alt="" class="rounded-[50px]" />
-          <span class="name">{{ user?.firstName?? '' }} {{ user?.lastName?? '' }}</span>
+          <img :src="user.profileImage ?? require('~/assets/img/avt.png')" alt="" class="rounded-[50px]" />
+          <span class="name">{{ user?.firstName ?? '' }} {{ user?.lastName ?? '' }}</span>
           <div class="icon-drop-down">
             <img src="~assets/icon/drop-down-icon.svg" alt="" />
           </div>
           <div v-show="isShowDropDown" class="dropdown-menu">
-            <nuxt-link class="item" to="/user/profile">Profile</nuxt-link>
+            <nuxt-link class="item" :to="`/user/${user._id}`">Profile</nuxt-link>
             <p class="item" @click="logout()">Logout</p>
           </div>
+
         </div>
       </div>
     </div>
-    <modal-alert
-      v-if="alert.isShowModal"
-      v-bind="alert"
-      @close="onCloseModal"
-    />
+    <modal-alert v-if="alert.isShowModal" v-bind="alert" @close="onCloseModal" />
   </div>
 </template>
 <script>
@@ -53,7 +42,7 @@ export default {
   components: { ModalAlert },
   data() {
     return {
-      user:{},
+      user: {},
       alert: {
         isShowModal: false,
         title: '',
@@ -105,11 +94,11 @@ export default {
         ...{
           isShowModal: true,
           title: 'Xác nhận',
-          buttonCancelContent:'Đóng',
+          buttonCancelContent: 'Đóng',
           buttonOkContent: 'Xác nhận',
           content: 'Bạn có muốn đăng xuất?',
           type: 'confirm',
-          typeSubmit:'confirmLogout'
+          typeSubmit: 'confirmLogout'
         },
       }
     },
@@ -145,6 +134,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '~assets/scss/variables.scss';
+
 .top-nav {
   display: inline-flex;
   padding: 20px 22px;
@@ -161,19 +151,23 @@ export default {
     align-items: center;
     gap: 10px;
     cursor: pointer;
+
     img {
       height: 100%;
       object-fit: contain;
     }
+
     .name-web {
       color: $orange;
       font-family: 'Montserrat', sans-serif;
       font-size: 26px;
       font-style: normal;
       font-weight: 700;
-      line-height: 38px; /* 146.154% */
+      line-height: 38px;
+      /* 146.154% */
     }
   }
+
   &__main {
     display: flex;
     align-items: flex-start;
@@ -182,6 +176,7 @@ export default {
     height: 100%;
     width: 100%;
     flex: 1;
+
     &__left {
       display: flex;
       justify-content: flex-start;
@@ -189,6 +184,7 @@ export default {
       flex: 1 0 0;
       gap: 17px;
     }
+
     &__menu {
       display: flex;
       align-items: flex-start;
@@ -205,6 +201,7 @@ export default {
         &.isActive {
           background: $orange;
         }
+
         img {
           display: flex;
           align-items: flex-start;
@@ -212,18 +209,21 @@ export default {
         }
       }
     }
+
     &__right {
       height: 100%;
       display: flex;
       align-items: center;
 
       gap: 25px;
+
       .notification {
         display: flex;
         width: 20px;
         height: 20px;
         justify-content: center;
         align-items: center;
+
         img {
           width: 100%;
           height: 100%;
@@ -231,6 +231,7 @@ export default {
           cursor: pointer;
         }
       }
+
       .account {
         display: flex;
         justify-content: center;
@@ -241,23 +242,28 @@ export default {
         position: relative;
         cursor: pointer;
         margin-right: 40px;
+
         img {
           height: 100%;
           object-fit: contain;
         }
+
         .name {
           color: #f7f7f7;
           font-size: 14px;
           font-style: normal;
           font-weight: 500;
-          line-height: 24px; /* 150% */
+          line-height: 24px;
+          /* 150% */
         }
+
         .icon-drop-down {
           position: absolute;
           right: -10px;
           top: 50%;
           transform: translateY(-50%);
         }
+
         .dropdown-menu {
           position: absolute;
           display: inline-flex;
@@ -285,5 +291,4 @@ export default {
       }
     }
   }
-}
-</style>
+}</style>

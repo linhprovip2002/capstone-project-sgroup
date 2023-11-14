@@ -28,7 +28,7 @@
           </div>
           <div class="flex gap-[6px] flex-nowrap">
             <span class="text-gray-500 text-[12px] font-normal">Author : </span>
-            <span class="text-[#050505] text-[12px] font-normal">{{ blog.userId.firstName ?? '' }}
+            <span class="text-[#050505] text-[12px] font-normal cursor-pointer" @click="GoToDetails(blog.userId._id)">{{ blog.userId.firstName ?? '' }}
             {{ blog.userId.lastName ?? '' }}</span>
           </div>
         </div>
@@ -311,7 +311,10 @@ export default {
     toggleShowReplyComment(index) {
       this.listReplyBox[index].isShowReply = !this.listReplyBox[index].isShowReply
       console.log('Toggle:',index,this.listReplyBox[index].isShowReply);
-    }
+    },
+    GoToDetails(id) {
+      this.$router.push(`/user/${id}`)
+    },
   },
 }
 </script>

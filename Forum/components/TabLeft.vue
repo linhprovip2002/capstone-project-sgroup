@@ -23,48 +23,33 @@
         </div>
       </div>
     </div>
-    <div class="tableft__item category">
-      <div class="category__item">
-        <img src="~/assets/icon/category.svg" alt="">
-        <div class="category__item__info">
-          <span class="name">Category 1</span>
-          <span class="desc">1234 posts</span>
-        </div>
-      </div>
-      <div class="category__item">
-        <img src="~/assets/icon/category.svg" alt="">
-        <div class="category__item__info">
-          <span class="name">Category 1</span>
-          <span class="desc">13 posts</span>
-        </div>
-      </div>
-      <div class="category__item">
-        <img src="~/assets/icon/category.svg" alt="">
-        <div class="category__item__info">
-          <span class="name">Category 1</span>
-          <span class="desc">871 posts</span>
-        </div>
-      </div>
-      <div class="category__item">
-        <img src="~/assets/icon/category.svg" alt="">
-        <div class="category__item__info">
-          <span class="name">Category 1</span>
-          <span class="desc">10 posts</span>
-        </div>
-      </div>
-      <div class="category__item">
-        <img src="~/assets/icon/category.svg" alt="">
-        <div class="category__item__info">
-          <span class="name">Category 1</span>
-          <span class="desc">1234 posts</span>
-        </div>
-      </div>
-    </div>
     
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  data() {
+    return {
+      categories:[]
+    }
+  },
+  created() {
+    this.fetchCategory()
+  },
+  methods: {
+    fetchCategory() {
+      this.$axios.get('/categories')
+      .then(res=> {
+        this.categories = res.data
+      })
+      .catch((err) => {
+          console.log(err)
+        })
+    }
+  }
+}
+</script>
 
 <style scoped lang="scss">
 @import '~/assets/scss/variables.scss';

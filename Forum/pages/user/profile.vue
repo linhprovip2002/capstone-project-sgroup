@@ -18,7 +18,7 @@
               <div class="flex flex-wrap justify-between w-full">
                 <div class="w-[200px] px-4 flex justify-center">
                   <div class="relative">
-                    <img alt="..." :src="user.profileImage ?? require('~/assets/img/logosgroup.png')"
+                    <img alt="..." :src="user.profileImage ?? require('~/assets/img/avt.png')"
                       class="shadow-xl rounded-full h-[150px] border-none absolute -m-16 -ml-20 lg:-ml-16"
                       style="max-width: 150px" />
                   </div>

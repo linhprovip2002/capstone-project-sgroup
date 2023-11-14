@@ -22,7 +22,6 @@ export default {
   },
   methods: {
     fetchInfoUser() {
-      console.log('Fetch user');
         this.$axios.get('/users/me').then(res => {
           localStorage.setItem('user', JSON.stringify(res.data))
         }).catch(err => {

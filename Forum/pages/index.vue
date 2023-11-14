@@ -18,11 +18,13 @@
           <div class="search flex gap-5 w-full p-5 my-5 rounded-lg">
             <input
               id=""
+              v-model="searchValue"
               type="text"
               name=""
-              placeholder="Type here to search..."
+              placeholder="Type title blog to search..."
+              @keydown.enter="searchBlog"
             />
-            <img src="~assets/icon/search.svg" alt="" />
+            <img src="~assets/icon/search.svg" class="cursor-pointer" alt="" @click="searchBlog" />
           </div>
           <button
             class="text-white py-2 px-6 rounded-[10px] bg-[#FF571A]"
@@ -62,12 +64,19 @@
               "
               :title="n.title"
               :time="n.createdAt"
-              :category="n.category"
+              :category="n.category?.name ?? ''"
             />
           </div>
-          <div v-if="totalBlogs === 0" class="empty-data flex flex-col gap-[20px] items-center">
-            <img src="~/assets/icon/warning.svg"  class="w-[100px] h-[100px] " alt="" />
-            <p class="text-white" >Không có dữ liệu</p>
+          <div
+            v-if="totalBlogs === 0"
+            class="empty-data flex flex-col gap-[20px] items-center"
+          >
+            <img
+              src="~/assets/icon/warning.svg"
+              class="w-[100px] h-[100px]"
+              alt=""
+            />
+            <p class="text-white">Không có dữ liệu</p>
           </div>
         </div>
         <Pagination
@@ -106,6 +115,7 @@ export default {
     return {
       news: [],
       isLoading: true,
+      searchValue: '',
       isCreatingPost: false,
       totalBlogs: 0,
       recordsPerPage: 4,
@@ -220,6 +230,46 @@ export default {
         buttonOkContent: '',
         typeSubmit: '',
       }
+    },
+    async searchBlog() {
+      this.isLoading = true
+      await this.$axios
+        .get(`/blogs?page=1&limit=${this.recordsPerPage}`, {
+          params: {
+            title: this.searchValue.trim(),
+          },
+        })
+        .then((res) => {
+          console.log(res)
+          this.news = res.data.docs
+          this.totalBlogs = res.data.totalDocs
+          this.isLoading = false
+        })
+        .catch((err) => {
+          if (err.response.data.status === 401)
+            this.alert = {
+              ...this.alert,
+              ...{
+                isShowModal: true,
+                title: 'Lỗi',
+                buttonOkContent: 'Đăng nhập lại',
+                content: 'Hết phiên đăng nhập, vui lòng đăng nhập lại',
+                type: 'failed',
+                typeSubmit: 'loginagain',
+              },
+            }
+          else
+            this.alert = {
+              ...this.alert,
+              ...{
+                isShowModal: true,
+                title: 'Lỗi',
+                buttonOkContent: 'Đóng',
+                content: err.response.data.error,
+                type: 'failed',
+              },
+            }
+        })
     },
   },
 }

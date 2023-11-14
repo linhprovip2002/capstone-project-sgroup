@@ -9,14 +9,14 @@
         <div class="top-nav__main__menu">
           <div
             class="menu__item"
-            :class="{ isActive: currentTab == 'home' }"
+            :class="{ isActive: getPath !=='admin' }"
             @click="navigation('home')"
           >
             <img src="~/assets/icon/home.svg" alt="" />
           </div>
           <div
             class="menu__item"
-            :class="{ isActive: currentTab == 'calendar' }"
+            :class="{ isActive: getPath == 'admin' }"
             @click="navigation('calendar')"
           >
             <img src="~/assets/icon/calendar.svg" alt="" />
@@ -28,8 +28,8 @@
           <img src="~assets/icon/bell.svg" alt="" />
         </div>
         <div class="account" @click="toggleDropdown">
-          <img :src="user.profileImage??require('~/assets/img/logosgroup.png')" alt="" class="rounded-[50px]" />
-          <span class="name">{{ user?.firstName?? 'Sgroup' }} {{ user?.lastName?? 'Member' }}</span>
+          <img :src="user.profileImage??require('~/assets/img/avt.png')" alt="" class="rounded-[50px]" />
+          <span class="name">{{ user?.firstName?? '' }} {{ user?.lastName?? '' }}</span>
           <div class="icon-drop-down">
             <img src="~assets/icon/drop-down-icon.svg" alt="" />
           </div>
@@ -77,24 +77,27 @@ export default {
       isShowDropDown: false,
     }
   },
+  computed: {
+    getPath() {
+      return this.$route.name
+    }
+  },
   created() {
     this.getProfile()
   },
   methods: {
     navigation(item) {
-      this.currentTab = item
       switch (item) {
         case 'home':
           this.$router.push('/')
           break
         case 'calendar':
-          this.$router.push('/calendar')
+          this.$router.push('/admin')
           break
       }
     },
     getProfile() {
       this.user = JSON.parse(localStorage.getItem('user'))
-      console.log('User nè:',this.user);
     },
     logout() {
       this.alert = {

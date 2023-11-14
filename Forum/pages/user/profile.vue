@@ -69,16 +69,13 @@
                   <div class="w-full lg:w-9/12 px-4">
                     <div id="main-content">
                       <div v-for="n in filternews" :key="n.id">
-                        <BlogCard 
-                        :image-link="n.blogImage ?? null" 
-                        :author="`${n.userId?.firstName ?? ''} ${n.userId?.lastName ?? ''}`" 
-                        :comments="n.comments" :like="n.reaction?.filter((e) => {
-                          return e.reaction === 'like'
-                        }).length" 
-                        :dislike="n.reaction?.filter((e) => {
-                          return e.reaction === 'dislike'
-                        }).length" 
-                        :title="n.title" :time="n.createdAt" />
+                        <BlogCard :image-link="n.blogImage ?? null"
+                          :author="`${n.userId?.firstName ?? ''} ${n.userId?.lastName ?? ''}`" :comments="n.comments"
+                          :like="n.reaction?.filter((e) => {
+                            return e.reaction === 'like'
+                          }).length" :dislike="n.reaction?.filter((e) => {
+  return e.reaction === 'dislike'
+}).length" :title="n.title" :time="n.createdAt" />
                       </div>
                     </div>
                     <span v-if="!compareLength" class="font-normal text-[#FF571A] cursor-pointer" @click="showMore">Show
@@ -116,14 +113,18 @@ export default {
   },
   computed: {
     countPost() {
-      return this.news.length
+      return this.filternews.length
     },
     countLikes() {
-      let total = 0
-      this.news.forEach((e) => {
-        total += e.like
-      })
-      return total
+      let totalLikes = 0
+      this.filternews.forEach((e) => {
+        e.reaction.forEach((r) => {
+          if (r.reaction === "like") {
+            totalLikes++;
+          }
+        });
+      });
+      return totalLikes
     },
     compareLength() {
       return this.filternews.length === this.news.length

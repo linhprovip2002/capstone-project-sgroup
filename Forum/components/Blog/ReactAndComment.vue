@@ -7,7 +7,7 @@
             </div>
             <div class="flex justify-between items-center gap-1">
                 <div class="text-gray-500">{{ dislike }}</div>
-                <button><img src="~/assets/icon/downvote.svg" alt="" class="w-5 h-5"></button>
+                <button><img src="~/assets/icon/disliked.svg" alt="" class="w-5 h-5"></button>
             </div>
         </div>
         <div>

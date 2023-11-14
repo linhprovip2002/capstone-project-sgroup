@@ -8,7 +8,7 @@
     </div>
     <div
       v-else
-      class="p-10 flex flex-col gap-5 bg-[#fff] rounded-lg justify-center ql-container ql-snow"
+      class="detail-box p-10 flex flex-col gap-5 bg-[#fff] justify-center ql-container ql-snow rounded-[10px] "
     >
       <div class="header border-b-[1px] border-[#000]">
         <p class="text-[32px] font-[600] pb-2">
@@ -29,13 +29,19 @@
       <div class="relative z-[1] rounded-lg comment-area">
         <CommentBox @comment="mainComment" />
       </div>
-      <div v-for="c in comment" :key="c._id">
+      <div v-for="c in comment" :key="c._id" class="pb-[40px] border-b-[1px] border-[#e3e6e8]">
         <CommentCard :comment="c.content" :user="c.userId" />
-        <!-- <div v-if="c.reply.length>=0" class="reply-comment" >
-          <div v-for="reply in c.reply" :key="reply._id" class="reply-comment__container" >
+        <div class="flex items-center mx-[6px] cursor-pointer ml-[46px] my-[10px] justify-end" >
+          <span class="text-[#050505] text-[14px] font-normal pr-[12px] text-[#FF571A]" >Phản hồi</span>
+          <img src="~/assets/icon/reply.svg" class="w-6 h-6 rotate rounded-[50px]" alt="">
+        </div>
+        <ReplyBox :id-comment="c._id" @comment="replyComment" />
+        <div v-if="c.reply.length>0" class="reply-comment mt-[12px] pl-[30px] flex flex-col gap-[10px]" >
+          <div v-for="reply in c.reply" :key="reply._id" class="reply-comment__container flex" >
+            <img src="~/assets/icon/left-down-light.svg" class="w-8 h-8" alt="">
             <CommentCard :comment="reply.content" :user="reply.userId" />
           </div>
-        </div> -->
+        </div>
       </div>
     </div>
   </div>
@@ -46,12 +52,14 @@ import LoadingSpinner from '~/components/Animation/LoadingSpinner.vue'
 import CommentCard from '~/components/Card/CommentCard.vue'
 import ReactAndComment from '~/components/Blog/ReactAndComment.vue'
 import CommentBox from '~/components/Blog/CommentBox.vue'
+import ReplyBox from '~/components/Blog/ReplyBox.vue'
 export default {
   components: {
     CommentCard,
     ReactAndComment,
     LoadingSpinner,
     CommentBox,
+    ReplyBox
   },
 
   data() {
@@ -74,7 +82,11 @@ export default {
       }).length
     },
     countComment() {
-      return this.comment.length
+      let count = 0
+      this.comment.forEach(e=> {
+        count+=e.reply.length + 1
+      })
+      return count
     },
   },
   async created() {
@@ -141,16 +153,47 @@ export default {
         })
       this.isLoading = false
     },
+    replyComment(idComment,content) {
+      const contentComment = content
+      this.$axios
+        .patch(
+          `/blog/comments/${idComment}/reply/`,
+          {
+            // Thêm body của request ở đây
+            content: contentComment,
+          }
+        )
+        .then((res) => {
+          console.log(res)
+          this.fetchBlogComment()
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          if (error.response?.status === 401) {
+            localStorage.removeItem('accessToken')
+            localStorage.removeItem('user')
+            this.$router.push('/auth/login')
+          } else
+            this.$notify({
+              title: 'Lỗi',
+              text: 'Không thể thêm bình luận vào blog này',
+              type: 'error',
+              group: 'foo',
+            })
+        })
+    }
   },
 }
 </script>
 <style lang="scss" scoped>
 .main {
+  .detail-box {
+    border-radius: 10px;
+  }
   .content {
     &:deep() {
       img {
-        width: 200px;
-        height: 200px;
+        max-width: 100%;
         object-fit: contain;
       }
     }

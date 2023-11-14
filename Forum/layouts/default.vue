@@ -60,7 +60,7 @@ export default {
     width: 100%;
     left: 0;
     top: 0;
-    z-index: 10;
+    z-index: 20;
   }
 
   &__tableft {
@@ -81,7 +81,7 @@ export default {
 
     &__container {
       width: 100%;
-      
+      height: 100%;
       max-width: 780px;
     }
   }

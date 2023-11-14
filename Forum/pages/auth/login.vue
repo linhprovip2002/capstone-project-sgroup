@@ -7,6 +7,7 @@
       <form
         action=""
         class="flex flex-col form gap-7 py-[60px] justify-center items-center w-[400px] rounded-md bg-[#1E252B] px-10"
+        @keydown.enter="userLogin"
       >
         <div class="text-3xl font-bold text-white">Sign in</div>
         <div class="w-full flex flex-col gap-2">

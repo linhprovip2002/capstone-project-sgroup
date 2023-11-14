@@ -3,15 +3,15 @@
     <div v-if="isCreatingPost" class="post-creator" @click="cancel">
       <div class="post-creator__container custom-scroll" @click.stop>
         <PostCreator
-          @cancel="cancel"
           class="post-creator__container custom-scroll"
-          @setLoading="isLoading=true"
-          @doneLoading="isLoading=false"
+          @cancel="cancel"
+          @setLoading="isLoading = true"
+          @doneLoading="isLoading = false"
         />
       </div>
     </div>
     <div class="container">
-      <div class="w-full px-4 flex justify-center flex-col items-center">
+      <div class="w-full px-4 flex flex-col items-center">
         <div
           class="flex bg-[#262D34] gap-5 w-full px-5 items-center h-[80px] rounded-md mb-5"
         >
@@ -64,9 +64,13 @@
               :time="n.createdAt"
             />
           </div>
+          <div v-if="totalBlogs === 0" class="empty-data flex flex-col gap-[20px] items-center">
+            <img src="~/assets/icon/warning.svg"  class="w-[100px] h-[100px] " alt="" />
+            <p class="text-white" >Không có dữ liệu</p>
+          </div>
         </div>
         <Pagination
-          v-show="!isLoading"
+          v-show="!isLoading && totalBlogs != 0"
           :count="totalBlogs"
           :records-per-page="recordsPerPage"
           @changePage="changePage"
@@ -122,7 +126,7 @@ export default {
   },
   methods: {
     ScrollToTop() {
-      this.$scrollToTop();
+      this.$scrollToTop()
     },
     cancel() {
       this.isCreatingPost = false
@@ -229,7 +233,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
+    z-index: 30;
     padding: 20px 0;
     &__container {
       height: 100%;
@@ -250,6 +254,7 @@ export default {
     width: 100%;
     max-width: 750px;
     margin: auto;
+    height: 100%;
     .blog {
       width: 100%;
     }
@@ -297,6 +302,10 @@ export default {
     }
   }
   .main-content {
+    height: calc(100% - 100px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }
 </style>

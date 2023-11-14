@@ -171,7 +171,7 @@ export default {
             ...{
               isShowModal : true,
               title: 'Thất bại',
-              content: res.response.data.error,
+              content: res.response.data.message[0].message,
               type:'failed',
               buttonOkContent:'Đóng'
           }}

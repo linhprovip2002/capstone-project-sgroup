@@ -62,6 +62,7 @@
               "
               :title="n.title"
               :time="n.createdAt"
+              :category="n.category"
             />
           </div>
         </div>

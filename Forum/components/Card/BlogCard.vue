@@ -10,7 +10,7 @@
       <div class="flex justify-between items-center">
         <div class="flex justify-center gap-2">
           <span class="text-[#C5D0E6] text-[10px] leading-[20px]">Category:</span>
-        <SmallTagCard :tag="'Category'" />
+        <SmallTagCard :tag="category" v-if="category" />
       </div>
         <div class="flex gap-5">
           <p class="text-[#C5D0E6] text-[10px]">{{ like }} Likes</p>
@@ -61,6 +61,10 @@ export default {
       type: Number,
       default: 0
     },
+    category: {
+      type: String,
+      default: ''
+    }
   },
 }
 </script>

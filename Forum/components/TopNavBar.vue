@@ -21,12 +21,13 @@
         </div>
       </div>
       <div class="top-nav__main__right">
-        <div class="notification">
+        <!-- <div class="notification">
           <img src="~assets/icon/bell.svg" alt="" />
-        </div>
-        <div class="account" @click="toggleDropdown">
+        </div> -->
+        <div class="account" @mouseover="showDropdown()" @mouseleave="hiddenDropDown()">
           <img :src="user?.profileImage ?? require('~/assets/img/avt.png')" alt="" class="rounded-full w-[40px] h-[40px]" />
-          <span class="name">{{ user?.firstName ?? '' }} {{ user?.lastName ?? '' }}</span>
+          <span v-if="!user.firstName&&!user.lastName" class="name">Unknown User</span>
+          <span v-else class="name">{{ user?.firstName ?? '' }} {{ user?.lastName ?? '' }}</span>
           <div class="icon-drop-down">
             <img src="~assets/icon/drop-down-icon.svg" alt="" />
           </div>
@@ -107,8 +108,11 @@ export default {
         },
       }
     },
-    toggleDropdown() {
-      this.isShowDropDown = !this.isShowDropDown
+    showDropdown() {
+      this.isShowDropDown = true
+    },
+    hiddenDropDown() {
+      this.isShowDropDown = false
     },
     onCloseModal(typeSubmit) {
       switch (typeSubmit) {

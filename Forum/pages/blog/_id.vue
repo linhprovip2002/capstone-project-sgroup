@@ -10,11 +10,11 @@
       v-else
       class="detail-box p-10 flex flex-col gap-5 bg-[#fff] justify-center ql-container ql-snow rounded-[10px]"
     >
-      <div class="header border-b-[1px] border-[#ccc]">
+      <div class="header border-b-[1px] border-[#ccc]flex flex-col gap-[20px]">
         <p class="text-[32px] font-[600] pb-2">
           {{ blog.title }}
         </p>
-        <div class="flex gap-[10px] flex-wrap">
+        <div class="flex gap-[10px] flex-wrap mt-[6px]">
           <div class="flex gap-[6px] flex-nowrap header-desc">
             <span class="text-gray-500 text-[12px] font-normal">Asked</span>
             <span class="text-[#050505] text-[12px] font-normal">
@@ -26,13 +26,15 @@
               {{ blog.updatedAt.split('T')[0]}} at {{ blog.updatedAt.split('T')[1].split('.')[0]}} 
             </span>
           </div>
+        </div>
+        <div class="flex gap-[10px] flex-wrap mt-[6px]">
           <div class="flex gap-[6px] flex-nowrap">
             <span class="text-gray-500 text-[12px] font-normal">Author : </span>
             <span class="text-[#050505] text-[12px] font-normal cursor-pointer" @click="GoToDetails(blog.userId._id)">{{ blog.userId.firstName ?? '' }}
             {{ blog.userId.lastName ?? '' }}</span>
           </div>
         </div>
-        <div class="flex gap-[10px] flex-wrap">
+        <div class="flex gap-[10px] flex-wrap mt-[6px]">
           <div class="flex gap-[6px] flex-nowrap">
             <span class="text-gray-500 text-[12px] font-normal">Category : </span>
             <span class="text-[#050505] text-[12px] font-normal cursor-pointer" @click="GoToCategory(blog.category.slug)">

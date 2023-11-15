@@ -19,7 +19,7 @@
               :time="n.time"
             /> -->
             <div class="image">
-                <img :src="n.blogImage[0]" alt="" v-if="n.blogImage[0]">
+                <img :src="n.blogImage[0]?n.blogImage[0]:defaultImage" alt="" >
             </div>
             <div class="author">{{ getName(n.userId?.firstName, n.userId?.lastName) }}</div>
             <div class="title">{{ n.title }}</div>
@@ -49,6 +49,11 @@ export default {
         news: [],
         count: Number,
         recordsPerPage: Number,
+    },
+    data() {
+        return{
+            defaultImage: require('~/assets/img/logosgroup.png')
+        }
     },
     methods: {
         formatDay(date) {

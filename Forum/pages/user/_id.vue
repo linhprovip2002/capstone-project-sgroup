@@ -127,14 +127,14 @@
                         />
                       </div>
                     </div>
+                    <Pagination
+                      v-show="!isLoading && countPost != 0"
+                      class="bg-[#fafcfe] px-[40px] py-2 rounded-[10px]"
+                      :count="19"
+                      :records-per-page="recordsPerPage"
+                      @changePage="changePage"
+                    />
                   </div>
-                  <Pagination
-                    v-show="!isLoading && countPost!=0"
-                    class="bg-[#fafcfe] px-[40px] py-2 rounded-[10px]"
-                    :count="19"
-                    :records-per-page="recordsPerPage"
-                    @changePage="changePage"
-                  />
                 </div>
               </div>
             </div>

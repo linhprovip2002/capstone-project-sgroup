@@ -4,14 +4,11 @@
       <section class="relative block" style="height: 500px">
         <div
           class="absolute top-0 w-full h-full bg-center bg-cover"
-          style="
-            background-image: url('https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=2710&amp;q=80');
-          "
         >
           <span
             id="blackOverlay"
             class="w-full h-full absolute opacity-50 bg-black"
-            >dhfdhdfjfdj</span
+            ></span
           >
         </div>
         <div
@@ -133,12 +130,6 @@
                         />
                       </div>
                     </div>
-                    <span
-                      v-if="!compareLength"
-                      class="font-normal text-[#FF571A] cursor-pointer"
-                      @click="showMore"
-                      >Show more
-                    </span>
                   </div>
                 </div>
               </div>
@@ -334,6 +325,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.bg-cover {
+  background-image: url('~/assets/img/anhsgroup.jpg');
+}
 .relative {
   img {
     width: 150px;

@@ -1,10 +1,11 @@
 <template>
   <div class="main relative">
     <div v-if="isCreatingPost" class="post-creator" @click="cancel">
-      <div class="post-creator__container custom-scroll" @click.stop>
+      <div class="post-creator__container custom-scroll" @click.stop="cancel">
         <PostCreator
-          class="post-creator__container custom-scroll"
+          class=" custom-scroll"
           @cancel="cancel"
+          @save="save"
           @setLoading="isLoading = true"
           @doneLoading="isLoading = false"
         />
@@ -146,7 +147,18 @@ export default {
       this.$scrollToTop()
     },
     cancel() {
-      this.isCreatingPost = false
+      this.alert = {
+        ...this.alert,
+        ...{
+          isShowModal: true,
+          title: 'Xác nhận',
+          buttonCancelContent: 'Hủy',
+          buttonOkContent: 'Xác nhận',
+          content: 'Bạn có chưa lưu bài đăng. Bạn có muốn thoát ?',
+          type: 'confirm',
+          typeSubmit: 'cancelCreatePost',
+        },
+      }
     },
     GoToDetails(id) {
       this.$router.push(`/blog/${id}`)
@@ -213,12 +225,19 @@ export default {
       })
       console.log('News:', this.news)
     },
+    save() {
+      this.isCreatingPost = false
+    },
     onCloseModal(typeSubmit) {
       switch (typeSubmit) {
         case 'loginagain':
           localStorage.setItem('accessToken', 'false')
           localStorage.setItem('user', 'false')
           this.$router.push('/auth/login')
+          this.resetAlert()
+          break
+        case 'cancelCreatePost':
+          this.isCreatingPost = false
           this.resetAlert()
           break
         default:
@@ -296,6 +315,9 @@ export default {
       height: 100%;
       overflow-y: auto;
       width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     &__form {
       width: 100%;
@@ -310,7 +332,6 @@ export default {
     display: flex;
     width: 100%;
     max-width: 750px;
-    margin: auto;
     height: 100%;
     .blog {
       width: 100%;

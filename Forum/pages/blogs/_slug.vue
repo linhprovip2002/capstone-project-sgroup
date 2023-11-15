@@ -1,10 +1,11 @@
 <template>
   <div class="main relative">
     <div v-if="isCreatingPost" class="post-creator" @click="cancel">
-      <div class="post-creator__container custom-scroll" @click.stop>
+      <div class="post-creator__container custom-scroll" @click.stop="cancel">
         <PostCreator
           class="post-creator__container custom-scroll"
           @cancel="cancel"
+          @save="save"
           @setLoading="isLoading = true"
           @doneLoading="isLoading = false"
         />
@@ -38,6 +39,14 @@
           >
             Create Post
           </button>
+        </div>
+        <div class="info-category w-full pb-[20px]">
+          <h2 class="text-[#f7f7f7] text-[18px] font-[500]">
+            {{ slug==='newest'?'Newest and Recent':'Popular of the day' }}
+          </h2>
+          <p class="text-[#f7f7f7] text-[14px]">
+            {{ slug==='newest'?'Find the last update':'Shots featured today by curators' }}
+          </p>
         </div>
         <div class="info-category w-full pb-[20px]">
           <h2 class="text-[#f7f7f7] text-[18px] font-[500]">
@@ -128,13 +137,13 @@ export default {
   data() {
     return {
       news: [],
-      listBlog:[],
+      listBlog: [],
       isLoading: true,
       searchValue: '',
       categoryInfo: {},
       isCreatingPost: false,
       totalBlogs: 0,
-      recordsPerPage: 4,
+      recordsPerPage: 5,
       alert: {
         isShowModal: false,
         title: '',
@@ -159,6 +168,20 @@ export default {
       this.$scrollToTop()
     },
     cancel() {
+      this.alert = {
+        ...this.alert,
+        ...{
+          isShowModal: true,
+          title: 'Xác nhận',
+          buttonCancelContent: 'Hủy',
+          buttonOkContent: 'Xác nhận',
+          content: 'Bạn có chưa lưu bài đăng. Bạn có muốn thoát ?',
+          type: 'confirm',
+          typeSubmit: 'cancelCreatePost',
+        },
+      }
+    },
+    save() {
       this.isCreatingPost = false
     },
     GoToDetails(id) {
@@ -177,8 +200,8 @@ export default {
           }
           this.news = data.docs
           this.listBlog = this.news
-          this.news = this.news.slice(0,this.recordsPerPage)
-          console.log('news:',this.news);
+          this.news = this.news.slice(0, this.recordsPerPage)
+          console.log('news:', this.news)
           this.totalBlogs = this.listBlog.length
         })
         .catch((err) => {
@@ -208,7 +231,10 @@ export default {
         })
     },
     changePage(page, limit) {
-      this.news = this.listBlog.slice(limit*(page-1),limit*(page-1)+this.recordsPerPage)
+      this.news = this.listBlog.slice(
+        limit * (page - 1),
+        limit * (page - 1) + this.recordsPerPage
+      )
     },
     modifyListBlog() {
       this.news.forEach((e) => {
@@ -231,6 +257,10 @@ export default {
           localStorage.setItem('accessToken', 'false')
           localStorage.setItem('user', 'false')
           this.$router.push('/auth/login')
+          this.resetAlert()
+          break
+        case 'cancelCreatePost':
+          this.isCreatingPost = false
           this.resetAlert()
           break
         default:

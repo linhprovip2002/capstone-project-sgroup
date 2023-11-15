@@ -19,7 +19,7 @@
               :time="n.time"
             /> -->
             <div class="image">
-                <img src="" alt="">
+                <img :src="n.blogImage[0]" alt="" v-if="n.blogImage[0]">
             </div>
             <div class="author">{{ getName(n.userId?.firstName, n.userId?.lastName) }}</div>
             <div class="title">{{ n.title }}</div>
@@ -215,7 +215,11 @@ export default {
             justify-content: center;
 
             img {
-                width: 50px;
+                padding: 10px;
+                width: 80%;
+                max-width: 50px;
+                aspect-ratio: 1 / 1;
+                border-radius: 100%;
             }
         }
 

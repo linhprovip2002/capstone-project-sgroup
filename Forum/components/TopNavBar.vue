@@ -11,7 +11,7 @@
             <img src="~/assets/icon/home.svg" alt="" />
           </div>
           <div
-          v-if="user.roleName==='ADMIN'"
+          v-if="user?.roleName==='ADMIN'"
             class="menu__item"
             :class="{ isActive: getPath == 'admin' }"
             @click="navigation('calendar')"
@@ -25,13 +25,13 @@
           <img src="~assets/icon/bell.svg" alt="" />
         </div>
         <div class="account" @click="toggleDropdown">
-          <img :src="user.profileImage ?? require('~/assets/img/avt.png')" alt="" class="rounded-[50px]" />
+          <img :src="user?.profileImage ?? require('~/assets/img/avt.png')" alt="" class="rounded-full w-[40px] h-[40px]" />
           <span class="name">{{ user?.firstName ?? '' }} {{ user?.lastName ?? '' }}</span>
           <div class="icon-drop-down">
             <img src="~assets/icon/drop-down-icon.svg" alt="" />
           </div>
           <div v-show="isShowDropDown" class="dropdown-menu">
-            <nuxt-link class="item" :to="`/user/${user._id}`">Profile</nuxt-link>
+            <nuxt-link class="item" :to="`/user/${user?._id}`">Profile</nuxt-link>
             <p class="item" @click="logout()">Logout</p>
           </div>
 

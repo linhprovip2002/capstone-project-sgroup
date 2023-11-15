@@ -94,7 +94,7 @@ export default {
   align-items: flex-start;
   background: linear-gradient(
     0deg,
-    rgba(95, 108, 133, 0.5),
+    #5f6c8580,
     rgba(95, 108, 133, 0.5)
   );
 }

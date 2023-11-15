@@ -18,7 +18,6 @@ async function uploadFile(file) {
         body: formData
     })
         .then((response) => {
-            console.log("aaaaaaaaa");
             return response.text();
         })
         .then((data) => {

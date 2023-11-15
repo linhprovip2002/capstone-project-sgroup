@@ -19,7 +19,7 @@
               :time="n.time"
             /> -->
             <div class="image">
-                <img src="" alt="">
+                <img :src="n.blogImage[0]?n.blogImage[0]:defaultImage" alt="" >
             </div>
             <div class="author">{{ getName(n.userId?.firstName, n.userId?.lastName) }}</div>
             <div class="title">{{ n.title }}</div>
@@ -49,6 +49,11 @@ export default {
         news: [],
         count: Number,
         recordsPerPage: Number,
+    },
+    data() {
+        return{
+            defaultImage: require('~/assets/img/logosgroup.png')
+        }
     },
     methods: {
         formatDay(date) {
@@ -215,7 +220,11 @@ export default {
             justify-content: center;
 
             img {
-                width: 50px;
+                padding: 10px;
+                width: 80%;
+                max-width: 50px;
+                aspect-ratio: 1 / 1;
+                border-radius: 100%;
             }
         }
 

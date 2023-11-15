@@ -26,13 +26,13 @@
           </div>
         </div>
       </div>
-      <UserList class="w-full" :users="users" @reload="reload" v-if="manageOption === 1" @changePage="changeUserPage"
+      <UserList class="w-full" :users="users" @reload="reload" v-show="manageOption === 1 && !isLoading" @changePage="changeUserPage"
         :count="userCount" :recordsPerPage="recordsPerPage"/>
-      <BlogList v-if="manageOption === 2" @reload="reload" :news="pendingNews" class="w-full" @changePage="changePendingPage"
+      <BlogList v-show="manageOption === 2 && !isLoading" @reload="reload" :news="pendingNews" class="w-full" @changePage="changePendingPage"
        :count="pendingNewsCount" @setLoading="setLoading" @doneLoading="doneLoading" :recordsPerPage="recordsPerPage"/>
-      <BlogList v-if="manageOption === 3" @reload="reload" :news="news" class="w-full" @changePage="changeNewsPage"
+      <BlogList v-show="manageOption === 3 && !isLoading" @reload="reload" :news="news" class="w-full" @changePage="changeNewsPage"
        :count="newsCount"  @setLoading="setLoading" @doneLoading="doneLoading" :recordsPerPage="recordsPerPage"/>
-      <div v-if="isLoading" class="absolute bg-gray-800 bg-opacity-80 w-full h-full flex justify-center items-center">
+      <div v-if="isLoading" class="flex justify-center items-center w-full h-screen-60">
         <LoadingSpinner/>
       </div>
     </div>

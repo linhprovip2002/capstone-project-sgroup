@@ -57,10 +57,11 @@
     </button>
     <TextEditor @textChange="updateContent" />
     <button
+      type="button"
       class="bg-gray-800 p-2 text-white w-[200px] rounded-lg m-auto"
-      @click="submit"
+      @click.stop="submit"
     >
-      Xuất bản
+      {{ textSubmit }}
     </button>
   </div>
 </template>
@@ -73,6 +74,12 @@ export default {
     TextEditor,
   },
   layout: 'topandfooter',
+  props: {
+    textSubmit: {
+      type: String,
+      default:'Đăng bài'
+    }
+  },
   data() {
     return {
       title: '',
@@ -95,7 +102,6 @@ export default {
     submit() {
       const authorization = localStorage.getItem('accessToken')
       console.log(this.selectedCategory)
-      this.cancel()
       this.$axios
         .post(
           '/blogs',
@@ -143,6 +149,8 @@ export default {
               group: 'foo',
             })
         })
+      this.$emit('save')
+
     },
     cancel() {
       this.$emit('cancel')

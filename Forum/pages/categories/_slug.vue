@@ -1,10 +1,11 @@
 <template>
   <div class="main relative">
     <div v-if="isCreatingPost" class="post-creator" @click="cancel">
-      <div class="post-creator__container custom-scroll" @click.stop>
+      <div class="post-creator__container custom-scroll" @click.stop="cancel">
         <PostCreator
           class="post-creator__container custom-scroll"
           @cancel="cancel"
+          @save="save"
           @setLoading="isLoading = true"
           @doneLoading="isLoading = false"
         />
@@ -60,10 +61,11 @@
             class="blog"
             @click="GoToDetails(n._id)"
           >
-            <!-- <h2>{{ n?.user?.firstName??'khong co' }}</h2> -->
             <BlogCard
               :image-link="n.blogImage ?? null"
-              :author="`${n.user?.firstName ?? ''} ${n.user?.lastName ?? ''}`"
+              :author="`${n.userId?.firstName ?? ''} ${
+                n.userId?.lastName ?? ''
+              }`"
               :comments="n.comments"
               :like="
                 n.reaction?.filter((e) => {
@@ -158,6 +160,20 @@ export default {
       this.$scrollToTop()
     },
     cancel() {
+      this.alert = {
+        ...this.alert,
+        ...{
+          isShowModal: true,
+          title: 'Xác nhận',
+          buttonCancelContent: 'Hủy',
+          buttonOkContent: 'Xác nhận',
+          content: 'Bạn có chưa lưu bài đăng. Bạn có muốn thoát ?',
+          type: 'confirm',
+          typeSubmit: 'cancelCreatePost',
+        },
+      }
+    },
+    save() {
       this.isCreatingPost = false
     },
     GoToDetails(id) {
@@ -185,13 +201,12 @@ export default {
           //       console.log(err)
           //     })
           // })
-          
-            this.news = data.blogs
-            this.listBlog = this.news
-            this.news = this.news.slice(0, this.recordsPerPage)
-            console.log('news:', this.news)
-            this.totalBlogs = this.listBlog.length
-          
+
+          this.news = data.blogs
+          this.listBlog = this.news
+          this.news = this.news.slice(0, this.recordsPerPage)
+          console.log('news:', this.news)
+          this.totalBlogs = this.listBlog.length
         })
         .catch((err) => {
           if (err.response.data.status === 401)
@@ -260,6 +275,10 @@ export default {
           localStorage.setItem('accessToken', 'false')
           localStorage.setItem('user', 'false')
           this.$router.push('/auth/login')
+          this.resetAlert()
+          break
+        case 'cancelCreatePost':
+          this.isCreatingPost = false
           this.resetAlert()
           break
         default:

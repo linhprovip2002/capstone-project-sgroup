@@ -32,6 +32,13 @@
             {{ blog.userId.lastName ?? '' }}</span>
           </div>
         </div>
+        <div class="flex gap-[10px] flex-wrap">
+          <div class="flex gap-[6px] flex-nowrap">
+            <span class="text-gray-500 text-[12px] font-normal">Category : </span>
+            <span class="text-[#050505] text-[12px] font-normal cursor-pointer" @click="GoToCategory(blog.category.slug)">
+            {{ blog.category?.name ?? '' }}</span>
+          </div>
+        </div>
       </div>
       <div class="content ql-editor" v-html="blog.content"></div>
       <div class="h-[1px] w-full bg-gray-300"></div>
@@ -315,6 +322,9 @@ export default {
     GoToDetails(id) {
       this.$router.push(`/user/${id}`)
     },
+    GoToCategory(slug) {
+      this.$router.push(`/categories/${slug}`)
+    }
   },
 }
 </script>

@@ -190,18 +190,6 @@ export default {
             description: data.description,
             slug: data.slug,
           }
-          // await data.blogs.forEach(async (e) => {
-          //   await this.$axios
-          //     .get(`/users/${e.userId}`)
-          //     .then((res) => {
-          //       const userX = res.data
-          //       e.user = userX
-          //     })
-          //     .catch((err) => {
-          //       console.log(err)
-          //     })
-          // })
-
           this.news = data.blogs
           this.listBlog = this.news
           this.news = this.news.slice(0, this.recordsPerPage)

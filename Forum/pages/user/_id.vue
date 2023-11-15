@@ -2,14 +2,11 @@
   <div>
     <main class="profile-page overflow-hidden rounded-lg">
       <section class="relative block" style="height: 500px">
-        <div
-          class="absolute top-0 w-full h-full bg-center bg-cover"
-        >
+        <div class="absolute top-0 w-full h-full bg-center bg-cover">
           <span
             id="blackOverlay"
             class="w-full h-full absolute opacity-50 bg-black"
-            ></span
-          >
+          ></span>
         </div>
         <div
           class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden"
@@ -131,6 +128,13 @@
                       </div>
                     </div>
                   </div>
+                  <Pagination
+                    v-show="!isLoading && countPost!=0"
+                    class="bg-[#fafcfe] px-[40px] py-2 rounded-[10px]"
+                    :count="19"
+                    :records-per-page="recordsPerPage"
+                    @changePage="changePage"
+                  />
                 </div>
               </div>
             </div>
@@ -200,15 +204,14 @@ export default {
         buttonOkContent: 'Ok',
         typeSubmit: '',
       },
+      recordsPerPage: 5,
+      countPost: 0,
     }
   },
   computed: {
-    countPost() {
-      return this.filternews.length
-    },
     countLikes() {
       let totalLikes = 0
-      this.filternews.forEach((e) => {
+      this.news.forEach((e) => {
         e.reaction.forEach((r) => {
           if (r.reaction === 'like') {
             totalLikes++
@@ -216,9 +219,6 @@ export default {
         })
       })
       return totalLikes
-    },
-    compareLength() {
-      return this.filternews.length === this.news.length
     },
   },
   created() {
@@ -232,15 +232,15 @@ export default {
       .finally(() => {
         this.$axios.get(`/users/${this.user._id}/blogs`).then((res) => {
           this.filternews = res.data.docs
+          this.news = this.filternews
+          this.filternews = this.filternews.slice(0, this.recordsPerPage)
+          this.countPost = this.news.length
           this.isLoading = false
         })
       })
 
     const id = JSON.parse(localStorage.getItem('user'))._id
     if (id === this.$route.params.id) this.isOwn = true
-  },
-  beforeMount() {
-    this.filternews = this.news.slice(0, 2)
   },
   methods: {
     getProfile() {
@@ -249,8 +249,13 @@ export default {
         console.log(JSON.parse(JSON.stringify(res.data)))
       })
     },
-    showMore() {
-      this.filternews = this.news
+    changePage(page, limit) {
+      this.isLoading = true
+      this.filternews = this.news.slice(
+        limit * (page - 1),
+        limit * (page - 1) + this.recordsPerPage
+      )
+      this.isLoading = false
     },
     EditProfile() {
       this.isEditProfile = true
@@ -276,7 +281,7 @@ export default {
       this.isEditProfile = false
     },
     fetchInfoUser(data) {
-      this.alert.isShowModal=false
+      this.alert.isShowModal = false
       this.isEditProfile = false
       console.log('Fetch user for edit')
       this.$axios

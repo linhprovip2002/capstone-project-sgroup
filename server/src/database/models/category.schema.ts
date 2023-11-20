@@ -2,6 +2,7 @@ import mongooseSlugPlugin from 'mongoose-slug-plugin';
 import mongoose, { Schema, model } from 'mongoose';
 import mongooseDelete from 'mongoose-delete';
 import { ICategory } from './interface';
+import pagination from 'mongoose-paginate-v2';
 
 const categorySchema = new Schema<ICategory>({
     name: { type : String , required : true },
@@ -12,5 +13,6 @@ const categorySchema = new Schema<ICategory>({
 } , { timestamps: true} );
 categorySchema.plugin(mongooseSlugPlugin , { tmpl: '<%=name%>' });
 categorySchema.plugin(mongooseDelete , { overrideMethods: 'all',   deletedAt : true });
+categorySchema.plugin(pagination);
 const Category = model<ICategory>('Category', categorySchema);
 export default Category;

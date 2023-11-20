@@ -1,13 +1,11 @@
-import { User } from '../../database/models';
+import { Blog, User } from '../../database/models';
 import { myCustomLabels } from '../../constant';
 class UserService {
     _constructor() {
     }
-    async getUsers(page? , limit?) {
+    async getUsers(page=1 , limit=1000) {
         try {
-            if(page === undefined || limit === undefined) {
-                return await User.find({ deleted: false})
-            }
+         
               const options = {
                 page,
                 limit,
@@ -26,12 +24,25 @@ class UserService {
             throw error;
         }
     }
-    async updateUser(id, body) {    
+    async isAdmin(id) {
+            const user =await User.findById({_id:id,deleted:false});
+            if(!user) throw new Error('User not found');
+            if(user.roleName == 'ADMIN' || user.roleName == 'MODERATOR') return true;
+            return false;
+    }
+        
+    async updateUser(idToken, id, body) {    
         try {
+            
+            // check admin or moderator can edit user
+            if (idToken == id || await this.isAdmin(idToken)) {
             const user = await User.findById({_id:id,deleted:false});
             if(!user) throw new Error('User not found');
             user.set(body);
             await user.save();
+            } else {
+                throw new Error('You are not allowed to edit this user');
+            }
         } catch(error) {
             throw error;
         }
@@ -83,6 +94,24 @@ class UserService {
         if(!user) throw new Error('User not found');
         await user.set({profileImage:avatar});
         await user.save();
+    }
+    async getBlogsByUserId(id, page=1, limit=1000) {
+        try {
+            const options = {
+                page,
+                limit,
+                populate: { path: 'userId' , select:'_id firstName lastName email gender phone dayOfBirth profileImage isActive roleName createdAt updatedAt' },
+                sort: { createdAt: -1 },
+                select: 'category title content blogImage reaction createdAt updatedAt',
+                myCustomLabels,
+            };
+            return await Blog.paginate({ userId: id, deleted: false }, options, function (err, result) {
+                if (err) throw new Error('Error');
+                return result;
+            });
+        } catch(error) {
+            throw error;
+        }
     }
 }
 export default new UserService();

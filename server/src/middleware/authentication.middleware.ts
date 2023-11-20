@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import env from 'dotenv';
-import { HttpResponseBuilder } from './error';
+// import { HttpResponseBuilder } from './error';
 env.config();
 export  function verify(req, res, next) {
     try {
@@ -13,24 +13,21 @@ export  function verify(req, res, next) {
       }
   
       const accessToken = req.headers.authorization;
-     
-      const token = accessToken.split(' ')[1];
-      console.log(!accessToken, !token);
-      
-      if (token) {
+      if (accessToken) {
+        const token = accessToken.split(' ')[1];
         jwt.verify(token, jwtSecret, (err, decoded) => {
           if (err) {
-            throw HttpResponseBuilder.buildUnAuthorized(res, err.message);
+            throw Error('Invalid token');
           } else {
             req.userToken = decoded;
             next();
           }
         });
       } else {
-        throw HttpResponseBuilder.buildUnAuthorized(res, 'No token provided');
+        throw Error('No token provided');
       }
     } catch (err:any) {
-      err.status = 401;
+      err.status = 403;
       next(err);
     }
   }

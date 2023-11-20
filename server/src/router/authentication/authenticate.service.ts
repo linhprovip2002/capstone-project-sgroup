@@ -7,23 +7,37 @@ class AuthenticationService {
     constructor() {
 
     }
-    async register(password, email) {
-        try {
-            const existingUser = await User.findOne({ email: email, deleted: false });
-            if (existingUser) {
-                throw new Error("Email already exists");
-            }
+    // async register(password, email) {
+    //         const existingUser = await User.findOne({ email: email, deleted: false });
+    //         if (existingUser) {
+    //             console.log("Email already exists");
+                
+    //             return Error("Email already exists");
+    //         }
     
-            const salt = bcrypt.genSaltSync(10);
-            const hashPasswordUser = bcrypt.hashSync(password, salt);
+    //         const salt = bcrypt.genSaltSync(10);
+    //         const hashPasswordUser = bcrypt.hashSync(password, salt);
             
-            const passwordResetToken = crypto.randomBytes(20).toString('hex');
-            await User.create({ email: email, password: hashPasswordUser, passwordResetToken: passwordResetToken });
-            return;
-        } catch (error:any) {
-            throw error.message;
+    //         const passwordResetToken = crypto.randomBytes(20).toString('hex');
+    //         await User.create({ email: email, password: hashPasswordUser, passwordResetToken: passwordResetToken });
+    //         return;
+    // }
+    async register(password, email) {
+        const existingUser = await User.findOne({ email: email, deleted: false });
+        if (existingUser) {
+            const error:any = new Error("Email already exists");
+            error.status = 400;
+            throw error;
         }
+    
+        const salt = bcrypt.genSaltSync(10);
+        const hashPasswordUser = bcrypt.hashSync(password, salt);
+    
+        const passwordResetToken = crypto.randomBytes(20).toString('hex');
+        await User.create({ email: email, password: hashPasswordUser, passwordResetToken: passwordResetToken });
+        return;
     }
+    
     
     async login(email, password) {
         try {
@@ -46,7 +60,9 @@ class AuthenticationService {
     async forgotPassword(email) {
         const user =await User.findOne({ email: email, deleted: false });
             if (user === null) {
-                throw new Error("Email not exists");
+                const error:any = new Error("Email not exists");
+                error.status = 404;
+                throw error;
             }
         const htmlTemplate = `
         <html>
@@ -116,7 +132,7 @@ class AuthenticationService {
         `;
         try {
             mailService.sendMail(email, "Forgot Password", "", htmlTemplate);
-        } catch (error) {
+        } catch (error:any) {
             throw error;
         }
     }

@@ -6,6 +6,7 @@ interface IBlog extends Document,SoftDeleteDocument {
     title: string;
     content: string;
     blogImage: string[];
+    reactionCount: number;
     status: string;
     reaction: [
         {

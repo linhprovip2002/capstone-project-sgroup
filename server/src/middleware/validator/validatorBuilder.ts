@@ -1,4 +1,4 @@
-import { HttpResponseBuilder } from '../error/';
+import { HttpResponseBuilder } from '../error';
 import { createBadRequestMessage } from './bad-request-message.factory'
 
 /**

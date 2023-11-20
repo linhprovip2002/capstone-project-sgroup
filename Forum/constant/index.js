@@ -1,3 +1,3 @@
 module.exports = {
-    base_url: "https://capstone-be-deploy-production.up.railway.app/api",
+    base_url: "https://docker-pratice-production.up.railway.app/api/",
 }

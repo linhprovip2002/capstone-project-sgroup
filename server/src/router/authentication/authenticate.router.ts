@@ -1,5 +1,5 @@
 import express from 'express';
-import { validateUserRegister,validatePasswordReset } from '../../middleware';
+import { validateUserRegister,validatePasswordReset } from '../../middleware/';
 import { authenticateController } from './index';
 const router = express.Router();
 

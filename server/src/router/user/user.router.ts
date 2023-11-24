@@ -1,6 +1,6 @@
 import express from 'express';
 import { userController } from './index';
-import { validateUserUpdate, verify, checkAuthor,validateStatusUser } from '../../middleware';
+import { validateUserUpdate, verify, checkAuthor,validateStatusUser } from '../../middleware/';
 const router = express.Router();
 
 router.get('/:id/blogs', userController.getBlogsByUserId);

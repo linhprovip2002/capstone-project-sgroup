@@ -1,5 +1,5 @@
 import express from 'express';
-import { verify } from '../../middleware';
+import { verify } from '../../middleware/';
 import commentController from './comment.controller';
 const router = express.Router();
 

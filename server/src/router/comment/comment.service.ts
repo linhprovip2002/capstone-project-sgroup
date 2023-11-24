@@ -1,5 +1,5 @@
 import { Comment,User } from '../../database/models';
-import { isActiveEnum } from '../../database/models/enum';
+import { isActiveEnum } from '../../database/models/enum';ww
 import { userService } from '../user';
 class UserService {
       constructor() {

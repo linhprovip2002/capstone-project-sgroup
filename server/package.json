@@ -4,8 +4,8 @@
     "tsc": "tsc",
     "dev": "ts-node-dev src/index.ts",
     "lint": "eslint --ext .ts .",
-    "seedUser": "if [ \"$SEED_ON_START\" = \"true\" ]; then ts-node src/database/seeders/seedAdmin.ts; fi",
-    "seedCategory": "if [ \"$SEED_ON_START\" = \"true\" ]; then ts-node src/database/seeders/seedCategory.ts; fi"
+    "seedUser": "ts-node src/database/seeders/seedAdmin.ts",
+    "seedCategory": "ts-node src/database/seeders/seedCategory.ts"
   },
   "devDependencies": {
     "axios": "^1.5.0",

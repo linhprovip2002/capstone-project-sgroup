@@ -14,8 +14,6 @@ services:
       - mongo
     networks:
       - app-network
-    gitenvironment:
-      - SEED_ON_START=true
   mongo:
     image: mongo
     container_name: mongo_test

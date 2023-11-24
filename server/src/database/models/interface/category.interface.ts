@@ -1,6 +1,6 @@
 import { Document } from "mongoose";
-
-export default interface ICategory extends Document {
+import { SoftDeleteDocument } from 'mongoose-delete';
+export default interface ICategory extends Document,SoftDeleteDocument {
     name: string;
     slug: string;
     description: string;

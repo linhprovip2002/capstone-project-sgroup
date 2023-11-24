@@ -20,17 +20,17 @@ class categoryService {
         const options = {
           page,
           limit,
-          populate: { path: 'userId', select: 'name' },
+          populate: { path: 'userId' , select:'_id firstName lastName email gender phone dayOfBirth profileImage isActive roleName createdAt updatedAt' },
           sort: { createdAt: -1 },
           myCustomLabels, // Define myCustomLabels somewhere in your code
         };
     
-        const blogs = await Blog.paginate(query, options);
+        const blogs = await Blog.paginate(query, options)
         console.log(blogs.docs + "aaaaaaaaaa");
         
         return { ...category.toJSON(), blogs: blogs.docs };
       } else {
-        const blogs = await Blog.find(query);
+        const blogs = await Blog.find(query).populate({ path: 'userId' , select:'_id firstName lastName email gender phone dayOfBirth profileImage isActive roleName createdAt updatedAt' })
         console.log(blogs + "aaaaaaaaaa");
         
         return { ...category.toJSON(), blogs };
@@ -46,6 +46,11 @@ class categoryService {
         const categoryCreated = await Category.create(category);
         return categoryCreated;
     }
+    async getListCategories() {
+        const categories = await Category.find({deleted: false}).populate({ path:'parentId', select:'name slug description'} );
+        return categories;
+    }
+
 }
 
 export default new categoryService()

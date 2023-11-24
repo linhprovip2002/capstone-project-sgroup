@@ -1,5 +1,7 @@
 export { 
     validateUserRegister,
     validateUserUpdate,
-    validateStatusUser
+    validateStatusUser,
+    validatePasswordReset,
+    validateUpdateBlogs,
 } from './validator.middleware';

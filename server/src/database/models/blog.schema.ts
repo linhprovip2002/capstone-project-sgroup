@@ -17,10 +17,20 @@ const blogSchema = new Schema<IBlog>({
             reaction: { type: String, enum: ['like', 'dislike'] },
         }
     ],
+    reactionCount: { type: Number, default: 0 },
   } , { timestamps: true} );
 
 blogSchema.plugin(MongooseDelete , { overrideMethods: 'all',   deletedAt : true });
 blogSchema.plugin(paginate);
+blogSchema.pre<IBlog>('save', function (next) {
+    if( this.reaction.length > 0 ) 
+    {
+        this.reactionCount = this.reaction.length;
+    } else {
+        this.reactionCount = 0;
+    }
+    next();
+  });
 const Blog:SoftDeleteModel = model<IBlog>('Blog', blogSchema);
 
 export default Blog;

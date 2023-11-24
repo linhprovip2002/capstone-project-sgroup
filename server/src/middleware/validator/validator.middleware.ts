@@ -13,6 +13,13 @@ const validateUserUpdate = createInboundValidatorByJoi(
         profileImage: Joi.string()
     })
 );
+const validatePasswordReset = createInboundValidatorByJoi(
+    Joi.object({
+        password: Joi.string().required()
+        .regex(EIGHT_CHAR_CONTAINS_ONE_LETTER_AND_ONE_NUMBER_REGEX)
+        .message('Password should contains 8 chars with 1 char and 1 num'),
+    })
+);
 
 const validateStatusUser = createInboundValidatorByJoi(
     Joi.object({
@@ -27,8 +34,19 @@ const validateUserRegister = createInboundValidatorByJoi(
         .message('Password should contains 8 chars with 1 char and 1 num'),
     })
 );
+const validateUpdateBlogs = createInboundValidatorByJoi(
+    Joi.object({
+        title: Joi.string(),
+        content: Joi.string(),
+        blogImage: Joi.string(),
+        category: Joi.string(),
+        reaction: Joi.string().valid('like','dislike'),
+    })
+);
 export { 
     validateUserRegister,
     validateUserUpdate,
-    validateStatusUser
+    validateStatusUser,
+    validatePasswordReset,
+    validateUpdateBlogs
 };

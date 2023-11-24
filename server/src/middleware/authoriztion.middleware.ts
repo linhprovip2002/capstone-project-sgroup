@@ -1,3 +1,4 @@
+import { HttpResponseBuilder } from "./error";
 export default function checkAuthor(roles:string[]) {
     return  function (req, res, next )
     {   
@@ -5,7 +6,7 @@ export default function checkAuthor(roles:string[]) {
             next();
         } else
         {
-            return res.status(403).json({ message: 'You are not allowed to perform this action' });
+            return HttpResponseBuilder.buildUnAuthorized(res,{ message: 'You are not allowed to perform this action' })
         }
         
     };

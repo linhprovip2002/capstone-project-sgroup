@@ -12,8 +12,11 @@ services:
       - ./:/app
     depends_on:
       - redis
+      - mongo
     networks:
       - app-network
+    gitenvironment:
+      - SEED_ON_START=true
   redis:
     image: redis
     container_name: redis_test
@@ -21,6 +24,15 @@ services:
       - ./redis.conf:/usr/local/etc/redis/redis.conf
     ports:
       - "6379:6379"
+    networks:
+      - app-network
+  mongo:
+    image: mongo
+    container_name: mongo_test
+    ports:
+      - "27017:27017"    
+    volumes:
+      - ./data:/data/db
     networks:
       - app-network
 networks:

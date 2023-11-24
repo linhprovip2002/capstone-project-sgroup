@@ -52,7 +52,7 @@ Follow the steps below to set up the mail service:
 
    ```plaintext
    cp .env.example ./.env
-   docker-compose exec app yarn seedUser
+   sudo docker exec test_app yarn seedUser
    docker-compose exec app yarn seedCategory
    ```      
 

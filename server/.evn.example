@@ -1,4 +1,3 @@
-REDIS_URL = 'redis://127.0.0.1'
 PASSWORD = 
 JWT_SECRET = 
 SMTP_HOST=

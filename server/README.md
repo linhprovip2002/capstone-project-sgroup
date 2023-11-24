@@ -47,3 +47,10 @@ Follow the steps below to set up the mail service:
    SMTP_PORT=587
    SMTP_USER=your_email@gmail.com
    SMTP_PASS=copied_password_above
+
+### Step to run server
+
+   ```plaintext
+   cp .env.example ./.env
+   
+
